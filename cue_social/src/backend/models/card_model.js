@@ -21,4 +21,4 @@ const cardSchema = new Schema({
    }
 });
 
-module.exports = mongoose.model('cardNames', cardSchema)
+module.exports = mongoose.model(process.env.CARD_COLLECTION, cardSchema)

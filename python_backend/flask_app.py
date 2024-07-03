@@ -4,7 +4,7 @@ import pytesseract
 from flask_cors import CORS, cross_origin
 
 app = Flask(__name__)
-CORS(app)  # This will enable CORS for all routes
+CORS(app)  # Allow requests from any origin
 
 # Configure Tesseract path if needed
 pytesseract.pytesseract.tesseract_cmd = '/usr/bin/tesseract'
@@ -111,7 +111,7 @@ def image_to_text(img_path):
     return cards, deck_code
 
 @app.route('/upload', methods=['POST'])
-@cross_origin()
+# @cross_origin()
 def upload_image():
     if 'image' not in request.files:
         return jsonify({'error': 'No file part in the request'}), 400
@@ -125,7 +125,11 @@ def upload_image():
     # Process the image and get results
     cards, deck_code = image_to_text(temp_image_path)
 
-    return jsonify({'cards': cards, 'deck_code': deck_code})
+    response = jsonify({'cards': cards, 'deck_code': deck_code})
+    response.headers.add("Access-Control-Allow-Origin", "*")
+    response.headers.add("Access-Control-Allow-Headers", "Content-Type")
+    response.headers.add("Access-Control-Allow-Methods", "POST")
+    return response
 
 @app.route('/')
 def hello_world():

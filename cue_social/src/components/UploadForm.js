@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const UploadForm = () => {
+const UploadForm = ({ onDataReceived }) => {
     const [file, setFile] = useState(null);
 
     const handleFileChange = (event) => {
@@ -12,7 +12,7 @@ const UploadForm = () => {
 
         const formData = new FormData();
         formData.append('image', file);
-        console.log('hello')
+        console.log('hello');
 
         try {
             const response = await fetch('https://jakesanghavi.pythonanywhere.com/upload', {
@@ -21,8 +21,8 @@ const UploadForm = () => {
             });
 
             const data = await response.json();
-            console.log('Success:', data);
-            // Handle the response data (e.g., display the processed text)
+            // console.log('Success:', data);
+            onDataReceived(data);  // Pass the data to the parent component
         } catch (error) {
             console.error('Error:', error);
         }
