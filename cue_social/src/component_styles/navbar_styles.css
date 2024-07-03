@@ -1,0 +1,121 @@
+
+header {
+    background: #333;
+  }
+  header .container {
+    /* max-width: 1400px; */
+    margin: 0 auto;
+    /* padding: 10px 20px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* justify-content: space-between; */
+    /* justify-content: space-between;  */
+  }
+  
+  .hamburger-holder {
+    flex: 1;
+    padding: 0 20px;
+  }
+  
+  .home-name-holder {
+    flex: 5;
+    padding: 0 20px;
+    text-align: center;
+  }
+  
+  .blank-space {
+    flex: 45;
+    padding: 0 10px;
+  }
+  
+  .headerText {
+    font-size: .9rem;
+    color: white;
+    text-align: center;
+    padding: 0 2rem;
+  }
+  
+  
+  .headerText:hover {
+    cursor: pointer;
+  }
+  
+  header a {
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .pages{
+    max-width: 1400px;
+    padding: 20px;
+    margin: 0 auto;
+  }
+  
+  /* homepage */
+  
+  #sidebarMenu {
+    height: 100%;
+    position: absolute;
+    left: 0;
+    width: 250px;
+    margin-top: 24px;
+    transform: translateX(-250px);
+    transition: transform 250ms ease-in-out;
+    background: #04A03B;
+  }
+  .sidebarMenuInner{
+    margin:0;
+    padding:0;
+    border-top: 1px solid rgba(255, 255, 255, 0.10);
+  }
+  .sidebarMenuInner li{
+    list-style: none;
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    padding: 20px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  }
+  .sidebarMenuInner li span{
+    display: block;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.50);
+  }
+  .sidebarMenuInner li a{
+    color: #fff;
+    text-transform: uppercase;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+  }
+  #openSidebarMenu:checked ~ #sidebarMenu {
+    transform: translateX(0);
+  }
+  
+  #openSidebarMenu {
+    transition: all 0.2s;
+    box-sizing: border-box;
+    display: none;
+  }
+  .sidebarIconToggle {
+    display:block;
+      font-family:'helvetica neue', helvetica, arial, sans-serif;
+      font-weight:700;
+      background:#333;
+      width:42px;
+      height:42px;
+      /* line-height:42px; */
+      color:#fff;
+      /* text-align:center; */
+      font-size:2em;
+      /* line-height:1.1em; */
+      /* position:fixed; */
+      left:10px;
+      -moz-transition:all 200ms ease-in;
+      -webkit-transition:all 200ms ease-in;
+      -o-transition:all 200ms ease-in;
+      transition:all 200ms ease-in;
+      position: relative;
+  }
