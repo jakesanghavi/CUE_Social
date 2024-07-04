@@ -11,7 +11,7 @@ const getCardByName = async (request, response) => {
   const { id } = request.params
 
   try {
-    const cardData = await Card.findOne({ Name: id });
+    const cardData = await Card.findOne({ NormalName: id });
     if (!cardData) {
       // Returning 201 instead of the proper 404 prevents errors from coming up in the console.
       return response.status(201).json({ "error": "Card does not exist" })

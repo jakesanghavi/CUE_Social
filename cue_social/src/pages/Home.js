@@ -18,21 +18,22 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       if (cards && cards.length > 0) {
+        console.log('Cards:', cards);
+
         const dummyArray = [];
         for (let i = 0; i < cards.length; i++) {
-          console.log(i)
-          if (dummyArray.length >= 18) {
-            break; // Terminate loop if dummyArray has 18 or more items
-          }
+          const lowercaseCard = cards[i].toLowerCase();
+          const encodedCard = lowercaseCard.replace(/ /g, '%20');
+          const url = `http://localhost:3008/api/cards/cardname/${encodedCard}`;
+          console.log(url);
 
           try {
-            console.log(i)
-            const response = await fetch(`http://localhost:3008/api/cards/cardname/${cards[i]}`); // Replace with your actual API endpoint
+            const response = await fetch(url);
             if (response.ok) {
               const result = await response.json();
-              // Assuming your API returns an object with 'result' field
-              if (result.result) {
-                dummyArray.push(result.result);
+              console.log(result)
+              if (result.Code) {
+                dummyArray.push(result);
               }
             } else {
               console.error(`Error fetching data for card: ${cards[i]}`);
@@ -40,13 +41,16 @@ function Home() {
           } catch (error) {
             console.error(`Error fetching data for card: ${cards[i]}`, error);
           }
-          console.log(dummyArray)
+
+          console.log('Current dummyArray:', dummyArray);
+          if (dummyArray.length >= 18) {
+            break; // Terminate loop if dummyArray has 18 or more items
+          }
         }
-      };
-    }
+      }
+    };
 
     fetchData();
-
   }, [cards]);
 
   return (
