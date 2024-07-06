@@ -77,7 +77,7 @@ const NavBar = ({ openLoginModal, openHelpModal, loggedInUser, onLoginSuccess, u
     /* global google */
     if (loggedInUser === null || loggedInUser.email === null) {
       google.accounts.id.initialize({
-        client_id: "294943120027-n845en83pcg77mf00c2nm2ce44t8ra10.apps.googleusercontent.com",
+        client_id: '974013126679-kauk60isd77u3857mln4n64gehunanmj.apps.googleusercontent.com',
         callback: handleLoginResponse
       });
 

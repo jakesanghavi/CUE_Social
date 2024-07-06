@@ -1,12 +1,12 @@
 import UploadForm from '../components/UploadForm';
 import Login from '../components/Login';
+import '../component_styles/home.css';
 import { useEffect, useRef, useState } from 'react';
 
 
-function Home() {
+const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
   const [deckCode, setDeckCode] = useState(null);
   const [cards, setCards] = useState(null);
-  const [fullCards, setFullCards] = useState([]);
 
   const handleData = (data) => {
     const cards = data.cards
@@ -55,7 +55,7 @@ function Home() {
 
   return (
     <div className="Home" id="home">
-      <Login />
+      <Login onLoginSuccess={onLoginSuccess} uid={uid} />
       <UploadForm onDataReceived={handleData} />
     </div>
   );
