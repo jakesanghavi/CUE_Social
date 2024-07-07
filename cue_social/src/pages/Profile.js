@@ -22,7 +22,7 @@ const Profile = ({ onLogout, loggedInUser }) => {
         {user ? user.username : null}
       </div>
       <div>
-        Stats
+        Decks
       </div>
       <button onClick={() => {onLogout(); backHome();}}>
         Sign out

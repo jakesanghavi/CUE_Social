@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars, faQuestionCircle } from '@fortawesome/free-solid-svg-icons'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
 import '../component_styles/navbar_styles.css'
 import { ROUTE } from '../constants';
 import { useEffect, useCallback } from 'react';
 import { jwtDecode } from "jwt-decode";
 
 // Navbar is available on every page. Contains Google OAuth, game info, and menu icon
-const NavBar = ({ openLoginModal, openHelpModal, loggedInUser, onLoginSuccess, uid }) => {
+const NavBar = ({ openLoginModal, loggedInUser, onLoginSuccess, uid }) => {
 
   // Set the route to the API
   const route = ROUTE;
@@ -17,22 +17,6 @@ const NavBar = ({ openLoginModal, openHelpModal, loggedInUser, onLoginSuccess, u
   const loginModal = useCallback(email => {
     openLoginModal(email);
   }, [openLoginModal]);
-
-  // Opens the help/game info modal
-  const helpModal = () => {
-    openHelpModal();
-  }
-
-  // Function to disable the player buttons when the player opens the menu
-  const disableButtons = () => {
-    const buttons = document.getElementById('player-controls');
-    if (buttons.style.pointerEvents === 'none') {
-      buttons.style.pointerEvents = 'auto';
-    }
-    else {
-      buttons.style.pointerEvents = 'none';
-    }
-  }
 
   // Called the user tries to sign in with google
   const handleLoginResponse = useCallback(async (response) => {
@@ -92,7 +76,7 @@ const NavBar = ({ openLoginModal, openHelpModal, loggedInUser, onLoginSuccess, u
     <header>
       <div className='container'>
         <div className="hamburger-holder">
-          <input type="checkbox" className="openSidebarMenu" id="openSidebarMenu" onClick={disableButtons} />
+          <input type="checkbox" className="openSidebarMenu" id="openSidebarMenu"/>
           <label htmlFor="openSidebarMenu" className="sidebarIconToggle">
             <FontAwesomeIcon icon={faBars} />
           </label>
@@ -107,16 +91,13 @@ const NavBar = ({ openLoginModal, openHelpModal, loggedInUser, onLoginSuccess, u
         <div className="home-name-holder">
           <Link to="/">
             <h1>
-              Musicle
+              Cue Tavern
             </h1>
           </Link>
         </div>
         <div className="blank-space">
         </div>
 
-        <div id="help-button" className="headerText" onClick={helpModal}>
-          <h2><FontAwesomeIcon icon={faQuestionCircle} /></h2>
-        </div>
         <div id="signInDiv">
           {loggedInUser === null || loggedInUser.email === null ? (
             // Render Google Sign-In button when loggedInUser is null

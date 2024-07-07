@@ -103,10 +103,6 @@ function App() {
     document.getElementById('signUpEmail').value = email;
   }
 
-  const openHelpModal = () => {
-    document.getElementById('helpModal').style.display = 'block';
-  }
-
   // When they log in, remove the google oAuth component when site loads
   const handleLoginSuccess = async(email, username) => {
     const element = document.getElementById('signInDiv').firstChild.firstChild
@@ -179,7 +175,7 @@ function App() {
   return (
     <div className="App" id="app" style={{ backgroundColor: '#ECE5F0', height: '100vh' }}>
       <BrowserRouter>
-        <NavBar openLoginModal={openLoginModal} openHelpModal={openHelpModal} loggedInUser={loggedInUser} onLoginSuccess={handleLoginSuccess} uid={getUserID} />
+        <NavBar openLoginModal={openLoginModal} loggedInUser={loggedInUser} onLoginSuccess={handleLoginSuccess} uid={getUserID} />
         <div className='pages'>
           <Routes>
           <Route
