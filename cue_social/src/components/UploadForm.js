@@ -4,6 +4,8 @@ const UploadForm = () => {
     const [file, setFile] = useState(null);
     const [description, setDescription] = useState('');
     const [album, setAlbum] = useState('');
+    const [tags, setTags] = useState('');
+    const [title, setTitle] = useState('');
     const [loading, setLoading] = useState(false);
     const [receivedData, setReceivedData] = useState(null);
     const [deckCode, setDeckCode] = useState(null);
@@ -11,7 +13,12 @@ const UploadForm = () => {
     const [submitted, setSubmitted] = useState(false);
 
     const handleFileChange = (event) => {
-        setFile(event.target.files[0]);
+        const selectedFile = event.target.files[0];
+        if (selectedFile && selectedFile.type.startsWith('image/')) {
+            setFile(selectedFile);
+        } else {
+            alert('Please upload a valid image file.');
+        }
     };
 
     const handleDescriptionChange = (event) => {
@@ -22,8 +29,21 @@ const UploadForm = () => {
         setAlbum(event.target.value);
     };
 
+    const handleTagChange = (event) => {
+        setTags(event.target.value);
+    };
+
+    const handleTitleChange = (event) => {
+        setTitle(event.target.value);
+    };
+
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        if (!file) {
+            alert('Please select an image file to upload.');
+            return;
+        }
 
         const formData = new FormData();
         formData.append('image', file);
@@ -49,9 +69,15 @@ const UploadForm = () => {
         }
     };
 
-    useEffect(() => {
-        console.log('useEffect triggered with receivedData:', receivedData);
+    const handleTextFormSubmit = (event) => {
+        event.preventDefault();
+        console.log('Title:', title);
+        console.log('Description:', description);
+        console.log('Album:', album);
+        // Add your logic for handling the text form submission
+    };
 
+    useEffect(() => {
         const fetchData = async () => {
             if (receivedData && receivedData.length > 0) {
                 receivedData.sort((a, b) => b.length - a.length);
@@ -94,37 +120,85 @@ const UploadForm = () => {
             {!submitted && (
                 <>
                     <label htmlFor="imageFile">Select an image:</label>
-                    <input type="file" id="imageFile" name="image" onChange={handleFileChange} />
+                    <input type="file" id="imageFile" name="image" onChange={handleFileChange} accept="image/*" />
+                    {file && <img src={URL.createObjectURL(file)} alt="Uploaded preview" style={{ maxWidth: '100%', maxHeight: '300px', marginTop: '10px' }} />}
                     <button type="submit">Upload Image</button>
                 </>
             )}
             {submitted && (
                 <>
-                    <label htmlFor="description">Description:</label>
-                    <input
-                        type="text"
-                        id="description"
-                        name="description"
-                        value={description}
-                        onChange={handleDescriptionChange}
-                    />
-
-                    <label htmlFor="album">Album:</label>
-                    <select id="album" name="album" value={album} onChange={handleAlbumChange}>
-                        <option value="">Select an album</option>
-                        <option value="album1">Album 1</option>
-                        <option value="album2">Album 2</option>
-                        <option value="album3">Album 3</option>
-                    </select>
-
-                    {loading && <div className="loading">Loading...</div>}
-
-                    {cardData.length > 0 && (
-                        <div className="data">
-                            <h3>Received Card Data:</h3>
-                            <pre>{JSON.stringify(cardData, null, 2)}</pre>
+                    <div style={{ display: 'flex', marginTop: '10px' }}>
+                        <div style={{ flex: 1, marginRight: '10px', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
+                            {file && (
+                                <img
+                                    src={URL.createObjectURL(file)}
+                                    alt="Uploaded preview"
+                                    style={{ maxWidth: '100%', maxHeight: '40%', objectFit: 'contain' }}
+                                />
+                            )}
                         </div>
-                    )}
+                        <div style={{ flex: 1 }}>
+                            <div>
+                                <label htmlFor="title">Title:</label>
+                                <input
+                                    type="text"
+                                    id="title"
+                                    name="title"
+                                    value={title}
+                                    onChange={handleTitleChange}
+                                    style={{ marginBottom: '10px', width: '100%' }}
+                                />
+                            </div>
+                            <div>
+                                <label htmlFor="album">Album:</label>
+                                <select id="album" name="album" value={album} onChange={handleAlbumChange} style={{ width: '100%' }}>
+                                    <option value="">Select an album</option>
+                                    <option value="album1">Album 1</option>
+                                    <option value="album2">Album 2</option>
+                                    <option value="album3">Album 3</option>
+                                </select>
+                            </div>
+                            <div style={{ marginTop: '10px' }}>
+                                <label htmlFor="tags">Tags:</label>
+                                <select id="tags" name="tags" value={tags} onChange={handleTagChange} style={{ width: '100%' }}>
+                                    <option value="">Select a tag</option>
+                                    <option value="tag1">Tag 1</option>
+                                    <option value="tag2">Tag 2</option>
+                                    <option value="tag3">Tag 3</option>
+                                </select>
+                            </div>
+                            <div style={{ display: 'flex', marginTop: '20px' }}>
+                                <div style={{ flex: 1, marginRight: '10px' }}>
+                                    <label htmlFor="description">Description:</label>
+                                    <textarea
+                                        id="description"
+                                        name="description"
+                                        value={description}
+                                        onChange={handleDescriptionChange}
+                                        style={{ width: '100%', height: '200px' }}
+                                    />
+                                </div>
+                                <div style={{ flex: 1 }}>
+                                    {loading && <div className="loading">Loading...</div>}
+                                    {cardData.length > 0 && (
+                                        <div className="data">
+                                            <label htmlFor="receivedCardData">Received Card Data:</label>
+                                            <textarea
+                                                id="receivedCardData"
+                                                value={cardData.map(card => card.Name).join('\n')}
+                                                readOnly
+                                                style={{ width: '100%', height: '200px' }}
+                                            />
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <button onClick={handleTextFormSubmit} style={{ marginTop: '10px' }}>Submit</button>
+
                 </>
             )}
         </form>
