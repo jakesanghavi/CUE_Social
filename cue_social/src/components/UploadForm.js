@@ -133,7 +133,7 @@ const UploadForm = () => {
                                 <img
                                     src={URL.createObjectURL(file)}
                                     alt="Uploaded preview"
-                                    style={{ maxWidth: '100%', maxHeight: '40%', objectFit: 'contain' }}
+                                    style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain' }}
                                 />
                             )}
                         </div>
@@ -193,12 +193,11 @@ const UploadForm = () => {
                                     )}
                                 </div>
                             </div>
+                            <div style={({ flex: 1})}>
+                                <button onClick={handleTextFormSubmit} style={{ marginTop: '10px' }}>Submit</button>
+                            </div>
                         </div>
                     </div>
-
-
-                    <button onClick={handleTextFormSubmit} style={{ marginTop: '10px' }}>Submit</button>
-
                 </>
             )}
         </form>
