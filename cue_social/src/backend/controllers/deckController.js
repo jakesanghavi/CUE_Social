@@ -1,6 +1,23 @@
 const Deck = require('../models/deck_model.js');
 const sharp = require('sharp');
 
+// GET decks for user with pagination
+const getDecksForUser = async (request, response) => {
+    const { id } = request.params // Assuming you have user information in req.user
+    const page = parseInt(request.query.page) || 1; // Page number from query parameter
+    const limit = 10; // Number of decks per page
+    console.log(id)
+
+    try {
+        const skips = (page - 1) * limit;
+        const decks = await Deck.find({ user: id }).skip(skips).limit(limit);
+        response.status(200).json(decks);
+    } catch (error) {
+        console.error('Error fetching decks:', error);
+        response.status(500).json({ message: 'Server error' });
+    }
+};
+
 // POST a certain deck
 const postDeck = async (request, response) => {
     console.log(request.body);
@@ -39,4 +56,4 @@ const postDeck = async (request, response) => {
     }
 };
 
-module.exports = { postDeck };
+module.exports = { getDecksForUser, postDeck };

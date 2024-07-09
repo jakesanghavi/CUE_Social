@@ -208,7 +208,7 @@ const UploadForm = ({ loggedInUser }) => {
                                     {loading && <div className="loading">Loading...</div>}
                                     {cardData.length > 0 && (
                                         <div className="data">
-                                            <label htmlFor="receivedCardData">Received Card Data:</label>
+                                            <label htmlFor="receivedCardData">Cards Detected:</label>
                                             <textarea
                                                 id="receivedCardData"
                                                 value={cardData.map(card => card.Name).join('\n')}
