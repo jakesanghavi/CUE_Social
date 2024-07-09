@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const UploadForm = () => {
+const UploadForm = ({ loggedInUser }) => {
     const [file, setFile] = useState(null);
     const [description, setDescription] = useState('');
     const [album, setAlbum] = useState('');
@@ -69,12 +69,38 @@ const UploadForm = () => {
         }
     };
 
-    const handleTextFormSubmit = (event) => {
+    const handleTextFormSubmit = async(event) => {
         event.preventDefault();
         console.log('Title:', title);
         console.log('Description:', description);
         console.log('Album:', album);
         // Add your logic for handling the text form submission
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('title', title);
+        formData.append('album', album);
+        formData.append('tags', tags);
+        formData.append('description', description);
+        const cardNames = cardData.map(card => card.Name); // Assuming cardData is an array of objects with a 'Name' field
+        formData.append('cards', JSON.stringify(cardNames));
+        formData.append('deckcode', deckCode);
+        formData.append('user', loggedInUser.username);
+        formData.append('email', loggedInUser.email)
+        console.log(formData);
+
+        try {
+            const response = await fetch('http://localhost:3008/api/decks/post/', {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await response.json();
+            console.log('Received data:', data);
+        } catch (error) {
+            console.error('Error:', error);
+        } finally {
+            setLoading(false);
+        }
     };
 
     useEffect(() => {
@@ -86,21 +112,21 @@ const UploadForm = () => {
                     const lowercaseCard = receivedData[i].toLowerCase();
                     const encodedCard = lowercaseCard.replace(/ /g, '%20');
                     const url = `http://localhost:3008/api/cards/cardname/${encodedCard}`;
-                    console.log(url);
+                    // console.log(url);
 
                     try {
                         const response = await fetch(url);
                         if (response.ok) {
                             const result = await response.json();
-                            console.log(result);
+                            // console.log(result);
                             if (result.Code) {
                                 dummyArray.push(result);
                             }
                         } else {
-                            console.error(`Error fetching data for card: ${receivedData[i]}`);
+                            // console.error(`Error fetching data for card: ${receivedData[i]}`);
                         }
                     } catch (error) {
-                        console.error(`Error fetching data for card: ${receivedData[i]}`, error);
+                        // console.error(`Error fetching data for card: ${receivedData[i]}`, error);
                     }
 
                     if (dummyArray.length >= 18) {

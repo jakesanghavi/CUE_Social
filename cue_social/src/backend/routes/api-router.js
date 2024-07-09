@@ -1,4 +1,9 @@
 const express = require('express')
+const multer = require('multer')
+
+// Configure multer storage
+const storage = multer.memoryStorage();
+const upload = multer({ storage: storage });
 
 const {
     getHome,
@@ -20,6 +25,10 @@ const {
     updateCookieUser,
     deleteCookieUser
 } = require('../controllers/cookieUsersController')
+
+const {
+    postDeck
+} = require('../controllers/deckController')
 
 const router = express.Router()
 
@@ -63,4 +72,6 @@ router.post('/api/users/userID/del/:id', deleteCookieUser)
 // GET a specific user by cookie ID
 router.get('/api/users/userID/:id', getCookieUser);
 
+// POST a specific deck
+router.post('/api/decks/post', upload.single('image'), postDeck);
 module.exports = router

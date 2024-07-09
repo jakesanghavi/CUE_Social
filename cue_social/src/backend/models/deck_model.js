@@ -20,11 +20,23 @@ const deckSchema = new Schema({
         required: true
     },
     image: {
-        data: Buffer, // Store image as Buffer data
-        contentType: String // Mime type of the image
+        data: {
+            type: Buffer,
+            required: true
+        }
+    },
+    cards: {
+        type: [String],
+        required: true
+    },
+    deckcode: {
+        type: String,
+        required: true
+    },
+    user: {
+        type: String,
+        required: true
     }
 });
 
-const Upload = mongoose.model(process.env.DECK_COLLECTION, deckSchema);
-
-module.exports = Upload;
+module.exports = mongoose.model(process.env.DECK_COLLECTION, deckSchema);
