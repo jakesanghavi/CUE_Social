@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { ROUTE } from '../constants';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const Profile = ({ onLogout, loggedInUser }) => {
@@ -16,7 +17,7 @@ const Profile = ({ onLogout, loggedInUser }) => {
   const fetchDecksForUser = async (user) => {
     if (user) {
       try {
-        const response = await fetch(`http://localhost:3008/api/decks/${user}`);
+        const response = await fetch(`${ROUTE}/api/decks/${user}`);
         if (!response.ok) {
           throw new Error('Failed to fetch decks');
         }

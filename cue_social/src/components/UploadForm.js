@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { ROUTE } from '../constants';
 
 const UploadForm = ({ loggedInUser }) => {
     const [file, setFile] = useState(null);
@@ -89,7 +90,7 @@ const UploadForm = ({ loggedInUser }) => {
         console.log(formData);
 
         try {
-            const response = await fetch('http://localhost:3008/api/decks/post/', {
+            const response = await fetch(ROUTE + '/api/decks/post/', {
                 method: 'POST',
                 body: formData,
             });
@@ -111,7 +112,7 @@ const UploadForm = ({ loggedInUser }) => {
                 for (let i = 0; i < receivedData.length; i++) {
                     const lowercaseCard = receivedData[i].toLowerCase();
                     const encodedCard = lowercaseCard.replace(/ /g, '%20');
-                    const url = `http://localhost:3008/api/cards/cardname/${encodedCard}`;
+                    const url = `${ROUTE}/api/cards/cardname/${encodedCard}`;
                     // console.log(url);
 
                     try {
