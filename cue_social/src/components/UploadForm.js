@@ -69,7 +69,7 @@ const UploadForm = ({ loggedInUser }) => {
         }
     };
 
-    const handleTextFormSubmit = async(event) => {
+    const handleTextFormSubmit = async (event) => {
         event.preventDefault();
         console.log('Title:', title);
         console.log('Description:', description);
@@ -144,10 +144,34 @@ const UploadForm = ({ loggedInUser }) => {
     return (
         <form onSubmit={handleSubmit} encType="multipart/form-data">
             {!submitted && (
+                <label htmlFor="imageFile" style={{ cursor: 'pointer' }}>
+                    {file ? (
+                        <img src={URL.createObjectURL(file)} alt="Uploaded preview" style={{ maxWidth: '100%', maxHeight: '300px', marginTop: '10px' }} />
+                    ) : (
+                        <div style={{ border: '1px dashed #ccc', padding: '20px', textAlign: 'center' }}>
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="64"
+                                height="64"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                            >
+                                <path d="M12 5v14M19 12l-7 7-7-7" />
+                            </svg>
+                            <br />
+                            Click to upload
+                        </div>
+                    )}
+                    <input type="file" id="imageFile" name="image" onChange={handleFileChange} accept="image/*" style={{ display: 'none' }} />
+                </label>
+            )}
+            {file && !submitted && (
                 <>
-                    <label htmlFor="imageFile">Select an image:</label>
-                    <input type="file" id="imageFile" name="image" onChange={handleFileChange} accept="image/*" />
-                    {file && <img src={URL.createObjectURL(file)} alt="Uploaded preview" style={{ maxWidth: '100%', maxHeight: '300px', marginTop: '10px' }} />}
+                    {/* <img src={URL.createObjectURL(file)} alt="Uploaded preview" style={{ maxWidth: '100%', maxHeight: '300px', marginTop: '10px' }} /> */}
                     <button type="submit">Upload Image</button>
                 </>
             )}
@@ -219,7 +243,7 @@ const UploadForm = ({ loggedInUser }) => {
                                     )}
                                 </div>
                             </div>
-                            <div style={({ flex: 1})}>
+                            <div style={({ flex: 1 })}>
                                 <button onClick={handleTextFormSubmit} style={{ marginTop: '10px' }}>Submit</button>
                             </div>
                         </div>
