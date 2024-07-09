@@ -8,7 +8,7 @@ function define(name, value) {
 
 // For Prod:
 define("ORIGIN", 'https://cuetavern.netlify.app');
-define("ROUTE", 'https://cuetavern.onrender.com');
+define("ROUTE", 'https://cue-social.onrender.com');
 
 // For Development:
 // define("ORIGIN", 'http://localhost:3000');
