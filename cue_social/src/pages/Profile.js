@@ -49,7 +49,7 @@ const Profile = ({ onLogout, loggedInUser }) => {
               {deck.image && (
                 <img
                   src={`data:image/jpeg;base64,${Buffer.from(deck.image.data).toString('base64')}`}
-                  alt="Deck Image"
+                  alt="Decklilst"
                 />
               )}
               <hr />

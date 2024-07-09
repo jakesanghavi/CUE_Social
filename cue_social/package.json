@@ -2,9 +2,6 @@
   "name": "cuetavern",
   "version": "0.1.0",
   "private": true,
-  "overrides": {
-    "sharp": "0.29.0"
-  },
   "dependencies": {
     "@fortawesome/free-solid-svg-icons": "^6.5.1",
     "@fortawesome/react-fontawesome": "^0.2.0",
