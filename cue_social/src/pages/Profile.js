@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { ROUTE } from '../constants';
+import '../component_styles/profile.css'; // Make sure to include the CSS file
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const Profile = ({ onLogout, loggedInUser }) => {
@@ -13,7 +14,6 @@ const Profile = ({ onLogout, loggedInUser }) => {
     }
   }, [loggedInUser]);
 
-  // Function to fetch decks for the logged-in user
   const fetchDecksForUser = async (user) => {
     if (user) {
       try {
@@ -29,7 +29,6 @@ const Profile = ({ onLogout, loggedInUser }) => {
     }
   };
 
-  // Make the user also navigate back to the home page when they log out
   const backHome = () => {
     window.location.href = '/';
   };
@@ -41,22 +40,21 @@ const Profile = ({ onLogout, loggedInUser }) => {
       </div>
       <div>
         <h2>Decks</h2>
-        <ul>
+        <div className="grid-container">
           {decks.map(deck => (
-            <li key={deck._id}>
+            <div key={deck._id} className="grid-item">
               <div>Title: {deck.title}</div>
-              <div>Description: {deck.description}</div>
-              {/* Render image if available */}
+              <div>Deck Code: {deck.deckcode}</div>
               {deck.image && (
                 <img
                   src={`data:image/jpeg;base64,${Buffer.from(deck.image.data).toString('base64')}`}
-                  alt="Decklilst"
+                  alt="Decklist"
                 />
               )}
               <hr />
-            </li>
+            </div>
           ))}
-        </ul>
+        </div>
       </div>
       <button onClick={() => { onLogout(); backHome(); }}>
         Sign out

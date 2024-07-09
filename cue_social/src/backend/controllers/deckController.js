@@ -5,7 +5,7 @@ const sharp = require('sharp');
 const getDecksForUser = async (request, response) => {
     const { id } = request.params // Assuming you have user information in req.user
     const page = parseInt(request.query.page) || 1; // Page number from query parameter
-    const limit = 10; // Number of decks per page
+    const limit = 16; // Number of decks per page
     console.log(id)
 
     try {
