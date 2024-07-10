@@ -17,18 +17,10 @@ app.use((request, response, next) => {
     next()
 })
 
-const allowedOrigins = [constants.ORIGIN, constants.ORIGIN2];
-
 app.use(cors({
-    origin: function (origin, callback) {
-        if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-            callback(null, true);
-        } else {
-            callback(new Error('Not allowed by CORS'));
-        }
-    },
+    origin: constants.ORIGIN,
     optionsSuccessStatus: 200
-}));
+}))
 
 // routes
 app.use('/', songRoutes)
