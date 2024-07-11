@@ -10,7 +10,7 @@ const DeckPage = () => {
   useEffect(() => {
     const fetchDeck = async () => {
       try {
-        const response = await fetch(`${ROUTE}/api/decks/${deckId}`);
+        const response = await fetch(`${ROUTE}/api/decks/onedeck/${deckId}`);
         if (!response.ok) {
           throw new Error('Failed to fetch deck');
         }

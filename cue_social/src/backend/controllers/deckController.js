@@ -6,7 +6,6 @@ const getDecksForUser = async (request, response) => {
     const { id } = request.params // Assuming you have user information in req.user
     const page = parseInt(request.query.page) || 1; // Page number from query parameter
     const limit = 16; // Number of decks per page
-    console.log(id)
 
     try {
         const skips = (page - 1) * limit;
@@ -17,6 +16,19 @@ const getDecksForUser = async (request, response) => {
         response.status(500).json({ message: 'Server error' });
     }
 };
+
+const getOneDeck = async (request, response) => {
+    const { id } = request.params // Assuming you have user information in req.user
+
+    try {
+        const decks = await Deck.findOne({ _id: id });
+        response.status(200).json(decks);
+    } catch (error) {
+        console.error('Error fetching decks:', error);
+        response.status(500).json({ message: 'Server error' });
+    }
+};
+
 
 // POST a certain deck
 const postDeck = async (request, response) => {
@@ -56,4 +68,4 @@ const postDeck = async (request, response) => {
     }
 };
 
-module.exports = { getDecksForUser, postDeck };
+module.exports = { getDecksForUser, postDeck, getOneDeck };

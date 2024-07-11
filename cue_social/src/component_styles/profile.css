@@ -19,3 +19,12 @@
     max-height: 40vh; /* Maximum height for the image */
   }
   
+  .grid-item a {
+    color: inherit; /* Inherit text color */
+    text-decoration: none; /* Remove underline */
+  }
+  
+  .grid-item a:hover {
+    color: inherit; /* Maintain text color on hover */
+    text-decoration: none; /* Maintain no underline on hover */
+  }

@@ -28,7 +28,8 @@ const {
 
 const {
     postDeck,
-    getDecksForUser
+    getDecksForUser,
+    getOneDeck
 } = require('../controllers/deckController')
 
 const router = express.Router()
@@ -76,6 +77,10 @@ router.get('/api/users/userID/:id', getCookieUser);
 // POST a specific deck
 router.post('/api/decks/post', upload.single('image'), postDeck);
 
-// GET decks fpr user
+// GET decks for user
 router.get('/api/decks/:id', getDecksForUser)
+
+// GET decks by ID
+router.get('/api/decks/onedeck/:id', getOneDeck)
+
 module.exports = router

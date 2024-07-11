@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { ROUTE } from '../constants';
-import '../component_styles/profile.css'; // Make sure to include the CSS file
+import '../component_styles/profile.css';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const Profile = ({ onLogout, loggedInUser }) => {
@@ -43,14 +44,16 @@ const Profile = ({ onLogout, loggedInUser }) => {
         <div className="grid-container">
           {decks.map(deck => (
             <div key={deck._id} className="grid-item">
-              <div>Title: {deck.title}</div>
-              <div>Deck Code: {deck.deckcode}</div>
-              {deck.image && (
-                <img
-                  src={`data:image/jpeg;base64,${Buffer.from(deck.image.data).toString('base64')}`}
-                  alt="Decklist"
-                />
-              )}
+              <Link to={`/decks/${deck._id}`}>
+                <div>Title: {deck.title}</div>
+                <div>Description: {deck.description}</div>
+                {deck.image && (
+                  <img
+                    src={`data:image/jpeg;base64,${Buffer.from(deck.image.data).toString('base64')}`}
+                    alt="Decklist"
+                  />
+                )}
+              </Link>
               <hr />
             </div>
           ))}

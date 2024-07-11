@@ -4,6 +4,7 @@ import Home from './pages/Home';
 import Profile from './pages/Profile';
 import NavBar from './components/Navbar';
 import { ROUTE } from './constants';
+import DeckPage from './pages/DeckPage'; // Import the new DeckPage component
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -43,7 +44,7 @@ function App() {
           if (data.email_address !== null) {
             const user = await fetch(ROUTE + '/api/users/email/' + data.email_address);
             const user_resp = await user.json()
-            setLoggedInUser({email: user_resp.email_address, username: user_resp.username});
+            setLoggedInUser({ email: user_resp.email_address, username: user_resp.username });
 
             // If they are on registered, remove the google OAuth component when site loads
             const element = document.getElementById('signInDiv').firstChild.firstChild
@@ -57,7 +58,7 @@ function App() {
           else if (data.userID !== null) {
             const user = await fetch(ROUTE + '/api/users/username/' + data.userID);
             const user_resp = await user.json()
-            setLoggedInUser({email: null, username: user_resp.username});
+            setLoggedInUser({ email: null, username: user_resp.username });
 
             // If they are on registered, remove the google OAuth component when site loads
             // We could maybe remove this for pseudo-users
@@ -69,7 +70,7 @@ function App() {
         }
         // If the browser has not been used before...
         else {
-          setLoggedInUser({email: null, username: getUserID()});
+          setLoggedInUser({ email: null, username: getUserID() });
           // Create a new cookie user for the new browser window user
           fetch(ROUTE + '/api/users/userID/post/' + userID, {
             method: 'POST',
@@ -104,7 +105,7 @@ function App() {
   }
 
   // When they log in, remove the google oAuth component when site loads
-  const handleLoginSuccess = async(email, username) => {
+  const handleLoginSuccess = async (email, username) => {
     const element = document.getElementById('signInDiv').firstChild.firstChild
     if (element) {
       element.remove()
@@ -121,11 +122,11 @@ function App() {
       body: JSON.stringify({ "userID": userID, "email_address": email })
     });
 
-    setLoggedInUser({email: email, username: username});
+    setLoggedInUser({ email: email, username: username });
 
     const user = await fetch(ROUTE + '/api/users/email/' + email);
     const user_resp = await user.json()
-    setLoggedInUser({email: user_resp.email_address, username: user_resp.username});
+    setLoggedInUser({ email: user_resp.email_address, username: user_resp.username });
 
   };
 
@@ -171,20 +172,24 @@ function App() {
       body: JSON.stringify({ "email_address": null, "username": userID })
     });
   };
-  
+
   return (
     <div className="App" id="app" style={{ backgroundColor: '#ECE5F0', height: '100vh' }}>
       <BrowserRouter>
         <NavBar openLoginModal={openLoginModal} loggedInUser={loggedInUser} onLoginSuccess={handleLoginSuccess} uid={getUserID} />
         <div className='pages'>
           <Routes>
-          <Route
+            <Route
               path="/"
-              element={<Home loggedInUser={loggedInUser} onLoginSuccess={handleLoginSuccess} uid={getUserID}/>}
+              element={<Home loggedInUser={loggedInUser} onLoginSuccess={handleLoginSuccess} uid={getUserID} />}
             />
-          <Route
+            <Route
               path='/profile'
               element={<Profile onLogout={handleLogout} loggedInUser={loggedInUser} />}
+            />
+            <Route
+              path="/decks/:deckId" // Add a new route for the DeckPage
+              element={<DeckPage />}
             />
           </Routes>
         </div>
