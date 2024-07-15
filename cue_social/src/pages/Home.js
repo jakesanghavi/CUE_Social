@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import UploadForm from '../components/UploadForm';
 import Login from '../components/Login';
+import SearchBar from '../components/SearchBar';
 import '../component_styles/home.css';
 
 const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
@@ -17,6 +18,7 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
   return (
     <div className="Home" id="home">
       <Login onLoginSuccess={onLoginSuccess} uid={uid} />
+      <SearchBar />
       {loggedInUser && loggedInUser.email && (
         <button onClick={openModal}>
           Upload a deck

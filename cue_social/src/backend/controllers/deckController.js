@@ -17,6 +17,41 @@ const getDecksForUser = async (request, response) => {
     }
 };
 
+// GET decks from homepage query
+const getDecksBySearch = async (request, response) => {
+    const { albums, collections, tags } = request.body; // Use body to receive search params
+    const page = parseInt(request.query.page) || 1; // Page number from query parameter
+    const limit = parseInt(request.query.limit) || 12; // Number of decks per page
+
+    try {
+        const query = {};
+
+        if (albums && albums.length > 0) {
+            query.albums = { $in: albums };
+        }
+
+        if (collections && collections.length > 0) {
+            query.collections = { $in: collections };
+        }
+
+        if (tags && tags.length > 0) {
+            query.tags = { $in: tags };
+        }
+
+        const skips = (page - 1) * limit;
+        const decks = await Deck.find(query).skip(skips).limit(limit);
+        const totalDecks = await Deck.countDocuments(query); // To get the total number of matching decks
+
+        response.status(200).json({ decks, totalDecks });
+    } catch (error) {
+        console.error('Error fetching decks:', error);
+        response.status(500).json({ message: 'Server error' });
+    }
+};
+
+
+
+
 const getOneDeck = async (request, response) => {
     const { id } = request.params // Assuming you have user information in req.user
 
@@ -69,4 +104,4 @@ const postDeck = async (request, response) => {
     }
 };
 
-module.exports = { getDecksForUser, postDeck, getOneDeck };
+module.exports = { getDecksForUser, getDecksBySearch, postDeck, getOneDeck };

@@ -29,7 +29,8 @@ const {
 const {
     postDeck,
     getDecksForUser,
-    getOneDeck
+    getOneDeck,
+    getDecksBySearch
 } = require('../controllers/deckController')
 
 const router = express.Router()
@@ -79,6 +80,9 @@ router.post('/api/decks/post', upload.single('image'), postDeck);
 
 // GET decks for user
 router.get('/api/decks/:id', getDecksForUser)
+
+// GET decks for search
+router.post('/api/decks/search-decks', getDecksBySearch);
 
 // GET decks by ID
 router.get('/api/decks/onedeck/:id', getOneDeck)
