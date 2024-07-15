@@ -4,8 +4,9 @@ import { ROUTE } from '../constants';
 const UploadForm = ({ loggedInUser }) => {
     const [file, setFile] = useState(null);
     const [description, setDescription] = useState('');
-    const [album, setAlbum] = useState('');
-    const [tags, setTags] = useState('');
+    const [albums, setAlbums] = useState([]);
+    const [collections, setCollections] = useState([]);
+    const [tags, setTags] = useState([]);
     const [title, setTitle] = useState('');
     const [loading, setLoading] = useState(false);
     const [receivedData, setReceivedData] = useState(null);
@@ -26,12 +27,37 @@ const UploadForm = ({ loggedInUser }) => {
         setDescription(event.target.value);
     };
 
-    const handleAlbumChange = (event) => {
-        setAlbum(event.target.value);
+    const handleAlbumsChange = (event) => {
+        const selectedAlbum = event.target.value;
+        if (selectedAlbum && !albums.includes(selectedAlbum) && albums.length < 3) {
+            setAlbums([...albums, selectedAlbum]);
+        }
     };
 
-    const handleTagChange = (event) => {
-        setTags(event.target.value);
+    const removeAlbum = (album) => {
+        setAlbums(albums.filter(a => a !== album));
+    };
+
+    const handleCollectionsChange = (event) => {
+        const selectedCollection = event.target.value;
+        if (selectedCollection && !collections.includes(selectedCollection) && collections.length < 3) {
+            setCollections([...collections, selectedCollection]);
+        }
+    };
+
+    const removeCollection = (album) => {
+        setCollections(collections.filter(a => a !== album));
+    };
+
+    const handleTagsChange = (event) => {
+        const selectedTag = event.target.value;
+        if (selectedTag && !tags.includes(selectedTag) && tags.length < 3) {
+            setTags([...tags, selectedTag]);
+        }
+    };
+
+    const removeTag = (album) => {
+        setTags(tags.filter(a => a !== album));
     };
 
     const handleTitleChange = (event) => {
@@ -74,13 +100,14 @@ const UploadForm = ({ loggedInUser }) => {
         event.preventDefault();
         console.log('Title:', title);
         console.log('Description:', description);
-        console.log('Album:', album);
+        console.log('Albums:', albums);
         // Add your logic for handling the text form submission
         const formData = new FormData();
         formData.append('image', file);
         formData.append('title', title);
-        formData.append('album', album);
-        formData.append('tags', tags);
+        formData.append('albums', JSON.stringify(albums));
+        formData.append('collections', JSON.stringify(collections));
+        formData.append('tags', JSON.stringify(tags));
         formData.append('description', description);
         const cardNames = cardData.map(card => card.Name); // Assuming cardData is an array of objects with a 'Name' field
         formData.append('cards', JSON.stringify(cardNames));
@@ -201,22 +228,61 @@ const UploadForm = ({ loggedInUser }) => {
                                 />
                             </div>
                             <div>
-                                <label htmlFor="album">Album:</label>
-                                <select id="album" name="album" value={album} onChange={handleAlbumChange} style={{ width: '100%' }}>
-                                    <option value="">Select an album</option>
-                                    <option value="album1">Album 1</option>
-                                    <option value="album2">Album 2</option>
-                                    <option value="album3">Album 3</option>
-                                </select>
+                                <div>
+                                    <label htmlFor="albums">Albums:</label>
+                                    <select id="albums" name="albums" onChange={handleAlbumsChange} style={{ width: '100%' }}>
+                                        <option value="">Select an album</option>
+                                        <option value="album1">Album 1</option>
+                                        <option value="album2">Album 2</option>
+                                        <option value="album3">Album 3</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    {albums.map((album, index) => (
+                                        <div key={index} style={{ display: 'inline-block', margin: '5px', padding: '5px', border: '1px solid #ccc', borderRadius: '5px' }}>
+                                            {album}
+                                            <button onClick={() => removeAlbum(album)} style={{ marginLeft: '5px' }}>x</button>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
-                            <div style={{ marginTop: '10px' }}>
-                                <label htmlFor="tags">Tags:</label>
-                                <select id="tags" name="tags" value={tags} onChange={handleTagChange} style={{ width: '100%' }}>
-                                    <option value="">Select a tag</option>
-                                    <option value="tag1">Tag 1</option>
-                                    <option value="tag2">Tag 2</option>
-                                    <option value="tag3">Tag 3</option>
-                                </select>
+                            <div>
+                                <div>
+                                    <label htmlFor="collections">Collections:</label>
+                                    <select id="collections" name="collections" onChange={handleCollectionsChange} style={{ width: '100%' }}>
+                                        <option value="">Select a collection</option>
+                                        <option value="collection1">Collection 1</option>
+                                        <option value="collection2">Collection 2</option>
+                                        <option value="collection3">Collection 3</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    {collections.map((collection, index) => (
+                                        <div key={index} style={{ display: 'inline-block', margin: '5px', padding: '5px', border: '1px solid #ccc', borderRadius: '5px' }}>
+                                            {collection}
+                                            <button onClick={() => removeCollection(collection)} style={{ marginLeft: '5px' }}>x</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                            <div>
+                                <div style={{ marginTop: '10px' }}>
+                                    <label htmlFor="tags">Tags:</label>
+                                    <select id="tags" name="tags" onChange={handleTagsChange} style={{ width: '100%' }}>
+                                        <option value="">Select a tag</option>
+                                        <option value="tag1">Tag 1</option>
+                                        <option value="tag2">Tag 2</option>
+                                        <option value="tag3">Tag 3</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    {tags.map((tag, index) => (
+                                        <div key={index} style={{ display: 'inline-block', margin: '5px', padding: '5px', border: '1px solid #ccc', borderRadius: '5px' }}>
+                                            {tag}
+                                            <button onClick={() => removeTag(tag)} style={{ marginLeft: '5px' }}>x</button>
+                                        </div>
+                                    ))}
+                                </div>
                             </div>
                             <div style={{ display: 'flex', marginTop: '20px' }}>
                                 <div style={{ flex: 1, marginRight: '10px' }}>

@@ -34,7 +34,7 @@ const getOneDeck = async (request, response) => {
 const postDeck = async (request, response) => {
     console.log(request.body);
 
-    const { title, album, tags, description, cards, deckcode, user, email } = request.body;
+    const { title, albums, collections, tags, description, cards, deckcode, user, email } = request.body;
     const file = request.file; // The uploaded file
 
     if (!email) {
@@ -52,8 +52,9 @@ const postDeck = async (request, response) => {
         const deck = await Deck.create({
             title,
             description,
-            album,
-            tags,
+            albums: JSON.parse(albums),
+            collections: JSON.parse(collections),
+            tags: JSON.parse(tags),
             image: { data: resizedImageBuffer }, // Use resized image buffer
             // image: { data: file.buffer }, // non-compressed image
             cards: JSON.parse(cards), // Parse the cards JSON string

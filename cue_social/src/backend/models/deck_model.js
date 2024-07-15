@@ -11,12 +11,16 @@ const deckSchema = new Schema({
         type: String,
         required: true
     },
-    album: {
-        type: String,
+    albums: {
+        type: [String],
+        required: true
+    },
+    collections: {
+        type: [String],
         required: true
     },
     tags: {
-        type: String,
+        type: [String],
         required: true
     },
     image: {
