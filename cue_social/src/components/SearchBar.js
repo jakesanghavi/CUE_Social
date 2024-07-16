@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Select from 'react-select';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../constants';
+import cardsJson from '../csvjson';
 
 const colorMapping = {
     'Arts & Culture': '#f792e4',
@@ -220,15 +221,12 @@ const SearchBar = () => {
 
     const fetchCards = useCallback(async () => {
         try {
-            const response = await fetch(`${ROUTE}/api/cards/`);
-            if (!response.ok) {
-                throw new Error('Failed to fetch cards');
-            }
-            const cardsData = await response.json();
-            const renamedData = cardsData.map(item => renameKey(item, 'Name', 'label')).map(item => renameKey(item, 'Code', 'value'));
-            setCards(renamedData);
+            const jsonData = await cardsJson;
+            const renamedData = jsonData.map(item => renameKey(item, 'Name', 'label')).map(item => renameKey(item, 'Code', 'value'));
+            setCards(renamedData.sort((a, b) => (a.label > b.label) ? 1 : (a.label < b.label) ? -1 : 0));
+            console.log(renamedData); // Use jsonData as needed
         } catch (error) {
-            console.error('Error fetching decks:', error);
+            console.error('Error fetching JSON:', error);
         }
     }, []); // Dependency array is empty assuming no external dependencies
 
