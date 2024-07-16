@@ -318,27 +318,27 @@ const SearchBar = () => {
                 isMulti
                 options={optionsAlbums}
                 onChange={setSelectedAlbums}
-                placeholder="Select Albums"
+                placeholder="Search for Albums"
                 styles={customStylesAlbums}
             />
             <Select
                 isMulti
                 options={optionsCollections}
                 onChange={setSelectedCollections}
-                placeholder="Select Collections"
+                placeholder="Search for Collections"
                 styles={customStylesCollections}
             />
             <Select
                 isMulti
                 options={optionsTags}
                 onChange={setSelectedTags}
-                placeholder="Select Tags"
+                placeholder="Search for Tags"
             />
             <Select
                 isMulti
                 options={cards}
                 onChange={setSelectedCards}
-                placeholder="Select Cards"
+                placeholder="Search for Cards"
                 styles={customStylesCards}
             />
             <button onClick={handleSearch}>Search</button>

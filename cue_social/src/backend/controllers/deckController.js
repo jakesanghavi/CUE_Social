@@ -27,19 +27,19 @@ const getDecksBySearch = async (request, response) => {
         const query = {};
 
         if (albums && albums.length > 0) {
-            query.albums = { $in: albums };
+            query.albums = { $all: albums };
         }
 
         if (collections && collections.length > 0) {
-            query.collections = { $in: collections };
+            query.collections = { $all: collections };
         }
 
         if (tags && tags.length > 0) {
-            query.tags = { $in: tags };
+            query.tags = { $all: tags };
         }
 
         if (cards && cards.length > 0) {
-            query.cards = { $in: cards };
+            query.cards = { $all: cards };
         }
 
         const skips = (page - 1) * limit;

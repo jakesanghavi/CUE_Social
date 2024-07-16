@@ -29,7 +29,7 @@ const UploadForm = ({ loggedInUser }) => {
 
     const handleAlbumsChange = (event) => {
         const selectedAlbum = event.target.value;
-        if (selectedAlbum && !albums.includes(selectedAlbum) && albums.length < 3) {
+        if (selectedAlbum && !albums.includes(selectedAlbum) && albums.length < 8) {
             setAlbums([...albums, selectedAlbum]);
         }
     };
@@ -40,7 +40,7 @@ const UploadForm = ({ loggedInUser }) => {
 
     const handleCollectionsChange = (event) => {
         const selectedCollection = event.target.value;
-        if (selectedCollection && !collections.includes(selectedCollection) && collections.length < 3) {
+        if (selectedCollection && !collections.includes(selectedCollection) && collections.length < 6) {
             setCollections([...collections, selectedCollection]);
         }
     };
@@ -51,7 +51,7 @@ const UploadForm = ({ loggedInUser }) => {
 
     const handleTagsChange = (event) => {
         const selectedTag = event.target.value;
-        if (selectedTag && !tags.includes(selectedTag) && tags.length < 3) {
+        if (selectedTag && !tags.includes(selectedTag) && tags.length < 6) {
             setTags([...tags, selectedTag]);
         }
     };

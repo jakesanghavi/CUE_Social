@@ -7,30 +7,34 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 const SearchResults = () => {
   const location = useLocation();
   const { searchParams } = location.state;
-  const [decks, setDecks] = useState([]);
+  const [decks, setDecks] = useState(null);
   const [totalDecks, setTotalDecks] = useState(0);
   const [page, setPage] = useState(1);
+  const [loading, setLoading] = useState(true); // State for loading animation
   const limit = 12;
 
   const fetchDecks = useCallback(async (page) => {
+    setLoading(true); // Set loading to true when fetching decks
     try {
-        const response = await fetch(`${ROUTE}/api/decks/search-decks?page=${page}&limit=${limit}`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(searchParams)
-        });
-        if (!response.ok) {
-            throw new Error('Failed to fetch decks');
-        }
-        const data = await response.json();
-        setDecks(data.decks);
-        setTotalDecks(data.totalDecks);
+      const response = await fetch(`${ROUTE}/api/decks/search-decks?page=${page}&limit=${limit}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(searchParams)
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch decks');
+      }
+      const data = await response.json();
+      setDecks(data.decks);
+      setTotalDecks(data.totalDecks);
     } catch (error) {
-        console.error('Error fetching decks:', error);
+      console.error('Error fetching decks:', error);
+    } finally {
+      setLoading(false); // Set loading to false when fetch completes (success or error)
     }
-}, [searchParams]);
+  }, [searchParams]);
 
   useEffect(() => {
     fetchDecks(page);
@@ -40,6 +44,19 @@ const SearchResults = () => {
     setPage(newPage);
   };
 
+  // Loading state
+  if (loading) {
+    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
+      Loading decks...</div>;
+  }
+
+  // No decks found state
+  if (!loading && decks.length === 0) {
+    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
+      <h2>No decks found!</h2></div>;
+  }
+
+  // Decks list
   return (
     <div>
       <div>
