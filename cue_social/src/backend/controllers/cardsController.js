@@ -41,10 +41,10 @@ const getCardByCode = async (request, response) => {
   }
 }
 
-// GET all songs
+// GET all cards
 const getCards = async (request, response) => {
-  const songs = await Card.find({}).sort({ createdAt: -1 })
-  response.status(200).json(songs)
+  const cards = await Card.find({}).sort({ Name: 1 });
+  response.status(200).json(cards)
 }
 
 module.exports = {

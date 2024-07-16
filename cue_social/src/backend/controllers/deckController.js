@@ -19,7 +19,7 @@ const getDecksForUser = async (request, response) => {
 
 // GET decks from homepage query
 const getDecksBySearch = async (request, response) => {
-    const { albums, collections, tags } = request.body; // Use body to receive search params
+    const { albums, collections, tags, cards } = request.body; // Use body to receive search params
     const page = parseInt(request.query.page) || 1; // Page number from query parameter
     const limit = parseInt(request.query.limit) || 12; // Number of decks per page
 
@@ -36,6 +36,10 @@ const getDecksBySearch = async (request, response) => {
 
         if (tags && tags.length > 0) {
             query.tags = { $in: tags };
+        }
+
+        if (cards && cards.length > 0) {
+            query.cards = { $in: cards };
         }
 
         const skips = (page - 1) * limit;

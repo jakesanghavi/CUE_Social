@@ -44,7 +44,6 @@ router.get('/api/cards/cardname/:id', getCardByName);
 // GET a specific card by code
 router.get('/api/cards/cardcode/:id', getCardByCode);
 
-
 // GET all cards
 router.get('/api/cards/', getCards);
 
