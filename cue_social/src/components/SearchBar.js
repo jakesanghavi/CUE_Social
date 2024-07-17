@@ -2,7 +2,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import Select from 'react-select';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../constants';
-import cardsJson from '../csvjson';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
 
 const colorMapping = {
     'Arts & Culture': '#f792e4',
@@ -199,7 +200,11 @@ const SearchBar = () => {
     const [selectedCollections, setSelectedCollections] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
     const [cards, setCards] = useState([]);
+    const [users, setUsers] = useState([]);
     const [selectedCards, setSelectedCards] = useState([]);
+    const [selectedUser, setSelectedUser] = useState(null);
+    const [searchType, setSearchType] = useState('decks'); // Default to 'decks'
+
 
     const handleSearch = () => {
         const searchParams = {
@@ -208,7 +213,7 @@ const SearchBar = () => {
             tags: selectedTags.map(tag => tag.value),
             cards: selectedCards.map(card => card.label)
         };
-        navigate('/search-results', { state: { searchParams } });
+        navigate('/deck-search-results', { state: { searchParams } });
     };
 
     const renameKey = (obj, oldKey, newKey) => {
@@ -229,7 +234,7 @@ const SearchBar = () => {
             const renamedData = cardsData.map(item => renameKey(item, 'Name', 'label')).map(item => renameKey(item, 'Code', 'value'));
             setCards(renamedData);
         } catch (error) {
-            console.error('Error fetching decks:', error);
+            console.error('Error fetching cards:', error);
         }
     }, []); // Dependency array is empty assuming no external dependencies
 
@@ -237,6 +242,26 @@ const SearchBar = () => {
         fetchCards();
     }, [fetchCards]); // useEffect dependency on fetchCards function
 
+    const fetchUsers = useCallback(async () => {
+        try {
+            const response = await fetch(`${ROUTE}/api/users/getall/`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch users');
+            }
+            const userData = await response.json();
+            const renamedData = userData.map(item => renameKey(item, 'username', 'label'));
+            renamedData['value'] = renamedData['label'];
+            setUsers(userData);
+        } catch (error) {
+            console.error('Error fetching users:', error);
+        }
+    }, []);
+
+    useEffect(() => {
+        fetchUsers();
+    }, [fetchUsers]);
+
+    // Custom styles for react-select to apply color mapping
     // Custom styles for react-select to apply color mapping
     const customStylesAlbums = {
         option: (provided, state) => ({
@@ -314,35 +339,63 @@ const SearchBar = () => {
     };
 
     return (
-        <div>
-            <Select
-                isMulti
-                options={optionsAlbums}
-                onChange={setSelectedAlbums}
-                placeholder="Search for Albums"
-                styles={customStylesAlbums}
-            />
-            <Select
-                isMulti
-                options={optionsCollections}
-                onChange={setSelectedCollections}
-                placeholder="Search for Collections"
-                styles={customStylesCollections}
-            />
-            <Select
-                isMulti
-                options={optionsTags}
-                onChange={setSelectedTags}
-                placeholder="Search for Tags"
-            />
-            <Select
-                isMulti
-                options={cards}
-                onChange={setSelectedCards}
-                placeholder="Search for Cards"
-                styles={customStylesCards}
-            />
-            <button onClick={handleSearch}>Search</button>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '200px' }}>
+            <div style={{ marginBottom: '10px' }}>
+                <button onClick={() => setSearchType('decks')} style={{ marginRight: '10px', padding: '8px' }}>
+                    Search for Decks
+                </button>
+                <button onClick={() => setSearchType('users')} style={{ padding: '8px' }}>
+                    Search for Users
+                </button>
+            </div>
+
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {searchType === 'decks' && (
+                    <>
+                        <Select
+                            isMulti
+                            options={optionsAlbums}
+                            onChange={setSelectedAlbums}
+                            placeholder="Search for Albums"
+                            styles={customStylesAlbums}
+                        />
+                        <Select
+                            isMulti
+                            options={optionsCollections}
+                            onChange={setSelectedCollections}
+                            placeholder="Search for Collections"
+                            styles={customStylesCollections}
+                        />
+                        <Select
+                            isMulti
+                            options={optionsTags}
+                            onChange={setSelectedTags}
+                            placeholder="Search for Tags"
+                        />
+                        <Select
+                            isMulti
+                            options={cards}
+                            onChange={setSelectedCards}
+                            placeholder="Search for Cards"
+                            styles={customStylesCards}
+                        />
+                    </>
+                )}
+
+                {searchType === 'users' && (
+                    <>
+                        <Select
+                            options={users} // Replace with user search options
+                            onChange={setSelectedUser}
+                            placeholder="Search for a User"
+                        />
+                    </>
+                )}
+                <button onClick={handleSearch} style={{ marginLeft: '5px', padding: '8px' }}>
+                    <FontAwesomeIcon icon={faSearch} />
+                </button>
+            </div>
+
         </div>
     );
 };

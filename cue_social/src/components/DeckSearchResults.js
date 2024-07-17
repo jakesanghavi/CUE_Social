@@ -4,7 +4,7 @@ import { ROUTE } from '../constants';
 import '../component_styles/profile.css';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
-const SearchResults = () => {
+const DeckSearchResults = () => {
   const location = useLocation();
   const { searchParams } = location.state;
   const [decks, setDecks] = useState(null);
@@ -94,4 +94,4 @@ const SearchResults = () => {
   );
 };
 
-export default SearchResults;
+export default DeckSearchResults;

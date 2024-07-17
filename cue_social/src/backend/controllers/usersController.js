@@ -81,9 +81,19 @@ const updateUser = async (request, response) => {
   }
 }
 
+// GET all users
+const getUsers = async (request, response) => {
+  const users = await User.aggregate([
+    { $match: { email_address: { $ne: null } } }, // Filter for non-null emails
+    { $sort: { username: 1 } },
+]);
+  response.status(200).json(users)
+}
+
 module.exports = {
   getUserByUsername,
   getUserByEmail,
   postUser,
-  updateUser
+  updateUser,
+  getUsers
 }
