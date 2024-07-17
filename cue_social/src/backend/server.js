@@ -25,6 +25,7 @@ app.use(cors({
 // routes
 app.use('/', songRoutes)
 
+
 // connect to database
 mongoose.connect(process.env.MONGO_URI)
     .then(() => {

@@ -221,12 +221,15 @@ const SearchBar = () => {
 
     const fetchCards = useCallback(async () => {
         try {
-            const jsonData = await cardsJson;
-            const renamedData = jsonData.map(item => renameKey(item, 'Name', 'label')).map(item => renameKey(item, 'Code', 'value'));
-            setCards(renamedData.sort((a, b) => (a.label > b.label) ? 1 : (a.label < b.label) ? -1 : 0));
-            console.log(renamedData); // Use jsonData as needed
+            const response = await fetch(`${ROUTE}/api/cards/`);
+            if (!response.ok) {
+                throw new Error('Failed to fetch cards');
+            }
+            const cardsData = await response.json();
+            const renamedData = cardsData.map(item => renameKey(item, 'Name', 'label')).map(item => renameKey(item, 'Code', 'value'));
+            setCards(renamedData);
         } catch (error) {
-            console.error('Error fetching JSON:', error);
+            console.error('Error fetching decks:', error);
         }
     }, []); // Dependency array is empty assuming no external dependencies
 
