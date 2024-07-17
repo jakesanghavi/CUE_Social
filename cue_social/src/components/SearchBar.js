@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { Link, useLocation } from 'react-router-dom';
 
 const colorMapping = {
     'Arts & Culture': '#f792e4',
@@ -205,8 +206,7 @@ const SearchBar = () => {
     const [selectedUser, setSelectedUser] = useState(null);
     const [searchType, setSearchType] = useState('decks'); // Default to 'decks'
 
-
-    const handleSearch = () => {
+    const handleDeckSearch = () => {
         const searchParams = {
             albums: selectedAlbums.map(album => album.value),
             collections: selectedCollections.map(collection => collection.value),
@@ -215,6 +215,7 @@ const SearchBar = () => {
         };
         navigate('/deck-search-results', { state: { searchParams } });
     };
+
 
     const renameKey = (obj, oldKey, newKey) => {
         if (oldKey in obj) {
@@ -391,9 +392,29 @@ const SearchBar = () => {
                         />
                     </>
                 )}
-                <button onClick={handleSearch} style={{ marginLeft: '5px', padding: '8px' }}>
-                    <FontAwesomeIcon icon={faSearch} />
-                </button>
+                {searchType === 'decks' && (
+                    <>
+                        <button onClick={handleDeckSearch} style={{ marginLeft: '5px', padding: '8px' }}>
+                            <FontAwesomeIcon icon={faSearch} />
+                        </button>
+                    </>
+                )}
+                {searchType === 'users' && (
+                    <>
+                        {selectedUser && (
+                            <Link to={`/users/${selectedUser.label}`}>
+                                <button style={{ marginLeft: '5px', padding: '8px' }}>
+                                    <FontAwesomeIcon icon={faSearch} />
+                                </button>
+                            </Link>
+                        )}
+                        {!selectedUser && (
+                            <button style={{ marginLeft: '5px', padding: '8px' }} disabled={true}>
+                                <FontAwesomeIcon icon={faSearch} />
+                            </button>
+                        )}
+                    </>
+                )}
             </div>
 
         </div>

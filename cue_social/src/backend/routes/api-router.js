@@ -17,7 +17,8 @@ const {
     getUserByEmail,
     postUser ,
     updateUser,
-    getUsers
+    getUsers,
+    getOneUser
 } = require('../controllers/usersController')
 
 const {
@@ -60,7 +61,11 @@ router.post('/api/users/:id', postUser)
 // PATCH a user in the DB
 router.post('/api/users/patchcookie/:id', updateUser)
 
+// GET all users
 router.get('/api/users/getall', getUsers)
+
+// GET a single user
+router.get('/api/users/getone/:id', getOneUser)
 
 // GET a specific user by cookie ID
 router.get('/api/users/userID/:id', getCookieUser);

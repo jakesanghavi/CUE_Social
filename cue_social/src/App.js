@@ -5,7 +5,8 @@ import Profile from './pages/Profile';
 import NavBar from './components/Navbar';
 import { ROUTE } from './constants';
 import DeckPage from './pages/DeckPage'; // Import the new DeckPage component
-import DeckSearchResults from './components/DeckSearchResults';
+import UserPage from './pages/UserPage';
+import DeckSearchResults from './pages/DeckSearchResults';
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -193,7 +194,7 @@ function App() {
               element={<DeckPage />}
             />
             <Route path="/deck-search-results" element={<DeckSearchResults />} />
-
+            <Route path="/users/:userId" element={<UserPage />} />
           </Routes>
         </div>
       </BrowserRouter>

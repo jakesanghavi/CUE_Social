@@ -86,8 +86,21 @@ const getUsers = async (request, response) => {
   const users = await User.aggregate([
     { $match: { email_address: { $ne: null } } }, // Filter for non-null emails
     { $sort: { username: 1 } },
-]);
+  ]);
   response.status(200).json(users)
+}
+
+const getOneUser = async (request, response) => {
+  const { id } = request.params // Assuming you have user information in req.user
+  console.log(id)
+
+  try {
+    const user = await User.findOne({ username: id });
+    response.status(200).json(user);
+  } catch (error) {
+    console.error('Error fetching decks:', error);
+    response.status(500).json({ message: 'Server error' });
+  }
 }
 
 module.exports = {
@@ -95,5 +108,6 @@ module.exports = {
   getUserByEmail,
   postUser,
   updateUser,
-  getUsers
+  getUsers,
+  getOneUser
 }
