@@ -3,6 +3,7 @@ import UploadForm from '../components/UploadForm';
 import Login from '../components/Login';
 import SearchBar from '../components/SearchBar';
 import '../component_styles/home.css';
+import UploadImage from '../components/UploadImage';
 
 const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,6 +19,7 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
   return (
     <div className="Home" id="home">
       <Login onLoginSuccess={onLoginSuccess} uid={uid} />
+      <UploadImage />
       <SearchBar />
       {loggedInUser && loggedInUser.email && (
         <button onClick={openModal}>
