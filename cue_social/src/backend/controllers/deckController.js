@@ -1,5 +1,8 @@
 const Deck = require('../models/deck_model.js');
 const sharp = require('sharp');
+const cloudinary = require('cloudinary').v2; // Assuming you have installed 'cloudinary' package
+const fs = require('fs');
+const path = require('path');
 
 // GET decks for user with pagination
 const getDecksForUser = async (request, response) => {
@@ -71,22 +74,74 @@ const getOneDeck = async (request, response) => {
 
 // POST a certain deck
 const postDeck = async (request, response) => {
-    console.log(request.body);
-
     const { title, albums, collections, tags, description, cards, deckcode, user, email } = request.body;
     const file = request.file; // The uploaded file
+    const uploadDir = path.join(__dirname, '../../assets'); // Directory path relative to backend/controllers
+    const filePath = path.join(uploadDir, file.originalname);
 
     if (!email) {
         response.status(400).json({ error: 'Not logged in!' });
         return;
     }
 
+    // const saveTempFile = async (file) => {
+    //     return new Promise((resolve, reject) => {
+    //         fs.writeFile(filePath, file.buffer, (error) => {
+    //             if (error) {
+    //                 reject(error);
+    //             } else {
+    //                 console.log('hello?')
+    //                 resolve(filePath);
+    //             }
+    //         });
+    //     });
+    // };
+
+    // await saveTempFile(file)
+
     try {
         // Use sharp to resize the image and reduce its quality
-        const resizedImageBuffer = await sharp(file.buffer)
-            .resize({ width: 800 }) // Resize the image to a width of 800px (adjust as needed)
-            .jpeg({ quality: 50 }) // Convert to JPEG with 50% quality (adjust as needed)
-            .toBuffer();
+        await sharp(file.buffer) // Input image buffer
+        .resize({ width: 800 }) // Resize the image to a width of 800px (adjust as needed)
+        .jpeg({ quality: 50 }) // Convert to JPEG with 50% quality (adjust as needed)
+        .toFile(filePath);
+
+        // const cloudinaryExample = async () => {
+        //     try {
+        //         // Configuration
+        //         cloudinary.config(cloudinaryConfig);
+
+        //         // Upload an image
+        //         const uploadResult = await cloudinary.uploader.upload(
+        //             file,
+        //         );
+        //         console.log('Upload result:', uploadResult);
+
+        //     } catch (error) {
+        //         console.error('Error:', error);
+        //     }
+        // };
+
+        cloudinary.config({
+            cloud_name: 'defal1ruq',
+            api_key: process.env.CLOUDINARY_PK,
+            api_secret: process.env.CLOUDINARY_SK // Click 'View Credentials' below to copy your API secret
+        });
+
+        let imageOutput = null;
+
+
+        try {
+            const result = await cloudinary.uploader.upload(filePath, {
+                resource_type: "auto",
+            });
+            imageOutput = result;
+        } catch (error) {
+            console.error(error);
+        }
+
+        console.log('beans')
+        console.log(imageOutput.url)
 
         const deck = await Deck.create({
             title,
@@ -94,8 +149,7 @@ const postDeck = async (request, response) => {
             albums: JSON.parse(albums),
             collections: JSON.parse(collections),
             tags: JSON.parse(tags),
-            image: { data: resizedImageBuffer }, // Use resized image buffer
-            // image: { data: file.buffer }, // non-compressed image
+            image: imageOutput.url, // Use resized image buffer
             cards: JSON.parse(cards), // Parse the cards JSON string
             deckcode,
             user: user
