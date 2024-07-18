@@ -140,7 +140,7 @@ const UploadForm = ({ loggedInUser }) => {
                     const lowercaseCard = receivedData[i].toLowerCase();
                     const encodedCard = lowercaseCard.replace(/ /g, '%20');
                     const url = `${ROUTE}/api/cards/cardname/${encodedCard}`;
-                    // console.log(url);
+                    console.log(url);
 
                     try {
                         const response = await fetch(url);
@@ -160,6 +160,7 @@ const UploadForm = ({ loggedInUser }) => {
                     if (dummyArray.length >= 18) {
                         break; // Terminate loop if dummyArray has 18 or more items
                     }
+                    console.log(dummyArray)
                 }
                 setCardData(dummyArray);
                 console.log('Final dummyArray:', dummyArray);

@@ -231,7 +231,7 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
 
     const fetchCards = useCallback(async () => {
         try {
-            const response = await fetch(`${ROUTE}/api/cards/`);
+            const response = await fetch(`${ROUTE}/api/allcards/`);
             if (!response.ok) {
                 throw new Error('Failed to fetch cards');
             }

@@ -1,5 +1,8 @@
 const Deck = require('../models/deck_model.js');
 const sharp = require('sharp');
+const ImageKit = require("imagekit-javascript")
+const { generateAuthenticationParams } = require('./secureUploadController')
+const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest
 
 // GET decks for user with pagination
 const getDecksForUser = async (request, response) => {
@@ -71,8 +74,13 @@ const getOneDeck = async (request, response) => {
 
 // POST a certain deck
 const postDeck = async (request, response) => {
-    console.log(request.body);
+    const imagekit = new ImageKit({
+        publicKey: process.env.IMAGEKIT_PK,
+        privateKey: process.env.IMAGEKIT_SK,
+        urlEndpoint: process.env.IMAGEKIT_URL,
+    });
 
+    const authenticationParameters = generateAuthenticationParams();
     const { title, albums, collections, tags, description, cards, deckcode, user, email } = request.body;
     const file = request.file; // The uploaded file
 
@@ -83,28 +91,50 @@ const postDeck = async (request, response) => {
 
     try {
         // Use sharp to resize the image and reduce its quality
-        const resizedImageBuffer = await sharp(file.buffer)
+        const resizedImage = await sharp(file.buffer)
             .resize({ width: 800 }) // Resize the image to a width of 800px (adjust as needed)
             .jpeg({ quality: 50 }) // Convert to JPEG with 50% quality (adjust as needed)
-            .toBuffer();
+            .toBuffer().toString('base64');; // Convert to buffer for upload
 
+        // Upload function internally uses the ImageKit.io javascript SDK
+        function upload(fileBuffer, fileName) {
+            return new Promise((resolve, reject) => {
+                imagekit.upload({
+                    file: fileBuffer,
+                    fileName: fileName,
+                    token: authenticationParameters.token,
+                    signature: authenticationParameters.signature,
+                    expire: authenticationParameters.expire
+                }).then(result => {
+                    resolve(result); // Resolve with the result from ImageKit upload
+                }).catch(error => {
+                    reject(error); // Reject with any error from ImageKit upload
+                });
+            });
+        }
+
+        // Upload the resized image to ImageKit
+        const imageUploadResult = await upload(resizedImage, file.originalname);
+        console.log(imageUploadResult)
+        
+
+        // Create a new Deck with the uploaded image URL from ImageKit
         const deck = await Deck.create({
             title,
             description,
             albums: JSON.parse(albums),
             collections: JSON.parse(collections),
             tags: JSON.parse(tags),
-            image: { data: resizedImageBuffer }, // Use resized image buffer
-            // image: { data: file.buffer }, // non-compressed image
-            cards: JSON.parse(cards), // Parse the cards JSON string
+            image: imageUploadResult.url, // Store the URL of the uploaded image
+            cards: JSON.parse(cards),
             deckcode,
             user: user
         });
 
-        response.status(200).json(deck);
+        response.status(200).json(deck); // Send the created deck as JSON response
     } catch (error) {
-        console.log(error.message);
-        response.status(400).json({ error: error.message });
+        console.error(error.message);
+        response.status(400).json({ error: error.message }); // Handle any errors and send as JSON response
     }
 };
 

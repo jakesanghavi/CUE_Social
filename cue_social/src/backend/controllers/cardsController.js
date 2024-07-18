@@ -6,23 +6,22 @@ const getHome = async (request, response) => {
   return response.send("Backend landing page");
 }
 
-// GET a specific user
+// GET a specific card
 const getCardByName = async (request, response) => {
+  const { id } = request.params
+
   try {
-    // Create an index on the "Name" field for efficient sorting
-    await Card.createIndex({ Name: 1 });
-
-    const cards = await Card.aggregate([
-      { $sort: { Name: 1 } },
-      { $project: { _id: 0, Code: 1, Name: 1, NormalName: 1 } }
-    ]);
-
-    response.status(200).json(cards);
-  } catch (error) {
-    console.error('Error fetching cards:', error);
-    response.status(500).json({ error: 'An error occurred while fetching cards' });
+    const cardData = await Card.findOne({ NormalName: id });
+    if (!cardData) {
+      // Returning 201 instead of the proper 404 prevents errors from coming up in the console.
+      return response.status(201).json({ "error": "Card does not exist" })
+    }
+    return response.status(200).json(cardData)
   }
-};
+  catch (error) {
+    return response.status(400).json({ error: error.message })
+  }
+}
 
 // GET a specific user
 const getCardByCode = async (request, response) => {

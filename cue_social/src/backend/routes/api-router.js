@@ -35,6 +35,8 @@ const {
     getDecksBySearch
 } = require('../controllers/deckController')
 
+const { getSign } = require('../controllers/secureUploadController')
+
 const router = express.Router()
 
 // GET the homepage (prevent crashing)
@@ -47,7 +49,7 @@ router.get('/api/cards/cardname/:id', getCardByName);
 router.get('/api/cards/cardcode/:id', getCardByCode);
 
 // GET all cards
-router.get('/api/cards/', getCards);
+router.get('/api/allcards/', getCards);
 
 // GET a specific user by email
 router.get('/api/users/email/:id', getUserByEmail);
