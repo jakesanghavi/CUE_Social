@@ -24,10 +24,8 @@ const deckSchema = new Schema({
         required: true
     },
     image: {
-        data: {
-            type: Buffer,
-            required: true
-        }
+        type: String,
+        required: true
     },
     cards: {
         type: [String],

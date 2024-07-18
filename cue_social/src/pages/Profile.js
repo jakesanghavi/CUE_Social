@@ -49,7 +49,7 @@ const Profile = ({ onLogout, loggedInUser }) => {
                 <div>Description: {deck.description}</div>
                 {deck.image && (
                   <img
-                    src={`data:image/jpeg;base64,${Buffer.from(deck.image.data).toString('base64')}`}
+                    src={deck.image} // Replace with your actual image URL
                     alt="Decklist"
                   />
                 )}
