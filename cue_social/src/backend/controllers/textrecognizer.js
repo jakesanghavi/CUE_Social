@@ -98,26 +98,30 @@ const recognizeText = async (request, response) => {
         // const toReturn = processLines(text)
         // await worker.terminate();
 
-        const wordRegex = /<span class='ocrx_word'[^>]*title='bbox (\d+) (\d+) (\d+) (\d+);[^>]*>([^<]+)<\/span>/g;
+        const wordRegex = /<span class='ocrx_word'[^>]*title='bbox (\d+) (\d+) (\d+) (\d+); x_wconf (\d+)'[^>]*>([^<]+)<\/span>/g;
         let match;
         const words = [];
 
+
         while ((match = wordRegex.exec(ret.data.hocr)) !== null) {
-            const [_, x1, y1, x2, y2, text] = match;
-            words.push({
-                text,
-                bbox: {
-                    x1: parseInt(x1),
-                    y1: parseInt(y1),
-                    x2: parseInt(x2),
-                    y2: parseInt(y2),
-                },
-            });
+            const [_, x1, y1, x2, y2, x_wconf, text] = match;
+            if (x_wconf > 30) {
+                words.push({
+                    text,
+                    bbox: {
+                        x1: parseInt(x1),
+                        y1: parseInt(y1),
+                        x2: parseInt(x2),
+                        y2: parseInt(y2),
+                    },
+                    x_wconf: parseInt(x_wconf)
+                });
+            }
         }
 
         console.log(words);
 
-        const threshold = 20; // Adjust this value based on your specific needs
+        const threshold = 40; // Adjust this value based on your specific needs
 
         const groupedWords = [];
         let currentGroup = [];
@@ -143,7 +147,85 @@ const recognizeText = async (request, response) => {
             groupedWords.push(currentGroup);
         }
 
-        console.log(groupedWords);
+
+        const phrases = groupedWords.map(group => group.map(word => word.text).join(' '));
+
+        let cards = [];
+        let deckCode = "";
+        const acceptChars = ['(', ' ', ')', '{', '}'];
+
+        console.log("Extracted and separated text:");
+        phrases.forEach((line) => {
+            console.log(`Line: ${line}`);
+
+            if (line.includes("DECK CODE:")) {
+                let codes = line.split(":");
+                let code = codes[codes.length - 1];
+                deckCode = code.trim();
+            }
+
+            line = line.split(' ');
+            let i = 0;
+            let flag = false;
+
+            while (!flag && i < line.length) {
+                if (line[i].toUpperCase() === line[i]) {
+                    flag = true;
+                } else {
+                    i++;
+                }
+            }
+
+            line = line.slice(i).join(' ');
+
+            let indexOfFirstCapital = null;
+            for (let index = 0; index < line.length; index++) {
+                const char = line[index];
+                // Check if the character is an uppercase letter or a quote
+                if ((char >= 'A' && char <= 'Z') || char === '"' || char === "'") {
+                    indexOfFirstCapital = index;
+                    break;
+                }
+            }
+
+            let leadingLine = [];
+            if (indexOfFirstCapital !== null) {
+                leadingLine = line.slice(indexOfFirstCapital);
+            }
+
+            console.log(leadingLine)
+
+            let trailingLine = [];
+            let foundLower = false;
+            for (let char of leadingLine) {
+                if (char >= 'a' && char <= 'z' || (!acceptChars.includes(char) && !(char >= 'A' && char <= 'Z'))) {
+                    foundLower = true;
+                    break;
+                }
+                if (!foundLower) {
+                    trailingLine.push(char);
+                }
+            }
+
+            trailingLine = trailingLine.join('');
+            console.log(`Trailing Line: ${trailingLine}`);
+
+            let capitalLetters = [...trailingLine].filter(char => char.toUpperCase() === char || acceptChars.includes(char)).join('').trim();
+            console.log(`Capital Letters: ${capitalLetters}`);
+
+            let processedLineWords = [];
+            capitalLetters.split(' ').forEach((word) => {
+                if (word.length > 1 || ['A', 'I'].includes(word)) {
+                    processedLineWords.push(word);
+                }
+            });
+
+            let processedLine = processedLineWords.join(' ').trim();
+            if (processedLine.length > 0) {
+                cards.push(processedLine);
+            }
+            console.log(`Processed Letters: ${processedLine}`);
+        });
 
         return ret.data.hocr;
     }
