@@ -94,10 +94,58 @@ const recognizeText = async (request, response) => {
 
         const ret = await worker.recognize(filePath);
         const text = ret.data.text;
-        const toReturn = processLines(text)
-        console.log(toReturn)
-        await worker.terminate();
-        return text;
+        // console.log(ret.data.hocr)
+        // const toReturn = processLines(text)
+        // await worker.terminate();
+
+        const wordRegex = /<span class='ocrx_word'[^>]*title='bbox (\d+) (\d+) (\d+) (\d+);[^>]*>([^<]+)<\/span>/g;
+        let match;
+        const words = [];
+
+        while ((match = wordRegex.exec(ret.data.hocr)) !== null) {
+            const [_, x1, y1, x2, y2, text] = match;
+            words.push({
+                text,
+                bbox: {
+                    x1: parseInt(x1),
+                    y1: parseInt(y1),
+                    x2: parseInt(x2),
+                    y2: parseInt(y2),
+                },
+            });
+        }
+
+        console.log(words);
+
+        const threshold = 20; // Adjust this value based on your specific needs
+
+        const groupedWords = [];
+        let currentGroup = [];
+
+        for (let i = 0; i < words.length; i++) {
+            const currentWord = words[i];
+            if (currentGroup.length === 0) {
+                currentGroup.push(currentWord);
+            } else {
+                const lastWord = currentGroup[currentGroup.length - 1];
+                const distance = currentWord.bbox.x1 - lastWord.bbox.x2;
+
+                if (distance <= threshold) {
+                    currentGroup.push(currentWord);
+                } else {
+                    groupedWords.push(currentGroup);
+                    currentGroup = [currentWord];
+                }
+            }
+        }
+
+        if (currentGroup.length > 0) {
+            groupedWords.push(currentGroup);
+        }
+
+        console.log(groupedWords);
+
+        return ret.data.hocr;
     }
     catch (error) {
         console.log(error)
