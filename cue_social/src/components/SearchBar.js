@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const colorMapping = {
     'Arts & Culture': '#f792e4',
@@ -195,24 +195,28 @@ const optionsTags = [
     { value: 'tag3', label: 'Tag 3' }
 ];
 
-const SearchBar = () => {
+const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cardsPass = [], userPass = [], allCardsPass = [], usersPass = [] }) => {
     const navigate = useNavigate();
-    const [selectedAlbums, setSelectedAlbums] = useState([]);
-    const [selectedCollections, setSelectedCollections] = useState([]);
-    const [selectedTags, setSelectedTags] = useState([]);
-    const [cards, setCards] = useState([]);
-    const [users, setUsers] = useState([]);
-    const [selectedCards, setSelectedCards] = useState([]);
-    const [selectedUser, setSelectedUser] = useState(null);
+    const [selectedAlbums, setSelectedAlbums] = useState(albumsPass);
+    const [selectedCollections, setSelectedCollections] = useState(collectionsPass);
+    const [selectedTags, setSelectedTags] = useState(tagsPass);
+    const [cards, setCards] = useState(allCardsPass);
+    const [users, setUsers] = useState(usersPass);
+    const [selectedCards, setSelectedCards] = useState(cardsPass);
+    const [selectedUser, setSelectedUser] = useState(userPass);
     const [searchType, setSearchType] = useState('decks'); // Default to 'decks'
 
     const handleDeckSearch = () => {
         const searchParams = {
-            albums: selectedAlbums.map(album => album.value),
-            collections: selectedCollections.map(collection => collection.value),
-            tags: selectedTags.map(tag => tag.value),
-            cards: selectedCards.map(card => card.label)
+            selectedAlbums,
+            selectedCollections,
+            selectedTags,
+            selectedCards,
+            selectedUser,
+            cards,
+            users
         };
+        console.log(searchParams)
         navigate('/deck-search-results', { state: { searchParams } });
     };
 
@@ -262,7 +266,6 @@ const SearchBar = () => {
         fetchUsers();
     }, [fetchUsers]);
 
-    // Custom styles for react-select to apply color mapping
     // Custom styles for react-select to apply color mapping
     const customStylesAlbums = {
         option: (provided, state) => ({
@@ -340,7 +343,7 @@ const SearchBar = () => {
     };
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', minHeight: '200px' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
             <div style={{ marginBottom: '10px' }}>
                 <button onClick={() => setSearchType('decks')} style={{ marginRight: '10px', padding: '8px' }}>
                     Search for Decks
@@ -356,6 +359,7 @@ const SearchBar = () => {
                         <Select
                             isMulti
                             options={optionsAlbums}
+                            value={selectedAlbums}
                             onChange={setSelectedAlbums}
                             placeholder="Search for Albums"
                             styles={customStylesAlbums}
@@ -363,6 +367,7 @@ const SearchBar = () => {
                         <Select
                             isMulti
                             options={optionsCollections}
+                            value={selectedCollections}
                             onChange={setSelectedCollections}
                             placeholder="Search for Collections"
                             styles={customStylesCollections}
@@ -370,12 +375,14 @@ const SearchBar = () => {
                         <Select
                             isMulti
                             options={optionsTags}
+                            value={selectedTags}
                             onChange={setSelectedTags}
                             placeholder="Search for Tags"
                         />
                         <Select
                             isMulti
                             options={cards}
+                            value={selectedCards}
                             onChange={setSelectedCards}
                             placeholder="Search for Cards"
                             styles={customStylesCards}
@@ -402,7 +409,8 @@ const SearchBar = () => {
                 {searchType === 'users' && (
                     <>
                         {selectedUser && (
-                            <Link to={`/users/${selectedUser.label}`}>
+                            <Link to={{ pathname: `/users/${selectedUser.label}`, state: { selectedAlbums, selectedCollections, selectedTags, selectedCards, selectedUser, cards, users } }}
+                            >
                                 <button style={{ marginLeft: '5px', padding: '8px' }}>
                                     <FontAwesomeIcon icon={faSearch} />
                                 </button>

@@ -1,27 +1,38 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
+import SearchBar from '../components/SearchBar';
 import { ROUTE } from '../constants';
-import '../component_styles/profile.css';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const DeckSearchResults = () => {
   const location = useLocation();
-  const { searchParams } = location.state;
+  const {
+    selectedAlbums = [], selectedCollections = [], selectedTags = [], selectedCards = [], selectedUser = null, allCards = [], users = []
+  } = location.state?.searchParams || {};
+
+  const cards = selectedCards.map(card => card.label)
+  const albums = selectedAlbums.map(album => album.value)
+  const collections = selectedCollections.map(collection => collection.value)
+  const tags = selectedTags.map(tag => tag.value)
+
+  console.log(location.state.searchParams)
+
   const [decks, setDecks] = useState(null);
   const [totalDecks, setTotalDecks] = useState(0);
   const [page, setPage] = useState(1);
-  const [loading, setLoading] = useState(true); // State for loading animation
+  const [loading, setLoading] = useState(true);
   const limit = 12;
 
   const fetchDecks = useCallback(async (page) => {
-    setLoading(true); // Set loading to true when fetching decks
+    setLoading(true);
+    console.log(cards)
     try {
       const response = await fetch(`${ROUTE}/api/decks/search-decks?page=${page}&limit=${limit}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(searchParams)
+        body: JSON.stringify({ albums, collections, tags, cards })
       });
       if (!response.ok) {
         throw new Error('Failed to fetch decks');
@@ -32,63 +43,68 @@ const DeckSearchResults = () => {
     } catch (error) {
       console.error('Error fetching decks:', error);
     } finally {
-      setLoading(false); // Set loading to false when fetch completes (success or error)
+      setLoading(false);
     }
-  }, [searchParams]);
+  }, [albums, collections, tags, cards]);
 
   useEffect(() => {
     fetchDecks(page);
-  }, [searchParams, page, fetchDecks]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, location.state]);
 
   const handlePageChange = (newPage) => {
     setPage(newPage);
   };
 
-  // Loading state
-  if (loading) {
-    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
-      Loading decks...</div>;
-  }
-
-  // No decks found state
-  if (!loading && decks.length === 0) {
-    return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
-      <h2>No decks found!</h2></div>;
-  }
-
-  // Decks list
   return (
     <div>
-      <div>
-        <h2>Search Results</h2>
-        <div className="grid-container">
-          {decks.map(deck => (
-            <div key={deck._id} className="grid-item">
-              <Link to={`/decks/${deck._id}`}>
-                <div>Title: {deck.title}</div>
-                <div>Description: {deck.description}</div>
-                {deck.image && (
-                  <img
-                    src={`data:image/jpeg;base64,${Buffer.from(deck.image.data).toString('base64')}`}
-                    alt="Decklist"
-                  />
-                )}
-              </Link>
-              <hr />
+      <SearchBar
+        albumsPass={selectedAlbums}
+        collectionsPass={selectedCollections}
+        tagsPass={selectedTags}
+        cardsPass={selectedCards}
+        userPass={selectedUser}
+        allCardsPass={allCards}
+        usersPass={users}
+      />
+      <div style={{ padding: 0, margin: 0, display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '200px' }}>
+        {loading ? (
+          "Loading decks..."
+        ) : decks.length === 0 ? (
+          <h2>No decks found!</h2>
+        ) : (
+          <div>
+            <h2>Search Results</h2>
+            <div className="grid-container">
+              {decks.map(deck => (
+                <div key={deck._id} className="grid-item">
+                  <Link to={`/decks/${deck._id}`}>
+                    <div>Title: {deck.title}</div>
+                    <div>Description: {deck.description}</div>
+                    {deck.image && (
+                      <img
+                        src={`data:image/jpeg;base64,${Buffer.from(deck.image.data).toString('base64')}`}
+                        alt="Decklist"
+                      />
+                    )}
+                  </Link>
+                  <hr />
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </div>
-      <div className="pagination-controls">
-        {Array.from({ length: Math.ceil(totalDecks / limit) }, (_, index) => (
-          <button
-            key={index}
-            onClick={() => handlePageChange(index + 1)}
-            className={page === index + 1 ? 'active' : ''}
-          >
-            {index + 1}
-          </button>
-        ))}
+            <div className="pagination-controls">
+              {Array.from({ length: Math.ceil(totalDecks / limit) }, (_, index) => (
+                <button
+                  key={index}
+                  onClick={() => handlePageChange(index + 1)}
+                  className={page === index + 1 ? 'active' : ''}
+                >
+                  {index + 1}
+                </button>
+              ))}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
