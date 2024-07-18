@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import { ROUTE } from '../constants';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
@@ -29,7 +29,8 @@ const DeckPage = () => {
   return (
     <div>
       <h2>{deck.title}</h2>
-      <p>{deck.description}</p>
+        <h3>Author: <Link to={'/users/jsd'} style={{ color: 'black' }}>{deck.user}</Link></h3>
+      <p>Description: {deck.description}</p>
       {deck.image && (
         <img
           src={`data:image/jpeg;base64,${Buffer.from(deck.image.data).toString('base64')}`}
