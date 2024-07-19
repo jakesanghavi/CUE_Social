@@ -88,8 +88,6 @@ const recognizeText = async (request, response) => {
 
         await sharp(file.buffer).toFile(filePath);
 
-        console.log('helo')
-
         const worker = await createWorker("eng");
 
         const ret = await worker.recognize(filePath);
@@ -119,12 +117,14 @@ const recognizeText = async (request, response) => {
             }
         }
 
-        console.log(words);
+        // console.log(words);
 
         const threshold = 40; // Adjust this value based on your specific needs
 
         const groupedWords = [];
         let currentGroup = [];
+        let cards = [];
+        let deckCode = "";
 
         for (let i = 0; i < words.length; i++) {
             const currentWord = words[i];
@@ -149,19 +149,24 @@ const recognizeText = async (request, response) => {
 
 
         const phrases = groupedWords.map(group => group.map(word => word.text).join(' '));
-
-        let cards = [];
-        let deckCode = "";
         const acceptChars = ['(', ' ', ')', '{', '}'];
 
-        console.log("Extracted and separated text:");
+        // console.log("Extracted and separated text:");
         phrases.forEach((line) => {
-            console.log(`Line: ${line}`);
+            // console.log(`Line: ${line}`);
 
             if (line.includes("DECK CODE:")) {
                 let codes = line.split(":");
-                let code = codes[codes.length - 1];
+                let oneCode = codes[codes.length - 1].split(' ')
+                let code = null
+                for (let k = 0; k < oneCode.length; k++) {
+                    if (oneCode[k].length === 6) {
+                        code = oneCode[k]
+                    }
+                }
+                // let code = codes[codes.length - 1];
                 deckCode = code.trim();
+                // console.log(deckCode)
             }
 
             line = line.split(' ');
@@ -193,7 +198,7 @@ const recognizeText = async (request, response) => {
                 leadingLine = line.slice(indexOfFirstCapital);
             }
 
-            console.log(leadingLine)
+            // console.log(leadingLine)
 
             let trailingLine = [];
             let foundLower = false;
@@ -208,10 +213,10 @@ const recognizeText = async (request, response) => {
             }
 
             trailingLine = trailingLine.join('');
-            console.log(`Trailing Line: ${trailingLine}`);
+            // console.log(`Trailing Line: ${trailingLine}`);
 
             let capitalLetters = [...trailingLine].filter(char => char.toUpperCase() === char || acceptChars.includes(char)).join('').trim();
-            console.log(`Capital Letters: ${capitalLetters}`);
+            // console.log(`Capital Letters: ${capitalLetters}`);
 
             let processedLineWords = [];
             capitalLetters.split(' ').forEach((word) => {
@@ -224,13 +229,21 @@ const recognizeText = async (request, response) => {
             if (processedLine.length > 0) {
                 cards.push(processedLine);
             }
-            console.log(`Processed Letters: ${processedLine}`);
+            // console.log(`Processed Letters: ${processedLine}`);
         });
 
-        return ret.data.hocr;
+        const resp = {
+            cards: cards,
+            deck_code: deckCode
+        };
+
+        console.log(resp)
+
+        return response.status(200).json(resp);
     }
     catch (error) {
-        console.log(error)
+        console.log(error.message);
+        response.status(400).json({ error: error.message });
     }
 };
 

@@ -80,7 +80,7 @@ const UploadForm = ({ loggedInUser }) => {
         setSubmitted(true);
 
         try {
-            const response = await fetch('https://jakesanghavi.pythonanywhere.com/upload', {
+            const response = await fetch(ROUTE + '/api/uploadimage/', {
                 method: 'POST',
                 body: formData,
             });
