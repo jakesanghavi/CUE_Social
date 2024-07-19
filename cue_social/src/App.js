@@ -99,6 +99,7 @@ function App() {
     };
 
     fetchData(); // Call the asynchronous function
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const openLoginModal = (email) => {
