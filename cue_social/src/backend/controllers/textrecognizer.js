@@ -1,6 +1,7 @@
 const { createWorker } = require('tesseract.js');
 const sharp = require('sharp');
 const path = require('path')
+const os = require('os')
 
 const recognizeText = async (request, response) => {
     const acceptChars = ['(', ' ', ')', '{', '}'];
@@ -82,9 +83,8 @@ const recognizeText = async (request, response) => {
 
     try {
         const file = request.file
-
-        const uploadDir = path.join(__dirname, '../../assets'); // Directory path relative to backend/controllers
-        const filePath = path.join(uploadDir, file.originalname);
+        const tempDir = os.tmpdir();
+        const filePath = path.join(tempDir, file.originalname);
 
         await sharp(file.buffer).toFile(filePath);
 
