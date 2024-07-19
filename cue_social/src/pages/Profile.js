@@ -30,9 +30,12 @@ const Profile = ({ onLogout, loggedInUser }) => {
     }
   };
 
-  const handleLogoutAndRedirect = async () => {
-    await onLogout();
-    window.location.href = '/';
+  const handleLogoutAndRedirect = () => {
+    onLogout();
+    console.log("Logout successful, waiting 1 second before redirecting...");
+    setTimeout(() => {
+      window.location.href = '/';
+    }, 700);
   };
 
   return (
