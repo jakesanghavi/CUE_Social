@@ -1,19 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import { ROUTE } from '../constants';
-import { optionsAlbums, optionsCollections, optionsTags, customStylesAlbums, customStylesCards, customStylesCollections, customStylesTags } from '../selectedStyles';
+import Select from 'react-select';
+import { optionsAlbums, optionsCollections, optionsTags, customStylesAlbums, customStylesCollections, customStylesTags } from '../selectedStyles';
 
 const UploadForm = ({ loggedInUser }) => {
     const [file, setFile] = useState(null);
     const [description, setDescription] = useState('');
-    const [albums, setAlbums] = useState([]);
-    const [collections, setCollections] = useState([]);
-    const [tags, setTags] = useState([]);
     const [title, setTitle] = useState('');
     const [loading, setLoading] = useState(false);
     const [receivedData, setReceivedData] = useState(null);
     const [deckCode, setDeckCode] = useState(null);
     const [cardData, setCardData] = useState([]);
     const [submitted, setSubmitted] = useState(false);
+    const [selectedAlbums, setSelectedAlbums] = useState([]);
+    const [selectedCollections, setSelectedCollections] = useState([]);
+    const [selectedTags, setSelectedTags] = useState([]);
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -26,39 +27,6 @@ const UploadForm = ({ loggedInUser }) => {
 
     const handleDescriptionChange = (event) => {
         setDescription(event.target.value);
-    };
-
-    const handleAlbumsChange = (event) => {
-        const selectedAlbum = event.target.value;
-        if (selectedAlbum && !albums.includes(selectedAlbum) && albums.length < 8) {
-            setAlbums([...albums, selectedAlbum]);
-        }
-    };
-
-    const removeAlbum = (album) => {
-        setAlbums(albums.filter(a => a !== album));
-    };
-
-    const handleCollectionsChange = (event) => {
-        const selectedCollection = event.target.value;
-        if (selectedCollection && !collections.includes(selectedCollection) && collections.length < 6) {
-            setCollections([...collections, selectedCollection]);
-        }
-    };
-
-    const removeCollection = (album) => {
-        setCollections(collections.filter(a => a !== album));
-    };
-
-    const handleTagsChange = (event) => {
-        const selectedTag = event.target.value;
-        if (selectedTag && !tags.includes(selectedTag) && tags.length < 6) {
-            setTags([...tags, selectedTag]);
-        }
-    };
-
-    const removeTag = (album) => {
-        setTags(tags.filter(a => a !== album));
     };
 
     const handleTitleChange = (event) => {
@@ -99,16 +67,31 @@ const UploadForm = ({ loggedInUser }) => {
 
     const handleTextFormSubmit = async (event) => {
         event.preventDefault();
-        console.log('Title:', title);
-        console.log('Description:', description);
-        console.log('Albums:', albums);
+
+        if (!title) {
+            alert('Title is required');
+            return;
+        }
+        if (cardData.length < 5) {
+            alert('Detected cards must contain at least 5 items');
+            return;
+        }
+        if (
+            selectedAlbums.length === 0 &&
+            selectedCollections.length === 0 &&
+            selectedTags.length === 0
+        ) {
+            alert('Must choose at least one album, collection, or deck tag.');
+            return;
+        }
+
         // Add your logic for handling the text form submission
         const formData = new FormData();
         formData.append('image', file);
         formData.append('title', title);
-        formData.append('albums', JSON.stringify(albums));
-        formData.append('collections', JSON.stringify(collections));
-        formData.append('tags', JSON.stringify(tags));
+        formData.append('albums', JSON.stringify(selectedAlbums.map(album => album.value)));
+        formData.append('collections', JSON.stringify(selectedCollections.map(collection => collection.value)));
+        formData.append('tags', JSON.stringify(selectedTags.map(tag => tag.value)));
         formData.append('description', description);
         const cardNames = cardData.map(card => card.Name); // Assuming cardData is an array of objects with a 'Name' field
         formData.append('cards', JSON.stringify(cardNames));
@@ -117,7 +100,7 @@ const UploadForm = ({ loggedInUser }) => {
         formData.append('email', loggedInUser.email)
         for (const [key, value] of formData.entries()) {
             console.log(`${key}: ${value}`);
-          }
+        }
 
         try {
             const response = await fetch(ROUTE + '/api/decks/post/', {
@@ -230,63 +213,30 @@ const UploadForm = ({ loggedInUser }) => {
                                     style={{ marginBottom: '10px', width: '100%' }}
                                 />
                             </div>
-                            <div>
-                                <div>
-                                    <label htmlFor="albums">Albums:</label>
-                                    <select id="albums" name="albums" onChange={handleAlbumsChange} style={{ width: '100%' }}>
-                                        <option value="">Select an album</option>
-                                        <option value="album1">Album 1</option>
-                                        <option value="album2">Album 2</option>
-                                        <option value="album3">Album 3</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    {albums.map((album, index) => (
-                                        <div key={index} style={{ display: 'inline-block', margin: '5px', padding: '5px', border: '1px solid #ccc', borderRadius: '5px' }}>
-                                            {album}
-                                            <button onClick={() => removeAlbum(album)} style={{ marginLeft: '5px' }}>x</button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <div>
-                                <div>
-                                    <label htmlFor="collections">Collections:</label>
-                                    <select id="collections" name="collections" onChange={handleCollectionsChange} style={{ width: '100%' }}>
-                                        <option value="">Select a collection</option>
-                                        <option value="collection1">Collection 1</option>
-                                        <option value="collection2">Collection 2</option>
-                                        <option value="collection3">Collection 3</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    {collections.map((collection, index) => (
-                                        <div key={index} style={{ display: 'inline-block', margin: '5px', padding: '5px', border: '1px solid #ccc', borderRadius: '5px' }}>
-                                            {collection}
-                                            <button onClick={() => removeCollection(collection)} style={{ marginLeft: '5px' }}>x</button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                            <div>
-                                <div style={{ marginTop: '10px' }}>
-                                    <label htmlFor="tags">Tags:</label>
-                                    <select id="tags" name="tags" onChange={handleTagsChange} style={{ width: '100%' }}>
-                                        <option value="">Select a tag</option>
-                                        <option value="tag1">Tag 1</option>
-                                        <option value="tag2">Tag 2</option>
-                                        <option value="tag3">Tag 3</option>
-                                    </select>
-                                </div>
-                                <div>
-                                    {tags.map((tag, index) => (
-                                        <div key={index} style={{ display: 'inline-block', margin: '5px', padding: '5px', border: '1px solid #ccc', borderRadius: '5px' }}>
-                                            {tag}
-                                            <button onClick={() => removeTag(tag)} style={{ marginLeft: '5px' }}>x</button>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
+                            <Select
+                                isMulti
+                                options={optionsAlbums}
+                                value={selectedAlbums}
+                                onChange={setSelectedAlbums}
+                                placeholder="Search for Albums"
+                                styles={customStylesAlbums}
+                            />
+                            <Select
+                                isMulti
+                                options={optionsCollections}
+                                value={selectedCollections}
+                                onChange={setSelectedCollections}
+                                placeholder="Search for Collections"
+                                styles={customStylesCollections}
+                            />
+                            <Select
+                                isMulti
+                                options={optionsTags}
+                                value={selectedTags}
+                                onChange={setSelectedTags}
+                                placeholder="Search for Tags"
+                                styles={customStylesTags}
+                            />
                             <div style={{ display: 'flex', marginTop: '20px' }}>
                                 <div style={{ flex: 1, marginRight: '10px' }}>
                                     <label htmlFor="description">Description:</label>

@@ -1,6 +1,4 @@
 import { Link } from 'react-router-dom'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars } from '@fortawesome/free-solid-svg-icons'
 import '../component_styles/navbar_styles.css'
 import { ROUTE } from '../constants';
 import { useEffect, useCallback } from 'react';
@@ -75,19 +73,6 @@ const NavBar = ({ openLoginModal, loggedInUser, onLoginSuccess, uid }) => {
   return (
     <header>
       <div className='container'>
-        <div className="hamburger-holder">
-          <input type="checkbox" className="openSidebarMenu" id="openSidebarMenu"/>
-          <label htmlFor="openSidebarMenu" className="sidebarIconToggle">
-            <FontAwesomeIcon icon={faBars} />
-          </label>
-          <div id="sidebarMenu" style={{ zIndex: 1000000 }}>
-            <ul className="sidebarMenuInner">
-              <li><a href="/">Daily Mode</a></li>
-              <li><a href="/endless">Endless Mode</a><br /></li>
-              <li>Race Mode<br />(Coming Soon!)</li>
-            </ul>
-          </div>
-        </div>
         <div className="home-name-holder">
           <Link to="/">
             <h1>
@@ -108,7 +93,7 @@ const NavBar = ({ openLoginModal, loggedInUser, onLoginSuccess, uid }) => {
             <div>
               <Link to="/profile">
                 <h1>
-                  Profile
+                  My Profile
                 </h1>
               </Link>
             </div>

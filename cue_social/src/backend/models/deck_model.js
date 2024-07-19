@@ -9,19 +9,23 @@ const deckSchema = new Schema({
     },
     description: {
         type: String,
-        required: true
+        required: false,
+        default: ''
     },
     albums: {
         type: [String],
-        required: true
+        required: false,
+        default: []
     },
     collections: {
         type: [String],
-        required: true
+        required: false,
+        default: []
     },
     tags: {
         type: [String],
-        required: true
+        required: false,
+        default: []
     },
     image: {
         type: String,
@@ -33,7 +37,8 @@ const deckSchema = new Schema({
     },
     deckcode: {
         type: String,
-        required: true
+        required: false,
+        default: ''
     },
     user: {
         type: String,

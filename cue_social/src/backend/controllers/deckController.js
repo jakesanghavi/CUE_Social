@@ -84,43 +84,12 @@ const postDeck = async (request, response) => {
         return;
     }
 
-    // const saveTempFile = async (file) => {
-    //     return new Promise((resolve, reject) => {
-    //         fs.writeFile(filePath, file.buffer, (error) => {
-    //             if (error) {
-    //                 reject(error);
-    //             } else {
-    //                 console.log('hello?')
-    //                 resolve(filePath);
-    //             }
-    //         });
-    //     });
-    // };
-
-    // await saveTempFile(file)
-
     try {
         // Use sharp to resize the image and reduce its quality
         await sharp(file.buffer) // Input image buffer
             .resize({ width: 800 }) // Resize the image to a width of 800px (adjust as needed)
             .jpeg({ quality: 50 }) // Convert to JPEG with 50% quality (adjust as needed)
             .toFile(filePath);
-
-        // const cloudinaryExample = async () => {
-        //     try {
-        //         // Configuration
-        //         cloudinary.config(cloudinaryConfig);
-
-        //         // Upload an image
-        //         const uploadResult = await cloudinary.uploader.upload(
-        //             file,
-        //         );
-        //         console.log('Upload result:', uploadResult);
-
-        //     } catch (error) {
-        //         console.error('Error:', error);
-        //     }
-        // };
 
         cloudinary.config({
             cloud_name: 'defal1ruq',
@@ -140,9 +109,6 @@ const postDeck = async (request, response) => {
             console.error(error);
         }
 
-        console.log('beans')
-        console.log(imageOutput.url)
-
         const deck = await Deck.create({
             title,
             description,
@@ -157,7 +123,6 @@ const postDeck = async (request, response) => {
 
         response.status(200).json(deck);
     } catch (error) {
-        console.log(error.message);
         response.status(400).json({ error: error.message });
     }
 };
