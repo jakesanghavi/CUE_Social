@@ -8,13 +8,14 @@ const UploadForm = ({ loggedInUser }) => {
     const [description, setDescription] = useState('');
     const [title, setTitle] = useState('');
     const [loading, setLoading] = useState(false);
-    const [receivedData, setReceivedData] = useState(null);
-    const [deckCode, setDeckCode] = useState(null);
+    const [receivedData, setReceivedData] = useState([]);
+    const [deckCode, setDeckCode] = useState([]);
     const [cardData, setCardData] = useState([]);
     const [submitted, setSubmitted] = useState(false);
     const [selectedAlbums, setSelectedAlbums] = useState([]);
     const [selectedCollections, setSelectedCollections] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
+    const [errors, setErrors] = useState({});
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -55,7 +56,7 @@ const UploadForm = ({ loggedInUser }) => {
             });
 
             const data = await response.json();
-            console.log('Received data:', data);
+            // console.log('Received data:', data);
             setReceivedData(data.cards);
             setDeckCode(data.deck_code);
         } catch (error) {
@@ -65,24 +66,27 @@ const UploadForm = ({ loggedInUser }) => {
         }
     };
 
-    const handleTextFormSubmit = async (event) => {
-        event.preventDefault();
-
-        if (!title) {
-            alert('Title is required');
-            return;
-        }
-        if (cardData.length < 5) {
-            alert('Detected cards must contain at least 5 items');
-            return;
-        }
+    const validateForm = () => {
+        const errors = {};
+        if (!title) errors.title = 'Title is required';
+        if (cardData === null || cardData.length < 5) errors.cardData = 'At least 5 cards must be detected';
         if (
             selectedAlbums.length === 0 &&
             selectedCollections.length === 0 &&
             selectedTags.length === 0
         ) {
-            alert('Must choose at least one album, collection, or deck tag.');
-            return;
+            errors.selection = 'Must choose at least one album, collection, or deck tag.';
+        }
+        setErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
+    const handleTextFormSubmit = async (event) => {
+        event.preventDefault();
+
+        const valid = validateForm();
+        if (!valid) {
+            return
         }
 
         // Add your logic for handling the text form submission
@@ -98,9 +102,6 @@ const UploadForm = ({ loggedInUser }) => {
         formData.append('deckcode', deckCode);
         formData.append('user', loggedInUser.username);
         formData.append('email', loggedInUser.email)
-        for (const [key, value] of formData.entries()) {
-            console.log(`${key}: ${value}`);
-        }
 
         try {
             const response = await fetch(ROUTE + '/api/decks/post/', {
@@ -147,6 +148,7 @@ const UploadForm = ({ loggedInUser }) => {
                         break; // Terminate loop if dummyArray has 18 or more items
                     }
                 }
+                // console.log(dummyArray)
                 setCardData(dummyArray);
                 console.log('Final dummyArray:', dummyArray);
             }
@@ -154,6 +156,12 @@ const UploadForm = ({ loggedInUser }) => {
 
         fetchData();
     }, [receivedData]);
+
+    useEffect(() => {
+        if (!loading) {
+            delete errors.cardData
+        }
+    }, [loading, errors.cardData])
 
     return (
         <form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -212,31 +220,35 @@ const UploadForm = ({ loggedInUser }) => {
                                     onChange={handleTitleChange}
                                     style={{ marginBottom: '10px', width: '100%' }}
                                 />
+                                {errors.title && <span style={{ color: 'red' }}>{errors.title}</span>}
                             </div>
-                            <Select
-                                isMulti
-                                options={optionsAlbums}
-                                value={selectedAlbums}
-                                onChange={setSelectedAlbums}
-                                placeholder="Search for Albums"
-                                styles={customStylesAlbums}
-                            />
-                            <Select
-                                isMulti
-                                options={optionsCollections}
-                                value={selectedCollections}
-                                onChange={setSelectedCollections}
-                                placeholder="Search for Collections"
-                                styles={customStylesCollections}
-                            />
-                            <Select
-                                isMulti
-                                options={optionsTags}
-                                value={selectedTags}
-                                onChange={setSelectedTags}
-                                placeholder="Search for Tags"
-                                styles={customStylesTags}
-                            />
+                            <div>
+                                <Select
+                                    isMulti
+                                    options={optionsAlbums}
+                                    value={selectedAlbums}
+                                    onChange={setSelectedAlbums}
+                                    placeholder="Search for Albums"
+                                    styles={customStylesAlbums}
+                                />
+                                <Select
+                                    isMulti
+                                    options={optionsCollections}
+                                    value={selectedCollections}
+                                    onChange={setSelectedCollections}
+                                    placeholder="Search for Collections"
+                                    styles={customStylesCollections}
+                                />
+                                <Select
+                                    isMulti
+                                    options={optionsTags}
+                                    value={selectedTags}
+                                    onChange={setSelectedTags}
+                                    placeholder="Search for Tags"
+                                    styles={customStylesTags}
+                                />
+                                {errors.selection && <div style={{ color: 'red', marginBottom: '10px' }}>{errors.selection}</div>}
+                            </div>
                             <div style={{ display: 'flex', marginTop: '20px' }}>
                                 <div style={{ flex: 1, marginRight: '10px' }}>
                                     <label htmlFor="description">Description:</label>
@@ -250,7 +262,8 @@ const UploadForm = ({ loggedInUser }) => {
                                 </div>
                                 <div style={{ flex: 1 }}>
                                     {loading && <div className="loading">Loading...</div>}
-                                    {cardData.length > 0 && (
+                                    {errors.cardData && cardData.length === 0 && loading && <span style={{ color: 'red' }}>{errors.cardData}</span>}
+                                    {!loading && cardData && cardData.length > 0 && (
                                         <div className="data">
                                             <label htmlFor="receivedCardData">Cards Detected:</label>
                                             <textarea
@@ -259,6 +272,19 @@ const UploadForm = ({ loggedInUser }) => {
                                                 readOnly
                                                 style={{ width: '100%', height: '200px' }}
                                             />
+                                            {errors.cardData && <span style={{ color: 'red' }}>{errors.cardData}</span>}
+                                        </div>
+                                    )}
+                                    {!loading && (receivedData && receivedData.length === 0) && (
+                                        <div className="data">
+                                            <label htmlFor="receivedCardData">Cards Detected:</label>
+                                            <textarea
+                                                id="receivedCardData"
+                                                value="No cards detected. Please try another image."
+                                                readOnly
+                                                style={{ width: '100%', height: '200px' }}
+                                            />
+                                            {errors.cardData && <span style={{ color: 'red' }}>{errors.cardData}</span>}
                                         </div>
                                     )}
                                 </div>
