@@ -3,7 +3,7 @@ import { ROUTE } from '../constants';
 import Select from 'react-select';
 import { optionsAlbums, optionsCollections, optionsTags, customStylesAlbums, customStylesCollections, customStylesTags } from '../selectedStyles';
 
-const UploadForm = ({ loggedInUser }) => {
+const UploadForm = ({ loggedInUser, closeModal }) => {
     const [file, setFile] = useState(null);
     const [description, setDescription] = useState('');
     const [title, setTitle] = useState('');
@@ -110,9 +110,12 @@ const UploadForm = ({ loggedInUser }) => {
             });
 
             const data = await response.json();
-            console.log('Received data:', data);
+            // console.log('Received data:', data);
+            closeModal();
+            alert("Deck uploaded successfully.")
         } catch (error) {
-            console.error('Error:', error);
+            // console.error('Error:', error);
+            alert("Deck upload failed. Please try again later.")
         } finally {
             setLoading(false);
         }

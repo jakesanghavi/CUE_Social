@@ -34,7 +34,7 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
         <div className="modal-overlay">
           <div className="modal-content">
             <button className="modal-close" onClick={closeModal}>Close</button>
-            <UploadForm loggedInUser={loggedInUser} />
+            <UploadForm loggedInUser={loggedInUser} closeModal={closeModal} />
           </div>
         </div>
       )}

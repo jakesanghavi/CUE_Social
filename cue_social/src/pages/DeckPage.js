@@ -28,7 +28,7 @@ const DeckPage = () => {
 
   return (
     <div>
-      <h2>{deck.title}</h2>
+      <h2>{deck.title} - Deck Code: ({deck.deckcode})</h2>
       <h3>Author: <Link to={`/users/${deck.user}`} style={{ color: 'black' }}>{deck.user}</Link></h3>
       <p>Description: {deck.description}</p>
       {deck.image && (
@@ -39,9 +39,6 @@ const DeckPage = () => {
       )}
       <div>
         <strong>Tags:</strong> {deck.tags}
-      </div>
-      <div>
-        <strong>Deck Code:</strong> {deck.deckcode}
       </div>
     </div>
   );
