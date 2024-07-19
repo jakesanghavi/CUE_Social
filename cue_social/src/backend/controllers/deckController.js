@@ -1,8 +1,8 @@
 const Deck = require('../models/deck_model.js');
 const sharp = require('sharp');
 const cloudinary = require('cloudinary').v2; // Assuming you have installed 'cloudinary' package
-const fs = require('fs');
 const path = require('path');
+const os = require('os');
 
 // GET decks for user with pagination
 const getDecksForUser = async (request, response) => {
@@ -76,8 +76,8 @@ const getOneDeck = async (request, response) => {
 const postDeck = async (request, response) => {
     const { title, albums, collections, tags, description, cards, deckcode, user, email } = request.body;
     const file = request.file; // The uploaded file
-    const uploadDir = path.join(__dirname, '../../assets'); // Directory path relative to backend/controllers
-    const filePath = path.join(uploadDir, file.originalname);
+    const tempDir = os.tmpdir(); // Directory path relative to backend/controllers
+    const filePath = path.join(tempDir, file.originalname);
 
     if (!email) {
         response.status(400).json({ error: 'Not logged in!' });
