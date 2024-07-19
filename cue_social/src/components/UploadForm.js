@@ -110,7 +110,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
             });
 
             const data = await response.json();
-            // console.log('Received data:', data);
+            console.log('Received data:', data);
             closeModal();
             alert("Deck uploaded successfully.")
         } catch (error) {
