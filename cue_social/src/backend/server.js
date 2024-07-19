@@ -22,6 +22,11 @@ app.use(cors({
     optionsSuccessStatus: 200
 }))
 
+app.use((req, res, next) => {
+    res.setHeader('Cross-Origin-Opener-Policy', 'same-origin');
+    next();
+});
+
 // routes
 app.use('/', songRoutes)
 

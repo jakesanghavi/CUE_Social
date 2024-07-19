@@ -1,5 +1,5 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { useEffect, useState, useCallback } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { useEffect, useState, useCallback } from 'react';
 import Home from './pages/Home';
 import Profile from './pages/Profile';
 import NavBar from './components/Navbar';
@@ -33,7 +33,7 @@ function App() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // get the userID for th user
+        // get the userID for the user
         const userID = getUserID();
 
         // Check if this browser has been used before on the site
@@ -45,36 +45,36 @@ function App() {
           // Check if the user is registered too. If they are, log them in automatically
           if (data.email_address !== null) {
             const user = await fetch(ROUTE + '/api/users/email/' + data.email_address);
-            const user_resp = await user.json()
+            const user_resp = await user.json();
             setLoggedInUser({ email: user_resp.email_address, username: user_resp.username });
 
-            // If they are on registered, remove the google OAuth component when site loads
-            const element = document.getElementById('signInDiv').firstChild.firstChild
+            // If they are registered, remove the google OAuth component when the site loads
+            const element = document.getElementById('signInDiv')?.firstChild?.firstChild;
             if (element) {
-              element.remove()
+              element.remove();
             }
-          }
+          } 
           // If the user is pseudo-registered (via cookies), fetch their data from a different route
           // and make their loggedInUser have a null email address. This could be helpful for deciding
           // when to make "sign in with google" show up
           else if (data.userID !== null) {
             const user = await fetch(ROUTE + '/api/users/username/' + data.userID);
-            const user_resp = await user.json()
+            const user_resp = await user.json();
             setLoggedInUser({ email: null, username: user_resp.username });
 
-            // If they are on registered, remove the google OAuth component when site loads
+            // If they are registered, remove the google OAuth component when the site loads
             // We could maybe remove this for pseudo-users
-            const element = document.getElementById('signInDiv').firstChild.firstChild
+            const element = document.getElementById('signInDiv')?.firstChild?.firstChild;
             if (element) {
-              element.remove()
+              element.remove();
             }
           }
-        }
+        } 
         // If the browser has not been used before...
         else {
           setLoggedInUser({ email: null, username: getUserID() });
           // Create a new cookie user for the new browser window user
-          fetch(ROUTE + '/api/users/userID/post/' + userID, {
+          await fetch(ROUTE + '/api/users/userID/post/' + userID, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -84,7 +84,7 @@ function App() {
           });
 
           // Post the cookie user with username of their cookie ID
-          fetch(ROUTE + '/api/users/' + userID, {
+          await fetch(ROUTE + '/api/users/' + userID, {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
@@ -99,21 +99,21 @@ function App() {
     };
 
     fetchData(); // Call the asynchronous function
-  }, [getUserID]);
+  }, []);
 
   const openLoginModal = (email) => {
     document.getElementById('sign-in-modal').style.display = 'block';
     document.getElementById('signUpEmail').value = email;
-  }
+  };
 
   // When they log in, remove the google oAuth component when site loads
   const handleLoginSuccess = async (email, username) => {
-    const element = document.getElementById('signInDiv').firstChild.firstChild
+    const element = document.getElementById('signInDiv')?.firstChild?.firstChild;
     if (element) {
-      element.remove()
+      element.remove();
     }
 
-    const userID = getUserID()
+    const userID = getUserID();
     // Update the loggedInUser state
     await fetch(ROUTE + '/api/users/userID/patch/' + userID, {
       method: 'POST',
@@ -127,21 +127,21 @@ function App() {
     setLoggedInUser({ email: email, username: username });
 
     const user = await fetch(ROUTE + '/api/users/email/' + email);
-    const user_resp = await user.json()
+    const user_resp = await user.json();
     setLoggedInUser({ email: user_resp.email_address, username: user_resp.username });
-
   };
 
   // Deal with users logging out
   const handleLogout = async () => {
-    console.log(getUserID)
-    console.log(loggedInUser)
+    console.log('Handling logout');
+    console.log(getUserID);
+    console.log(loggedInUser);
     // Clear the loggedInUser state
     setLoggedInUser(null);
 
-    const uid = getUserID()
-    console.log(uid)
-    console.log(loggedInUser)
+    const uid = getUserID();
+    console.log(uid);
+    console.log(loggedInUser);
 
     // If the user logs out, remove their cookie user from the collection
     await fetch(ROUTE + '/api/users/userID/del/' + uid, {
@@ -153,14 +153,14 @@ function App() {
       body: JSON.stringify({ "userID": uid })
     });
 
-    // Remove their userID from localstorage
+    // Remove their userID from local storage
     localStorage.removeItem('userID');
 
     // Immediately after logout, make a new temp user for the browser user with a newly generated cookie ID
-    const userID = getUserID()
-    console.log(getUserID())
+    const userID = getUserID();
+    console.log(getUserID());
 
-    fetch(ROUTE + '/api/users/userID/post/' + userID, {
+    await fetch(ROUTE + '/api/users/userID/post/' + userID, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -170,7 +170,7 @@ function App() {
     });
 
     // Post the temp user with username of their cookie ID
-    fetch(ROUTE + '/api/users/' + userID, {
+    await fetch(ROUTE + '/api/users/' + userID, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

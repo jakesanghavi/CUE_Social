@@ -38,7 +38,7 @@ const UserPage = () => {
             <div key={deck._id} className="grid-item">
               <Link to={`/decks/${deck._id}`}>
                 <div>Title: {deck.title}</div>
-                <div>Description: {deck.description}</div>
+                {/* <div>Description: {deck.description}</div> */}
                 {deck.image && (
                   <img
                     src={deck.image} // Replace with your actual image URL
