@@ -134,10 +134,14 @@ function App() {
 
   // Deal with users logging out
   const handleLogout = async () => {
+    console.log(getUserID)
+    console.log(loggedInUser)
     // Clear the loggedInUser state
     setLoggedInUser(null);
 
     const uid = getUserID()
+    console.log(uid)
+    console.log(loggedInUser)
 
     // If the user logs out, remove their cookie user from the collection
     await fetch(ROUTE + '/api/users/userID/del/' + uid, {
@@ -154,6 +158,7 @@ function App() {
 
     // Immediately after logout, make a new temp user for the browser user with a newly generated cookie ID
     const userID = getUserID()
+    console.log(getUserID())
 
     fetch(ROUTE + '/api/users/userID/post/' + userID, {
       method: 'POST',
