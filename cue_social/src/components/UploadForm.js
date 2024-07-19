@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ROUTE } from '../constants';
+import { optionsAlbums, optionsCollections, optionsTags, customStylesAlbums, customStylesCards, customStylesCollections, customStylesTags } from '../selectedStyles';
 
 const UploadForm = ({ loggedInUser }) => {
     const [file, setFile] = useState(null);
