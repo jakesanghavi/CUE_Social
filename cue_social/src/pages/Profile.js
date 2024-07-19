@@ -30,7 +30,8 @@ const Profile = ({ onLogout, loggedInUser }) => {
     }
   };
 
-  const backHome = () => {
+  const handleLogoutAndRedirect = async () => {
+    await onLogout();
     window.location.href = '/';
   };
 
@@ -59,7 +60,7 @@ const Profile = ({ onLogout, loggedInUser }) => {
           ))}
         </div>
       </div>
-      <button onClick={() => { onLogout(); backHome(); }}>
+      <button onClick={handleLogoutAndRedirect}>
         Sign out
       </button>
     </div>
