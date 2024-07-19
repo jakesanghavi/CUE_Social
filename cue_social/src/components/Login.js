@@ -99,7 +99,7 @@ const Login = ({ onLoginSuccess, uid }) => {
                 <input type="text" id="signUpEmail" placeholder="Email Address" required ref={signUpEmail} disabled/>
               </div>
               <div className="field">
-                <input type="text" id="signUpUsername" placeholder="Username" required ref={signUpUsername} />
+                <input type="text" id="signUpUsername" placeholder="CUE Username" required ref={signUpUsername} />
               </div>
               <div className="field btn">
                 <div className="btn-layer"></div>
