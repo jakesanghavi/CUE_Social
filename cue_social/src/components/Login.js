@@ -19,13 +19,13 @@ const Login = ({ onLoginSuccess, uid }) => {
     const usernameRegex = /^[a-zA-Z0-9]*$/;
     if (email_address === '' || !email_address || username === '' || !username || !usernameRegex.test(username) ) {
       if (email_address === '' | !email_address) {
-        console.log("Please input your email address.")
+        alert("Please input your email address.")
       }
       if (username === '' || !username) {
-        console.log("Please input your username.")
+        alert("Please input your username.")
       }
       if (!usernameRegex.test(username)) {
-        console.log("Username may only include letters and numbers.")
+        alert("Username may only include letters and numbers.")
       }
       return;
     }
@@ -35,14 +35,14 @@ const Login = ({ onLoginSuccess, uid }) => {
       // Check if the user's email is already registered
       const response = await fetch(route + '/api/users/email/' + email_address);
       if (response.status === 200) {
-        console.log("Email Address already in use!")
+        alert("Email Address already in use!")
         return;
       }
 
       // Check if the user's username already exists
       const response2 = await fetch(route + '/api/users/username/' + username);
       if (response2.status === 200) {
-        console.log("Username already in use!")
+        alert("Username already in use!")
         return;
       }
 

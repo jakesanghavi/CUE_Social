@@ -35,7 +35,7 @@ const Profile = ({ onLogout, loggedInUser }) => {
     console.log("Logout successful, waiting 1 second before redirecting...");
     setTimeout(() => {
       window.location.href = '/';
-    }, 700);
+    }, 500);
   };
 
   return (

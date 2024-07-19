@@ -23,7 +23,7 @@ const getUserByUsername = async (request, response) => {
   const { id } = request.params
 
   try {
-    const userData = await User.findOne({ username: id });
+    const userData = await User.findOne({ username: { $regex: new RegExp(`^${id}$`, 'i') } });
     if (!userData) {
       // Returning 201 instead of the proper 404 prevents errors from coming up in the console.
       return response.status(201).json({ "error": "User does not exist" })
