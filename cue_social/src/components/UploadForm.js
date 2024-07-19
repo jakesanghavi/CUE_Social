@@ -80,7 +80,7 @@ const UploadForm = ({ loggedInUser }) => {
         setSubmitted(true);
 
         try {
-            const response = await fetch('https://jakesanghavi.pythonanywhere.com/upload', {
+            const response = await fetch(ROUTE + '/api/uploadimage/', {
                 method: 'POST',
                 body: formData,
             });
@@ -114,7 +114,9 @@ const UploadForm = ({ loggedInUser }) => {
         formData.append('deckcode', deckCode);
         formData.append('user', loggedInUser.username);
         formData.append('email', loggedInUser.email)
-        console.log(formData);
+        for (const [key, value] of formData.entries()) {
+            console.log(`${key}: ${value}`);
+          }
 
         try {
             const response = await fetch(ROUTE + '/api/decks/post/', {

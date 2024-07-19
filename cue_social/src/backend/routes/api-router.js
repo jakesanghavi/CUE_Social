@@ -35,6 +35,8 @@ const {
     getDecksBySearch
 } = require('../controllers/deckController')
 
+const { recognizeText } = require('../controllers/textrecognizer')
+
 const router = express.Router()
 
 // GET the homepage (prevent crashing)
@@ -93,5 +95,7 @@ router.post('/api/decks/search-decks', getDecksBySearch);
 
 // GET decks by ID
 router.get('/api/decks/onedeck/:id', getOneDeck)
+
+router.post('/api/uploadimage/', upload.single('image'), recognizeText)
 
 module.exports = router
