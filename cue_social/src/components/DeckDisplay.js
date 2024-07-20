@@ -16,7 +16,7 @@ const DeckDisplay = ({ decks, styleClass, handleDeckSearch, upvoteCheck, loggedI
 
                             <div className="deck-info">
                                 <div className="deck-title">
-                                    {deck.title}{deck.deckcode && <span> ({deck.deckcode})</span>}<br />
+                                    {deck.title}{deck.deckcode !== 'null' && <span> ({deck.deckcode})</span>}<br />
                                     by <Link to={`/users/${deck.user}`} style={{ textDecoration: 'underline' }}>{deck.user}</Link>
                                 </div>
                                 <div className="deck-upvotes">
