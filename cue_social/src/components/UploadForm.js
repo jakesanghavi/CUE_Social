@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ROUTE } from '../constants';
 import Select from 'react-select';
 import { optionsAlbums, optionsCollections, optionsTags, customStylesAlbums, customStylesCollections, customStylesTags } from '../selectedStyles';
+import '../component_styles/uploadform.css';
 
 const UploadForm = ({ loggedInUser, closeModal }) => {
     const [file, setFile] = useState(null);
@@ -16,6 +17,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
     const [selectedCollections, setSelectedCollections] = useState([]);
     const [selectedTags, setSelectedTags] = useState([]);
     const [errors, setErrors] = useState({});
+    const [submitting, setSubmitting] = useState(false);
 
     const handleFileChange = (event) => {
         const selectedFile = event.target.files[0];
@@ -82,6 +84,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
     };
 
     const handleTextFormSubmit = async (event) => {
+        setSubmitting(true);
         event.preventDefault();
 
         const valid = validateForm();
@@ -111,6 +114,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
 
             const data = await response.json();
             console.log('Received data:', data);
+            setSubmitting(false);
             closeModal();
             alert("Deck uploaded successfully.")
         } catch (error) {
@@ -292,8 +296,9 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                                     )}
                                 </div>
                             </div>
-                            <div style={({ flex: 1 })}>
+                            <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
                                 <button onClick={handleTextFormSubmit} style={{ marginTop: '10px' }}>Submit</button>
+                                {submitting && <div className="loading">Submitting...</div>}
                             </div>
                         </div>
                     </div>
