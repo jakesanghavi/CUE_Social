@@ -1,6 +1,6 @@
 import { ROUTE } from './constants';
 
-export const upvoteCheck = async (deck, loggedInUser, ...setDecks) => {
+export const upvoteCheck = async (deck, loggedInUser, setOne, ...setDecks) => {
     if (!loggedInUser || !loggedInUser.email) {
       return
     }
@@ -18,6 +18,16 @@ export const upvoteCheck = async (deck, loggedInUser, ...setDecks) => {
         return d;
       });
     };
+
+    const updateDeck = (deck) => {
+        const isUpvoted = deck.voters.includes(loggedInUser.username);
+        const newVoters = isUpvoted
+          ? deck.voters.filter((voter) => voter !== loggedInUser.username)
+          : [...deck.voters, loggedInUser.username];
+        const newScore = isUpvoted ? deck.score - 1 : deck.score + 1;
+        
+        return { ...deck, voters: newVoters, score: newScore };
+      };
   
     try {
       const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
@@ -69,7 +79,13 @@ export const upvoteCheck = async (deck, loggedInUser, ...setDecks) => {
         }
       }
       
-      setDecks.forEach(setDeck => setDeck((prev) => updatedDecks(prev)));
+      if (!setOne) {
+        setDecks.forEach(setDeck => setDeck((prev) => updatedDecks(prev)));
+      }
+      else {
+        setDecks.forEach(setDeck => setDeck((prev) => updateDeck(prev)));
+      }
+      
   
     } catch (error) {
       console.error('Error fetching decks:', error);

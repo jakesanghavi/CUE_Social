@@ -8,6 +8,7 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 const Profile = ({ onLogout, loggedInUser }) => {
   const [user, setUser] = useState(null);
   const [decks, setDecks] = useState([]);
+  const setOne=false
 
   useEffect(() => {
     if (loggedInUser) {
@@ -48,7 +49,7 @@ const Profile = ({ onLogout, loggedInUser }) => {
         <h2>Decks</h2>
         <div className="grid-container">
         <DeckDisplay decks={decks} styleClass={""} handleDeckSearch={null}
-                upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setDecks={[setDecks]} />
+                upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setOne={setOne} setDecks={[setDecks]} />
         </div>
       </div>
       <button onClick={handleLogoutAndRedirect}>

@@ -3,7 +3,7 @@ import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import '../component_styles/deckdisplay.css';
 
-const DeckDisplay = ({ decks, styleClass, handleDeckSearch, upvoteCheck, loggedInUser, deckType, setDecks }) => {
+const DeckDisplay = ({ decks, styleClass, handleDeckSearch, upvoteCheck, loggedInUser, deckType, setOne, setDecks }) => {
     const a = styleClass.startsWith("custom") ? "custom-" : "";
 
     return (
@@ -21,7 +21,7 @@ const DeckDisplay = ({ decks, styleClass, handleDeckSearch, upvoteCheck, loggedI
                                 </div>
                                 <div className="deck-upvotes">
                                     <span>Upvotes: </span>
-                                    <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck, loggedInUser, ...setDecks)}
+                                    <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck, loggedInUser, setOne, ...setDecks)}
                                         style={{ cursor: 'pointer', color: loggedInUser && deck.voters.includes(loggedInUser.username) ? 'yellow' : 'inherit' }}
                                         className="thumbs-up-icon" />
                                     {deck.score}

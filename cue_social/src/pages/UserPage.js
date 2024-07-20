@@ -7,6 +7,7 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 const UserPage = ({ loggedInUser }) => {
   const { userId } = useParams();
   const [decks, setDecks] = useState([]);
+  const setOne=false
 
   const fetchDecksForUser = useCallback(async (user) => {
     if (user) {
@@ -111,7 +112,7 @@ const UserPage = ({ loggedInUser }) => {
         <h2>Decks</h2>
         <div className="grid-container">
           <DeckDisplay decks={decks} styleClass={""} handleDeckSearch={null}
-            upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setDecks={[setDecks]} />
+            upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setOne={setOne} setDecks={[setDecks]} />
         </div>
       </div>
     </div>

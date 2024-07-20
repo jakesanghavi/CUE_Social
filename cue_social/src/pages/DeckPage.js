@@ -38,7 +38,7 @@ const DeckPage = ({ loggedInUser }) => {
       <h3>Author: <Link to={`/users/${deck.user}`} style={{ color: 'black' }}>{deck.user}</Link></h3>
       <div className="deck-upvotes">
         <span>Upvotes: </span>
-        <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck, loggedInUser, setOne, [setDeck])}
+        <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck, loggedInUser, setOne, ...[setDeck])}
           style={{ cursor: 'pointer', color: loggedInUser && deck.voters.includes(loggedInUser.username) ? 'yellow' : 'inherit' }}
           className="thumbs-up-icon" />
         {deck.score}

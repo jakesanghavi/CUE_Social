@@ -22,6 +22,7 @@ const DeckSearchResults = ({ loggedInUser }) => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const limit = 12;
+  const setOne=false
 
   const fetchDecks = useCallback(async (page) => {
     setLoading(true);
@@ -76,7 +77,7 @@ const DeckSearchResults = ({ loggedInUser }) => {
             <h2>Search Results</h2>
             <div className="grid-container">
               <DeckDisplay decks={decks} styleClass={""} handleDeckSearch={null}
-                upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setDecks={[setDecks]} />
+                upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setOne={setOne} setDecks={[setDecks]} />
             </div>
             <div className="pagination-controls">
               {Array.from({ length: Math.ceil(totalDecks / limit) }, (_, index) => (
