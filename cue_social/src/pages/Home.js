@@ -14,8 +14,8 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
   const [newDecks, setNewDecks] = useState(null);
   const [topDecks, setTopDecks] = useState(null);
   const [topDecksWeek, setTopDecksWeek] = useState(null);
-  
-  const limit = 10
+
+  const limit = 5
 
   const handleDeckSearch = (sortBy, restricted) => {
     const searchParams = {
@@ -31,7 +31,6 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
     };
     navigate('/deck-search-results', { state: { searchParams } });
   };
-
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -87,6 +86,21 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
     if (!loggedInUser || !loggedInUser.email) {
       return
     }
+
+    const updatedDecks = (decks) => {
+      return decks.map((d) => {
+        if (d._id === deck._id) {
+          const isUpvoted = d.voters.includes(loggedInUser.username);
+          const newVoters = isUpvoted
+            ? d.voters.filter((voter) => voter !== loggedInUser.username)
+            : [...d.voters, loggedInUser.username];
+          const newScore = isUpvoted ? d.score - 1 : d.score + 1;
+          return { ...d, voters: newVoters, score: newScore };
+        }
+        return d;
+      });
+    };
+
     try {
       const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
         method: 'GET',
@@ -137,6 +151,10 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
           console.error('Error fetching decks:', error);
         }
       }
+
+      setTopDecks((prev) => updatedDecks(prev));
+      setTopDecksWeek((prev) => updatedDecks(prev));
+      setNewDecks((prev) => updatedDecks(prev));
 
     } catch (error) {
       console.error('Error fetching decks:', error);
