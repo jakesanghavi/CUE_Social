@@ -197,10 +197,10 @@ function App() {
             />
             <Route
               path="/decks/:deckId" // Add a new route for the DeckPage
-              element={<DeckPage />}
+              element={<DeckPage loggedInUser={loggedInUser}/>}
             />
             <Route path="/deck-search-results" element={<DeckSearchResults loggedInUser={loggedInUser}/>} />
-            <Route path="/users/:userId" element={<UserPage />} />
+            <Route path="/users/:userId" element={<UserPage loggedInUser={loggedInUser}/>} />
           </Routes>
         </div>
       </BrowserRouter>

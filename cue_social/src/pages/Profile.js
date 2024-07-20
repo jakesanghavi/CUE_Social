@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { ROUTE } from '../constants';
 import '../component_styles/profile.css';
+import DeckDisplay from '../components/DeckDisplay';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const Profile = ({ onLogout, loggedInUser }) => {
@@ -38,6 +38,81 @@ const Profile = ({ onLogout, loggedInUser }) => {
     }, 500);
   };
 
+  const upvoteCheck = async (deck) => {
+    if (!loggedInUser || !loggedInUser.email) {
+      return
+    }
+
+    const updatedDecks = (decks) => {
+      return decks.map((d) => {
+        if (d._id === deck._id) {
+          const isUpvoted = d.voters.includes(loggedInUser.username);
+          const newVoters = isUpvoted
+            ? d.voters.filter((voter) => voter !== loggedInUser.username)
+            : [...d.voters, loggedInUser.username];
+          const newScore = isUpvoted ? d.score - 1 : d.score + 1;
+          return { ...d, voters: newVoters, score: newScore };
+        }
+        return d;
+      });
+    };
+
+    try {
+      const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch decks');
+      }
+      const data = await response.json();
+      let voters = data.voters;
+
+      if (voters.includes(loggedInUser.username)) {
+        voters = voters.filter(voter => voter !== loggedInUser.username);
+
+        try {
+          const change = 'decrease'
+          const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ voters, change })
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch decks');
+          }
+        } catch (error) {
+          console.error('Error fetching decks:', error);
+        }
+      }
+      else {
+        voters.push(loggedInUser.username)
+        try {
+          const change = 'increase'
+          const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ voters, change })
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch decks');
+          }
+        } catch (error) {
+          console.error('Error fetching decks:', error);
+        }
+      }
+      setDecks((prev) => updatedDecks(prev));
+    } catch (error) {
+      console.error('Error fetching decks:', error);
+    }
+  }
+
   return (
     <div>
       <div>
@@ -46,21 +121,8 @@ const Profile = ({ onLogout, loggedInUser }) => {
       <div>
         <h2>Decks</h2>
         <div className="grid-container">
-          {decks.map(deck => (
-            <div key={deck._id} className="grid-item">
-              <Link to={`/decks/${deck._id}`}>
-                <div>Title: {deck.title}</div>
-                {/* <div>Description: {deck.description}</div> */}
-                {deck.image && (
-                  <img
-                    src={deck.image} // Replace with your actual image URL
-                    alt="Decklist"
-                  />
-                )}
-              </Link>
-              <hr />
-            </div>
-          ))}
+        <DeckDisplay decks={decks} styleClass={""} handleDeckSearch={null}
+                upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} />
         </div>
       </div>
       <button onClick={handleLogoutAndRedirect}>
