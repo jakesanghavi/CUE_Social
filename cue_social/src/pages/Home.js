@@ -13,9 +13,11 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newDecks, setNewDecks] = useState(null);
   const [topDecks, setTopDecks] = useState(null);
+  const [topDecksWeek, setTopDecksWeek] = useState(null);
+  
   const limit = 10
 
-  const handleDeckSearch = (sortBy) => {
+  const handleDeckSearch = (sortBy, restricted) => {
     const searchParams = {
       selectedAlbums: [],
       selectedCollections: [],
@@ -24,7 +26,8 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
       selectedUser: [],
       cards: [],
       users: [],
-      sortBy
+      sortBy,
+      restricted
     };
     navigate('/deck-search-results', { state: { searchParams } });
   };
@@ -38,7 +41,7 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
     setIsModalOpen(false);
   };
 
-  const fetchDecks = useCallback(async (method) => {
+  const fetchDecks = useCallback(async (method, restricted) => {
     try {
       const albums = []
       const collections = []
@@ -51,13 +54,17 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ albums, collections, tags, cards, sortBy })
+        body: JSON.stringify({ albums, collections, tags, cards, sortBy, restricted })
       });
       if (!response.ok) {
         throw new Error('Failed to fetch decks');
       }
       const data = await response.json();
-      if (method === 'score') {
+      if (restricted) {
+        setTopDecksWeek(data.decks)
+      }
+      else if (method === 'score') {
+        console.log(data.decks)
         setTopDecks(data.decks)
       }
       else {
@@ -70,6 +77,7 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
 
   useEffect(() => {
     fetchDecks('score');
+    fetchDecks('score', 'yes')
     fetchDecks()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -161,7 +169,7 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
       <div className="custom-grid-wrapper">
         {topDecks && (
           <div className="custom-grid-container top-decks" style={{ textAlign: 'center' }}>
-            <span onClick={() => handleDeckSearch('score')} style={{ textDecoration: 'underline', cursor: 'pointer' }}>Most Popular Decks</span>
+            <span onClick={() => handleDeckSearch('score', null)} style={{ textDecoration: 'underline', cursor: 'pointer' }}>Top Decks All Time</span>
             {topDecks.map(deck => (
               <div key={deck._id} className="custom-grid-item">
                 <div className="deck-info">
@@ -171,7 +179,41 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
                   </div>
                   <div className="deck-upvotes">
                     <span>Upvotes: </span>
-                    <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck)} style={{ cursor: 'pointer' }} className="thumbs-up-icon" />
+                    <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck)}
+                      style={{ cursor: 'pointer', color: loggedInUser && deck.voters.includes(loggedInUser.username) ? 'yellow' : 'inherit' }}
+                      className="thumbs-up-icon" />
+                    {deck.score}
+                  </div>
+                </div>
+                <Link to={`/decks/${deck._id}`}>
+                  {deck.image && (
+                    <img
+                      src={deck.image}
+                      alt="Decklist"
+                      className="custom-deck-image"
+                    />
+                  )}
+                </Link>
+                <hr />
+              </div>
+            ))}
+          </div>
+        )}
+        {topDecksWeek && (
+          <div className="custom-grid-container top-decks" style={{ textAlign: 'center' }}>
+            <span onClick={() => handleDeckSearch('score', 'yes')} style={{ textDecoration: 'underline', cursor: 'pointer' }}>Top Decks This League</span>
+            {topDecksWeek.map(deck => (
+              <div key={deck._id} className="custom-grid-item">
+                <div className="deck-info">
+                  <div className="deck-title">
+                    {deck.title}{deck.deckcode && <span> ({deck.deckcode})</span>}<br />
+                    by <Link to={`/users/${deck.user}`} style={{ textDecoration: 'underline' }}>{deck.user}</Link>
+                  </div>
+                  <div className="deck-upvotes">
+                    <span>Upvotes: </span>
+                    <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck)}
+                      style={{ cursor: 'pointer', color: loggedInUser && deck.voters.includes(loggedInUser.username) ? 'yellow' : 'inherit' }}
+                      className="thumbs-up-icon" />
                     {deck.score}
                   </div>
                 </div>
@@ -191,7 +233,7 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
         )}
         {newDecks && (
           <div className="custom-grid-container new-decks" style={{ textAlign: 'center' }}>
-            <span onClick={() => handleDeckSearch('')} style={{ textDecoration: 'underline', cursor: 'pointer'}}>Newest Decks</span>
+            <span onClick={() => handleDeckSearch('', null)} style={{ textDecoration: 'underline', cursor: 'pointer' }}>Newest Decks</span>
             {newDecks.map(deck => (
               <div key={deck._id} className="custom-grid-item">
 
@@ -202,7 +244,9 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
                   </div>
                   <div className="deck-upvotes">
                     <span>Upvotes: </span>
-                    <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck)} style={{ cursor: 'pointer' }} className="thumbs-up-icon" />
+                    <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck)}
+                      style={{ cursor: 'pointer', color: loggedInUser && deck.voters.includes(loggedInUser.username) ? 'yellow' : 'inherit' }}
+                      className="thumbs-up-icon" />
                     {deck.score}
                   </div>
                 </div>

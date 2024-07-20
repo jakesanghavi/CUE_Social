@@ -144,7 +144,9 @@ const DeckSearchResults = ({ loggedInUser }) => {
                     </div>
                     <div className="deck-upvotes">
                       <span>Upvotes: </span>
-                      <FontAwesomeIcon icon={faThumbsUp} className="thumbs-up-icon" onClick={() => upvoteCheck(deck)} style={{ cursor: 'pointer' }} />
+                      <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck)}
+                        style={{ cursor: 'pointer', color: loggedInUser && deck.voters.includes(loggedInUser.username) ? 'yellow' : 'inherit' }}
+                        className="thumbs-up-icon" />
                       {deck.score}
                     </div>
                   </div>

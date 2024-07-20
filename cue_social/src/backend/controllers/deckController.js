@@ -22,7 +22,7 @@ const getDecksForUser = async (request, response) => {
 
 // GET decks from homepage query
 const getDecksBySearch = async (request, response) => {
-    const { albums, collections, tags, cards, sortBy } = request.body; // Use body to receive search params
+    const { albums, collections, tags, cards, sortBy, restricted } = request.body; // Use body to receive search params
     const page = parseInt(request.query.page) || 1; // Page number from query parameter
     const limit = parseInt(request.query.limit) || 12; // Number of decks per page
 
@@ -43,6 +43,19 @@ const getDecksBySearch = async (request, response) => {
 
         if (cards && cards.length > 0) {
             query.cards = { $all: cards };
+        }
+
+        if (restricted) {
+            // Calculate the date for the most recent Monday at 12:00 AM GMT
+            const now = new Date();
+            const dayOfWeek = now.getUTCDay(); // Get day of week (0=Sunday, 1=Monday, etc.)
+            const daysSinceMonday = (dayOfWeek + 6) % 7; // Number of days since most recent Monday
+            const recentMonday = new Date(now);
+            recentMonday.setUTCDate(now.getUTCDate() - daysSinceMonday);
+            recentMonday.setUTCHours(0, 0, 0, 0); // Set time to 12:00 AM GMT
+
+            // Add date filter to the query
+            query.createdAt = { $gte: recentMonday.toISOString() };
         }
 
         let sortCriteria = {};
