@@ -42,6 +42,15 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
     const [selectedUser, setSelectedUser] = useState(userPass);
     const [searchType, setSearchType] = useState('decks'); // Default to 'decks'
     const [sortBy, setSortBy] = useState('score');
+    const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+        const handleResize = () => setViewportWidth(window.innerWidth);
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    const fontSize = viewportWidth > 768 ? '16px' : '12px';
 
     const optionsSort = [{ value: 'score', label: 'Most Popular' }, { value: 'new', label: 'Newest' }]
 
@@ -106,7 +115,7 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
     }, [fetchUsers]);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: fontSize }}>
             <div style={{ marginBottom: '10px' }}>
                 <button onClick={() => setSearchType('decks')} style={{ marginRight: '10px', padding: '8px' }}>
                     Search for Decks
