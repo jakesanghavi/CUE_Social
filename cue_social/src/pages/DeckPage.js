@@ -4,7 +4,6 @@ import { ROUTE } from '../constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { upvoteCheck } from '../UsefulFunctions';
-import '../component_styles/deckpage.css';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const DeckPage = ({ loggedInUser }) => {
@@ -32,26 +31,23 @@ const DeckPage = ({ loggedInUser }) => {
   if (!deck) return <div>Loading...</div>;
 
   return (
-    <div className="deck-details">
+    <div>
       <h2>
         {deck.title} {deck.deckcode !== 'null' ? `- Deck Code: ${deck.deckcode}` : ''}
       </h2>
-      <h3>Author: <Link to={`/users/${deck.user}`} className="author-link">{deck.user}</Link></h3>
+      <h3>Author: <Link to={`/users/${deck.user}`} style={{ color: 'black' }}>{deck.user}</Link></h3>
       <div className="deck-upvotes">
         <span>Upvotes: </span>
-        <FontAwesomeIcon
-          icon={faThumbsUp}
-          onClick={() => upvoteCheck(deck, loggedInUser, setOne, ...[setDeck])}
-          className={`thumbs-up-icon ${loggedInUser && deck.voters.includes(loggedInUser.username) ? 'voted' : ''}`}
-        />
+        <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck, loggedInUser, setOne, ...[setDeck])}
+          style={{ cursor: 'pointer', color: loggedInUser && deck.voters.includes(loggedInUser.username) ? 'yellow' : 'inherit' }}
+          className="thumbs-up-icon" />
         {deck.score}
       </div>
       <p>Description: {deck.description}</p>
       {deck.image && (
         <img
-          src={deck.image}
+          src={deck.image} // Replace with your actual image URL
           alt="Decklist"
-          className="deck-image"
         />
       )}
       <div>
