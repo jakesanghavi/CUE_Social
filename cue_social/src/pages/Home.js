@@ -3,14 +3,31 @@ import UploadForm from '../components/UploadForm';
 import Login from '../components/Login';
 import SearchBar from '../components/SearchBar';
 import '../component_styles/home.css';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ROUTE } from '../constants';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 
 const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
+  const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newDecks, setNewDecks] = useState(null);
   const [topDecks, setTopDecks] = useState(null);
   const limit = 10
+
+  const handleDeckSearch = (sortBy) => {
+    const searchParams = {
+      selectedAlbums: [],
+      selectedCollections: [],
+      selectedTags: [],
+      selectedCards: [],
+      selectedUser: [],
+      cards: [],
+      users: [],
+      sortBy
+    };
+    navigate('/deck-search-results', { state: { searchParams } });
+  };
 
 
   const openModal = () => {
@@ -57,6 +74,67 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const upvoteCheck = async (deck) => {
+    console.log(deck)
+    if (!loggedInUser || !loggedInUser.email) {
+      return
+    }
+    try {
+      const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch decks');
+      }
+      const data = await response.json();
+      let voters = data.voters;
+
+      if (voters.includes(loggedInUser.username)) {
+        voters = voters.filter(voter => voter !== loggedInUser.username);
+
+        try {
+          const change = 'decrease'
+          const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ voters, change })
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch decks');
+          }
+        } catch (error) {
+          console.error('Error fetching decks:', error);
+        }
+      }
+      else {
+        voters.push(loggedInUser.username)
+        try {
+          const change = 'increase'
+          const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ voters, change })
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch decks');
+          }
+        } catch (error) {
+          console.error('Error fetching decks:', error);
+        }
+      }
+
+    } catch (error) {
+      console.error('Error fetching decks:', error);
+    }
+  }
+
   return (
     <div className="Home" id="home">
       <Login onLoginSuccess={onLoginSuccess} uid={uid} />
@@ -83,11 +161,21 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
       <div className="custom-grid-wrapper">
         {topDecks && (
           <div className="custom-grid-container top-decks" style={{ textAlign: 'center' }}>
-            Most Popular Decks
+            <span onClick={() => handleDeckSearch('score')} style={{ textDecoration: 'underline', cursor: 'pointer' }}>Most Popular Decks</span>
             {topDecks.map(deck => (
               <div key={deck._id} className="custom-grid-item">
+                <div className="deck-info">
+                  <div className="deck-title">
+                    {deck.title}{deck.deckcode && <span> ({deck.deckcode})</span>}<br />
+                    by <Link to={`/users/${deck.user}`} style={{ textDecoration: 'underline' }}>{deck.user}</Link>
+                  </div>
+                  <div className="deck-upvotes">
+                    <span>Upvotes: </span>
+                    <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck)} style={{ cursor: 'pointer' }} className="thumbs-up-icon" />
+                    {deck.score}
+                  </div>
+                </div>
                 <Link to={`/decks/${deck._id}`}>
-                  <div>Title: {deck.title}</div>
                   {deck.image && (
                     <img
                       src={deck.image}
@@ -103,11 +191,22 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
         )}
         {newDecks && (
           <div className="custom-grid-container new-decks" style={{ textAlign: 'center' }}>
-            Newest Decks
+            <span onClick={() => handleDeckSearch('')} style={{ textDecoration: 'underline', cursor: 'pointer'}}>Newest Decks</span>
             {newDecks.map(deck => (
               <div key={deck._id} className="custom-grid-item">
+
+                <div className="deck-info">
+                  <div className="deck-title">
+                    {deck.title}{deck.deckcode && <span> ({deck.deckcode})</span>}<br />
+                    by <Link to={`/users/${deck.user}`} style={{ textDecoration: 'underline' }}>{deck.user}</Link>
+                  </div>
+                  <div className="deck-upvotes">
+                    <span>Upvotes: </span>
+                    <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck)} style={{ cursor: 'pointer' }} className="thumbs-up-icon" />
+                    {deck.score}
+                  </div>
+                </div>
                 <Link to={`/decks/${deck._id}`}>
-                  <div>Title: {deck.title}</div>
                   {deck.image && (
                     <img
                       src={deck.image}
@@ -122,7 +221,7 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
           </div>
         )}
       </div>
-    </div>
+    </div >
   );
 }
 

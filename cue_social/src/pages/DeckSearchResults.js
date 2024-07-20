@@ -2,20 +2,20 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
 import { ROUTE } from '../constants';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
-const DeckSearchResults = () => {
+const DeckSearchResults = ({ loggedInUser }) => {
   const location = useLocation();
   const {
-    selectedAlbums = [], selectedCollections = [], selectedTags = [], selectedCards = [], selectedUser = null, allCards = [], users = []
+    selectedAlbums = [], selectedCollections = [], selectedTags = [], selectedCards = [], selectedUser = null, allCards = [], users = [], sortBy = 'score'
   } = location.state?.searchParams || {};
 
   const cards = selectedCards.map(card => card.label)
   const albums = selectedAlbums.map(album => album.value)
   const collections = selectedCollections.map(collection => collection.value)
   const tags = selectedTags.map(tag => tag.value)
-
-  console.log(location.state.searchParams)
 
   const [decks, setDecks] = useState(null);
   const [totalDecks, setTotalDecks] = useState(0);
@@ -31,7 +31,7 @@ const DeckSearchResults = () => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ albums, collections, tags, cards })
+        body: JSON.stringify({ albums, collections, tags, cards, sortBy })
       });
       if (!response.ok) {
         throw new Error('Failed to fetch decks');
@@ -44,7 +44,67 @@ const DeckSearchResults = () => {
     } finally {
       setLoading(false);
     }
-  }, [albums, collections, tags, cards]);
+  }, [albums, collections, tags, cards, sortBy]);
+
+  const upvoteCheck = async (deck) => {
+    if (!loggedInUser || !loggedInUser.email) {
+      return
+    }
+    try {
+      const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      if (!response.ok) {
+        throw new Error('Failed to fetch decks');
+      }
+      const data = await response.json();
+      let voters = data.voters;
+
+      if (voters.includes(loggedInUser.username)) {
+        voters = voters.filter(voter => voter !== loggedInUser.username);
+
+        try {
+          const change = 'decrease'
+          const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ voters, change })
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch decks');
+          }
+        } catch (error) {
+          console.error('Error fetching decks:', error);
+        }
+      }
+      else {
+        voters.push(loggedInUser.username)
+        try {
+          const change = 'increase'
+          const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ voters, change })
+          });
+          if (!response.ok) {
+            throw new Error('Failed to fetch decks');
+          }
+        } catch (error) {
+          console.error('Error fetching decks:', error);
+        }
+      }
+
+    } catch (error) {
+      console.error('Error fetching decks:', error);
+    }
+  }
 
   useEffect(() => {
     fetchDecks(page);
@@ -77,9 +137,19 @@ const DeckSearchResults = () => {
             <div className="grid-container">
               {decks.map(deck => (
                 <div key={deck._id} className="grid-item">
+                  <div className="deck-info">
+                    <div className="deck-title">
+                      {deck.title}{deck.deckcode && <span> ({deck.deckcode})</span>}<br />
+                      by <Link to={`/users/${deck.user}`} style={{ textDecoration: 'underline' }}>{deck.user}</Link>
+                    </div>
+                    <div className="deck-upvotes">
+                      <span>Upvotes: </span>
+                      <FontAwesomeIcon icon={faThumbsUp} className="thumbs-up-icon" onClick={() => upvoteCheck(deck)} style={{ cursor: 'pointer' }} />
+                      {deck.score}
+                    </div>
+                  </div>
+                  {/* <div>Description: {deck.description}</div> */}
                   <Link to={`/decks/${deck._id}`}>
-                    <div>Title: {deck.title}</div>
-                    {/* <div>Description: {deck.description}</div> */}
                     {deck.image && (
                       <img
                         src={deck.image} // Replace with your actual image URL

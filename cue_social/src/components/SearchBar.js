@@ -17,6 +17,9 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
     const [selectedCards, setSelectedCards] = useState(cardsPass);
     const [selectedUser, setSelectedUser] = useState(userPass);
     const [searchType, setSearchType] = useState('decks'); // Default to 'decks'
+    const [sortBy, setSortBy] = useState('score')
+
+    const optionsSort = [{ value: 'score', label: 'Most Popular' }, { value: 'new', label: 'Newest' }]
 
     const handleDeckSearch = () => {
         const searchParams = {
@@ -26,7 +29,8 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
             selectedCards,
             selectedUser,
             cards,
-            users
+            users,
+            sortBy
         };
         console.log(searchParams)
         navigate('/deck-search-results', { state: { searchParams } });
@@ -123,6 +127,12 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
                             onChange={setSelectedCards}
                             placeholder="Search for Cards"
                             styles={customStylesCards}
+                        />
+                        <Select
+                            options={optionsSort}
+                            value={sortBy}
+                            onChange={setSortBy}
+                            placeholder="Sort (Default: Most Popular)"
                         />
                     </>
                 )}

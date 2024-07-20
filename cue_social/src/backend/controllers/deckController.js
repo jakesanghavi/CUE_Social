@@ -47,9 +47,9 @@ const getDecksBySearch = async (request, response) => {
 
         let sortCriteria = {};
         if (sortBy === 'score') {
-            sortCriteria = { createdAt: -1 };
+            sortCriteria = { score: -1 };
         } else {
-            sortCriteria = { score: -1 }; // Assuming 'score' is the field for upvotes
+            sortCriteria = { createdAt: -1 }; // Assuming 'score' is the field for upvotes
         }
 
         const skips = (page - 1) * limit;
@@ -134,4 +134,31 @@ const postDeck = async (request, response) => {
     }
 };
 
-module.exports = { getDecksForUser, getDecksBySearch, postDeck, getOneDeck };
+const patchUpvotes = async (request, response) => {
+    const { id } = request.params
+    const { voters, change } = request.body // Assuming you have user information in req.user
+
+    try {
+        // Find and update the deck by ID
+        const updatedDeck = await Deck.updateOne(
+            { _id: id }, // Filter query to match the document
+            {
+                $set: { voters: voters }, // Update voters
+                $inc: { score: change === 'increase' ? 1 : change === 'decrease' ? -1 : 0 } // Increment or decrement upvotes
+            },
+            { runValidators: true } // Run validators if defined in the schema
+        );
+
+        if (!updatedDeck) {
+            return res.status(404).json({ message: 'Deck not found' });
+        }
+
+        // Respond with the updated deck
+        response.status(200).json(updatedDeck);
+    } catch (error) {
+        console.error(error);
+        response.status(500).json({ message: 'Server error' });
+    }
+};
+
+module.exports = { getDecksForUser, getDecksBySearch, postDeck, getOneDeck, patchUpvotes };

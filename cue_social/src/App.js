@@ -199,7 +199,7 @@ function App() {
               path="/decks/:deckId" // Add a new route for the DeckPage
               element={<DeckPage />}
             />
-            <Route path="/deck-search-results" element={<DeckSearchResults />} />
+            <Route path="/deck-search-results" element={<DeckSearchResults loggedInUser={loggedInUser}/>} />
             <Route path="/users/:userId" element={<UserPage />} />
           </Routes>
         </div>

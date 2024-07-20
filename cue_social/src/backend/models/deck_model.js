@@ -53,7 +53,7 @@ const deckSchema = new Schema({
         default: 0
     },
     voters: {
-        type: [Number],
+        type: [String],
         default: []
     }
 });

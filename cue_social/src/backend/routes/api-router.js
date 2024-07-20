@@ -32,7 +32,8 @@ const {
     postDeck,
     getDecksForUser,
     getOneDeck,
-    getDecksBySearch
+    getDecksBySearch,
+    patchUpvotes
 } = require('../controllers/deckController')
 
 const { recognizeText } = require('../controllers/textrecognizer')
@@ -95,6 +96,9 @@ router.post('/api/decks/search-decks', getDecksBySearch);
 
 // GET decks by ID
 router.get('/api/decks/onedeck/:id', getOneDeck)
+
+// PATCH deck by ID
+router.post('/api/decks/onedeck/:id', patchUpvotes)
 
 router.post('/api/uploadimage/', upload.single('image'), recognizeText)
 
