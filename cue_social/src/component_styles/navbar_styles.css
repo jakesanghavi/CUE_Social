@@ -23,10 +23,17 @@ header {
     flex: 40;
     padding: 0 10px;
   }
-
+  
   #signInDiv {
     flex: 20;
     padding: 0 10px;
+  }
+  
+  /* Media query for small screens */
+  @media (max-width: 768px) {
+    #signInDiv {
+      padding: 0 20px; /* Increase padding on small screens */
+    }
   }
   
   .headerText {

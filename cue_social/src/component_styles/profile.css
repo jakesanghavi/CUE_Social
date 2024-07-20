@@ -1,30 +1,52 @@
 .grid-container {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 1vw; /* Adjust the gap between items as needed */
-    margin: 0 auto; /* Center the grid container */
-    width: 90vw; /* Set the grid container width to 90% of the viewport width */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1vw;
+  /* Adjust the gap between items as needed */
+  margin: 0 auto;
+  /* Center the grid container */
+  width: 90vw;
+  /* Set the grid container width to 90% of the viewport width */
+}
+
+/* Media query for mobile screens */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(3, 1fr);
+    /* Change to 3 columns for mobile screens */
   }
-  
-  .grid-item {
-    background-color: #f0f0f0; /* Example background color */
-    border: 1px solid #ccc;    /* Example border */
-    padding: 0.5vw;           /* Reduced padding */
-    text-align: center;        /* Center text */
-  }
-  
-  .grid-item img {
-    max-width: 100%; /* Make sure the image fits within its container */
-    height: auto;    /* Maintain the aspect ratio */
-    max-height: 40vh; /* Maximum height for the image */
-  }
-  
-  .grid-item a {
-    color: inherit; /* Inherit text color */
-    text-decoration: none; /* Remove underline */
-  }
-  
-  .grid-item a:hover {
-    color: inherit; /* Maintain text color on hover */
-    text-decoration: none; /* Maintain no underline on hover */
-  }
+}
+
+.grid-item {
+  background-color: #f0f0f0;
+  /* Example background color */
+  border: 1px solid #ccc;
+  /* Example border */
+  padding: 0.5vw;
+  /* Reduced padding */
+  text-align: center;
+  /* Center text */
+}
+
+.grid-item img {
+  max-width: 100%;
+  /* Make sure the image fits within its container */
+  height: auto;
+  /* Maintain the aspect ratio */
+  max-height: 40vh;
+  /* Maximum height for the image */
+}
+
+.grid-item a {
+  color: inherit;
+  /* Inherit text color */
+  text-decoration: none;
+  /* Remove underline */
+}
+
+.grid-item a:hover {
+  color: inherit;
+  /* Maintain text color on hover */
+  text-decoration: none;
+  /* Maintain no underline on hover */
+}
