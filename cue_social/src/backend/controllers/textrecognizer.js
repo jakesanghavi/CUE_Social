@@ -38,7 +38,12 @@ const recognizeText = async (request, response) => {
                             code = oneCode[k]
                         }
                     }
-                    deckCode = code.trim();
+                    if (code) {
+                        deckCode = code.trim();
+                    }
+                    else {
+                        deckCode = null
+                    }
                 }
 
                 line = line.split(' ');
