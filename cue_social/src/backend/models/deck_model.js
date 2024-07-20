@@ -43,6 +43,18 @@ const deckSchema = new Schema({
     user: {
         type: String,
         required: true
+    },
+    createdAt: {
+        type: Date,
+        default: new Date().toISOString()
+    },
+    score: {
+        type: Number,
+        default: 0
+    },
+    voters: {
+        type: [Number],
+        default: []
     }
 });
 

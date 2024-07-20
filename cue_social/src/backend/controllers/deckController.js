@@ -22,7 +22,7 @@ const getDecksForUser = async (request, response) => {
 
 // GET decks from homepage query
 const getDecksBySearch = async (request, response) => {
-    const { albums, collections, tags, cards } = request.body; // Use body to receive search params
+    const { albums, collections, tags, cards, sortBy } = request.body; // Use body to receive search params
     const page = parseInt(request.query.page) || 1; // Page number from query parameter
     const limit = parseInt(request.query.limit) || 12; // Number of decks per page
 
@@ -45,8 +45,15 @@ const getDecksBySearch = async (request, response) => {
             query.cards = { $all: cards };
         }
 
+        let sortCriteria = {};
+        if (sortBy === 'score') {
+            sortCriteria = { createdAt: -1 };
+        } else {
+            sortCriteria = { score: -1 }; // Assuming 'score' is the field for upvotes
+        }
+
         const skips = (page - 1) * limit;
-        const decks = await Deck.find(query).skip(skips).limit(limit);
+        const decks = await Deck.find(query).sort(sortCriteria).skip(skips).limit(limit);
         const totalDecks = await Deck.countDocuments(query); // To get the total number of matching decks
 
         response.status(200).json({ decks, totalDecks });

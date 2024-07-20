@@ -25,7 +25,6 @@ const DeckSearchResults = () => {
 
   const fetchDecks = useCallback(async (page) => {
     setLoading(true);
-    console.log(cards)
     try {
       const response = await fetch(`${ROUTE}/api/decks/search-decks?page=${page}&limit=${limit}`, {
         method: 'POST',
