@@ -30,7 +30,7 @@
   color: yellow;
 }
 
-.deck-image {
+.deckImage {
   width: 100%;
   height: auto;
   max-width: 100vw; /* Ensure the image does not exceed the viewport width */
@@ -44,7 +44,7 @@
     padding: 10px;
   }
 
-  .deck-image {
+  .deckImage {
     width: 100%;
     margin-left: 0;
     margin-right: 0;

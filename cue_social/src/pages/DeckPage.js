@@ -4,6 +4,7 @@ import { ROUTE } from '../constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { upvoteCheck } from '../UsefulFunctions';
+import '../component_styles/deckpage.css';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const DeckPage = ({ loggedInUser }) => {
@@ -31,7 +32,7 @@ const DeckPage = ({ loggedInUser }) => {
   if (!deck) return <div>Loading...</div>;
 
   return (
-    <div>
+    <div className='deck-details'>
       <h2>
         {deck.title} {deck.deckcode !== 'null' ? `- Deck Code: ${deck.deckcode}` : ''}
       </h2>
@@ -48,6 +49,7 @@ const DeckPage = ({ loggedInUser }) => {
         <img
           src={deck.image} // Replace with your actual image URL
           alt="Decklist"
+          className='deckImage'
         />
       )}
       <div>
