@@ -59,7 +59,7 @@ const getDecksBySearch = async (request, response) => {
         }
 
         let sortCriteria = {};
-        if (sortBy === 'score') {
+        if (sortBy === 'score' || !sortBy || (sortBy && sortBy.value === 'score')) {
             sortCriteria = { score: -1 };
         } else {
             sortCriteria = { createdAt: -1 }; // Assuming 'score' is the field for upvotes
