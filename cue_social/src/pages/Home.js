@@ -6,7 +6,7 @@ import DeckDisplay from '../components/DeckDisplay';
 import '../component_styles/home.css';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../constants';
-
+import { upvoteCheck } from '../UsefulFunctions'
 
 const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
   const navigate = useNavigate();
@@ -81,86 +81,6 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const upvoteCheck = async (deck) => {
-    console.log(deck)
-    if (!loggedInUser || !loggedInUser.email) {
-      return
-    }
-
-    const updatedDecks = (decks) => {
-      return decks.map((d) => {
-        if (d._id === deck._id) {
-          const isUpvoted = d.voters.includes(loggedInUser.username);
-          const newVoters = isUpvoted
-            ? d.voters.filter((voter) => voter !== loggedInUser.username)
-            : [...d.voters, loggedInUser.username];
-          const newScore = isUpvoted ? d.score - 1 : d.score + 1;
-          return { ...d, voters: newVoters, score: newScore };
-        }
-        return d;
-      });
-    };
-
-    try {
-      const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch decks');
-      }
-      const data = await response.json();
-      let voters = data.voters;
-
-      if (voters.includes(loggedInUser.username)) {
-        voters = voters.filter(voter => voter !== loggedInUser.username);
-
-        try {
-          const change = 'decrease'
-          const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ voters, change })
-          });
-          if (!response.ok) {
-            throw new Error('Failed to fetch decks');
-          }
-        } catch (error) {
-          console.error('Error fetching decks:', error);
-        }
-      }
-      else {
-        voters.push(loggedInUser.username)
-        try {
-          const change = 'increase'
-          const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ voters, change })
-          });
-          if (!response.ok) {
-            throw new Error('Failed to fetch decks');
-          }
-        } catch (error) {
-          console.error('Error fetching decks:', error);
-        }
-      }
-
-      setTopDecks((prev) => updatedDecks(prev));
-      setTopDecksWeek((prev) => updatedDecks(prev));
-      setNewDecks((prev) => updatedDecks(prev));
-
-    } catch (error) {
-      console.error('Error fetching decks:', error);
-    }
-  }
-
   return (
     <div className="Home" id="home">
       <Login onLoginSuccess={onLoginSuccess} uid={uid} />
@@ -186,11 +106,11 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
       )}
       <div className="custom-grid-wrapper">
         <DeckDisplay decks={topDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks All Time"} />
+          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks All Time"} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]}/>
         <DeckDisplay decks={topDecksWeek} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks This Week"}/>
+          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks This Week"} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]}/>
         <DeckDisplay decks={newDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Newest Decks"} />
+          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Newest Decks"} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]}/>
       </div>
     </div >
   );

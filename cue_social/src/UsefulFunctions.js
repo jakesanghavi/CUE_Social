@@ -1,37 +1,10 @@
-import React, { useEffect, useState, useCallback } from 'react';
-import { useParams } from 'react-router-dom';
-import { ROUTE } from '../constants';
-import DeckDisplay from '../components/DeckDisplay';
-window.Buffer = window.Buffer || require("buffer").Buffer;
+import { ROUTE } from './constants';
 
-const UserPage = ({ loggedInUser }) => {
-  const { userId } = useParams();
-  const [decks, setDecks] = useState([]);
-
-  const fetchDecksForUser = useCallback(async (user) => {
-    if (user) {
-      try {
-        const response = await fetch(`${ROUTE}/api/decks/${user}`);
-        if (!response.ok) {
-          throw new Error('Failed to fetch decks');
-        }
-        const decksData = await response.json();
-        setDecks(decksData);
-      } catch (error) {
-        console.error('Error fetching decks:', error);
-      }
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchDecksForUser(userId);
-  }, [userId, fetchDecksForUser]);
-
-  const upvoteCheck = async (deck) => {
+export const upvoteCheck = async (deck, loggedInUser, ...setDecks) => {
     if (!loggedInUser || !loggedInUser.email) {
       return
     }
-
+  
     const updatedDecks = (decks) => {
       return decks.map((d) => {
         if (d._id === deck._id) {
@@ -45,7 +18,7 @@ const UserPage = ({ loggedInUser }) => {
         return d;
       });
     };
-
+  
     try {
       const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
         method: 'GET',
@@ -58,10 +31,10 @@ const UserPage = ({ loggedInUser }) => {
       }
       const data = await response.json();
       let voters = data.voters;
-
+  
       if (voters.includes(loggedInUser.username)) {
         voters = voters.filter(voter => voter !== loggedInUser.username);
-
+  
         try {
           const change = 'decrease'
           const response = await fetch(`${ROUTE}/api/decks/onedeck/${deck._id}`, {
@@ -77,8 +50,7 @@ const UserPage = ({ loggedInUser }) => {
         } catch (error) {
           console.error('Error fetching decks:', error);
         }
-      }
-      else {
+      } else {
         voters.push(loggedInUser.username)
         try {
           const change = 'increase'
@@ -96,26 +68,11 @@ const UserPage = ({ loggedInUser }) => {
           console.error('Error fetching decks:', error);
         }
       }
-      setDecks((prev) => updatedDecks(prev));
+      
+      setDecks.forEach(setDeck => setDeck((prev) => updatedDecks(prev)));
+  
     } catch (error) {
       console.error('Error fetching decks:', error);
     }
   }
-
-  return (
-    <div>
-      <div>
-        {userId ? <div>Username: {userId}</div> : null}
-      </div>
-      <div>
-        <h2>Decks</h2>
-        <div className="grid-container">
-          <DeckDisplay decks={decks} styleClass={""} handleDeckSearch={null}
-            upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setDecks={[setDecks]} />
-        </div>
-      </div>
-    </div>
-  );
-};
-
-export default UserPage;
+  

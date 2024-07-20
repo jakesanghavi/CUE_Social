@@ -32,7 +32,6 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
             users,
             sortBy
         };
-        console.log(searchParams)
         navigate('/deck-search-results', { state: { searchParams } });
     };
 
