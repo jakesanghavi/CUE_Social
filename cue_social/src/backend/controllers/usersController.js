@@ -92,7 +92,6 @@ const getUsers = async (request, response) => {
 
 const getOneUser = async (request, response) => {
   const { id } = request.params // Assuming you have user information in req.user
-  console.log(id)
 
   try {
     const user = await User.findOne({ username: id });

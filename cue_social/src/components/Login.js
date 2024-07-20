@@ -51,7 +51,7 @@ const Login = ({ onLoginSuccess, uid }) => {
         // Get the user's userID
         const userID = uid()
         // Add their email to their cookie user
-        fetch(route + '/api/users/patchcookie/' + userID, {
+        fetch(route + '/api/users/' + userID, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',

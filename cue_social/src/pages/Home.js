@@ -105,12 +105,12 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
         </div>
       )}
       <div className="custom-grid-wrapper">
-        <DeckDisplay decks={topDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks All Time"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]}/>
         <DeckDisplay decks={topDecksWeek} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
           upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks This Week"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]}/>
         <DeckDisplay decks={newDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
           upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Newest Decks"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]}/>
+          <DeckDisplay decks={topDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
+          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks All Time"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]}/>
       </div>
     </div >
   );
