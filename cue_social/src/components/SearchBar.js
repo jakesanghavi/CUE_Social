@@ -7,6 +7,30 @@ import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { optionsAlbums, optionsCollections, optionsTags, customStylesAlbums, customStylesCards, customStylesCollections, customStylesTags } from '../selectedStyles';
 
+const customStyles = {
+    dropdownIndicator: (provided) => ({
+        ...provided,
+        display: 'none'
+    }),
+    indicatorSeparator: () => ({
+        display: 'none', // Hide the separator if not needed
+    }),
+    control: (provided) => ({
+        ...provided,
+        borderRadius: '2px', // Optional: adjust border radius if needed
+        boxShadow: 'none', // Remove box shadow if you prefer a flat look
+        padding: '0 2px', // Adjust padding to reduce space
+    }),
+    input: (provided) => ({
+        ...provided,
+        margin: 0, // Adjust margin to keep the input aligned
+    }),
+    placeholder: (provided) => ({
+        ...provided,
+        margin: 0, // Remove extra margin from placeholder
+    }),
+};
+
 const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cardsPass = [], userPass = [], allCardsPass = [], usersPass = [] }) => {
     const navigate = useNavigate();
     const [selectedAlbums, setSelectedAlbums] = useState(albumsPass);
@@ -17,7 +41,7 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
     const [selectedCards, setSelectedCards] = useState(cardsPass);
     const [selectedUser, setSelectedUser] = useState(userPass);
     const [searchType, setSearchType] = useState('decks'); // Default to 'decks'
-    const [sortBy, setSortBy] = useState('score')
+    const [sortBy, setSortBy] = useState('score');
 
     const optionsSort = [{ value: 'score', label: 'Most Popular' }, { value: 'new', label: 'Newest' }]
 
@@ -100,38 +124,39 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
                             options={optionsAlbums}
                             value={selectedAlbums}
                             onChange={setSelectedAlbums}
-                            placeholder="Search for Albums"
-                            styles={customStylesAlbums}
+                            placeholder="Add Albums"
+                            styles={{ ...customStyles, ...customStylesAlbums }}
                         />
                         <Select
                             isMulti
                             options={optionsCollections}
                             value={selectedCollections}
                             onChange={setSelectedCollections}
-                            placeholder="Search for Collections"
-                            styles={customStylesCollections}
+                            placeholder="Add Collections"
+                            styles={{ ...customStyles, ...customStylesCollections }}
                         />
                         <Select
                             isMulti
                             options={optionsTags}
                             value={selectedTags}
                             onChange={setSelectedTags}
-                            placeholder="Search for Tags"
-                            styles={customStylesTags}
+                            placeholder="Add Tags"
+                            styles={{ ...customStyles, ...customStylesTags }}
                         />
                         <Select
                             isMulti
                             options={cards}
                             value={selectedCards}
                             onChange={setSelectedCards}
-                            placeholder="Search for Cards"
-                            styles={customStylesCards}
+                            placeholder="Add Cards"
+                            styles={{ ...customStyles, ...customStylesCards }}
                         />
                         <Select
                             options={optionsSort}
                             value={sortBy}
                             onChange={setSortBy}
-                            placeholder="Sort (Default: Most Popular)"
+                            placeholder="Sort Decks"
+                            styles={customStyles}
                         />
                     </>
                 )}

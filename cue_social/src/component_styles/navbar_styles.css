@@ -23,6 +23,11 @@ header {
     flex: 45;
     padding: 0 10px;
   }
+
+  #signInDiv {
+    flex: 45;
+    padding: 0 10px;
+  }
   
   .headerText {
     font-size: .9rem;
