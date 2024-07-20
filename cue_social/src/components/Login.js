@@ -24,9 +24,9 @@ const Login = ({ onLoginSuccess, uid }) => {
       if (username === '' || !username) {
         alert("Please input your username.")
       }
-      if (!usernameRegex.test(username)) {
-        alert("Username may only include letters and numbers.")
-      }
+      // if (!usernameRegex.test(username)) {
+      //   alert("Username may only include letters and numbers.")
+      // }
       return;
     }
 
