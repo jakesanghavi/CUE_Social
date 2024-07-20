@@ -16,8 +16,8 @@ const Login = ({ onLoginSuccess, uid }) => {
     const username = signUpUsername.current.value;
 
     // In the future, we should change this regex so it doesn't coincide with auto-generated cookie usernames
-    const usernameRegex = /^[a-zA-Z0-9]*$/;
-    if (email_address === '' || !email_address || username === '' || !username || !usernameRegex.test(username) ) {
+    // const usernameRegex = /^[a-zA-Z0-9]*$/;
+    if (email_address === '' || !email_address || username === '' || !username ) {
       if (email_address === '' | !email_address) {
         alert("Please input your email address.")
       }

@@ -20,12 +20,12 @@ header {
   }
   
   .blank-space {
-    flex: 45;
+    flex: 40;
     padding: 0 10px;
   }
 
   #signInDiv {
-    flex: 45;
+    flex: 20;
     padding: 0 10px;
   }
   
