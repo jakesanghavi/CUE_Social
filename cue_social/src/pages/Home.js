@@ -2,11 +2,11 @@ import React, { useState, useCallback, useEffect } from 'react';
 import UploadForm from '../components/UploadForm';
 import Login from '../components/Login';
 import SearchBar from '../components/SearchBar';
+import DeckDisplay from '../components/DeckDisplay';
 import '../component_styles/home.css';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../constants';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
+
 
 const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
   const navigate = useNavigate();
@@ -185,103 +185,12 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
         </div>
       )}
       <div className="custom-grid-wrapper">
-        {topDecks && (
-          <div className="custom-grid-container top-decks" style={{ textAlign: 'center' }}>
-            <span onClick={() => handleDeckSearch('score', null)} style={{ textDecoration: 'underline', cursor: 'pointer' }}>Top Decks All Time</span>
-            {topDecks.map(deck => (
-              <div key={deck._id} className="custom-grid-item">
-                <div className="deck-info">
-                  <div className="deck-title">
-                    {deck.title}{deck.deckcode && <span> ({deck.deckcode})</span>}<br />
-                    by <Link to={`/users/${deck.user}`} style={{ textDecoration: 'underline' }}>{deck.user}</Link>
-                  </div>
-                  <div className="deck-upvotes">
-                    <span>Upvotes: </span>
-                    <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck)}
-                      style={{ cursor: 'pointer', color: loggedInUser && deck.voters.includes(loggedInUser.username) ? 'yellow' : 'inherit' }}
-                      className="thumbs-up-icon" />
-                    {deck.score}
-                  </div>
-                </div>
-                <Link to={`/decks/${deck._id}`}>
-                  {deck.image && (
-                    <img
-                      src={deck.image}
-                      alt="Decklist"
-                      className="custom-deck-image"
-                    />
-                  )}
-                </Link>
-                <hr />
-              </div>
-            ))}
-          </div>
-        )}
-        {topDecksWeek && (
-          <div className="custom-grid-container top-decks" style={{ textAlign: 'center' }}>
-            <span onClick={() => handleDeckSearch('score', 'yes')} style={{ textDecoration: 'underline', cursor: 'pointer' }}>Top Decks This League</span>
-            {topDecksWeek.map(deck => (
-              <div key={deck._id} className="custom-grid-item">
-                <div className="deck-info">
-                  <div className="deck-title">
-                    {deck.title}{deck.deckcode && <span> ({deck.deckcode})</span>}<br />
-                    by <Link to={`/users/${deck.user}`} style={{ textDecoration: 'underline' }}>{deck.user}</Link>
-                  </div>
-                  <div className="deck-upvotes">
-                    <span>Upvotes: </span>
-                    <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck)}
-                      style={{ cursor: 'pointer', color: loggedInUser && deck.voters.includes(loggedInUser.username) ? 'yellow' : 'inherit' }}
-                      className="thumbs-up-icon" />
-                    {deck.score}
-                  </div>
-                </div>
-                <Link to={`/decks/${deck._id}`}>
-                  {deck.image && (
-                    <img
-                      src={deck.image}
-                      alt="Decklist"
-                      className="custom-deck-image"
-                    />
-                  )}
-                </Link>
-                <hr />
-              </div>
-            ))}
-          </div>
-        )}
-        {newDecks && (
-          <div className="custom-grid-container new-decks" style={{ textAlign: 'center' }}>
-            <span onClick={() => handleDeckSearch('', null)} style={{ textDecoration: 'underline', cursor: 'pointer' }}>Newest Decks</span>
-            {newDecks.map(deck => (
-              <div key={deck._id} className="custom-grid-item">
-
-                <div className="deck-info">
-                  <div className="deck-title">
-                    {deck.title}{deck.deckcode && <span> ({deck.deckcode})</span>}<br />
-                    by <Link to={`/users/${deck.user}`} style={{ textDecoration: 'underline' }}>{deck.user}</Link>
-                  </div>
-                  <div className="deck-upvotes">
-                    <span>Upvotes: </span>
-                    <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck)}
-                      style={{ cursor: 'pointer', color: loggedInUser && deck.voters.includes(loggedInUser.username) ? 'yellow' : 'inherit' }}
-                      className="thumbs-up-icon" />
-                    {deck.score}
-                  </div>
-                </div>
-                <Link to={`/decks/${deck._id}`}>
-                  {deck.image && (
-                    <img
-                      src={deck.image}
-                      alt="Decklist"
-                      className="custom-deck-image"
-                    />
-                  )}
-                </Link>
-                <hr />
-              </div>
-            ))}
-          </div>
-        )}
+        <DeckDisplay decks={topDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
+          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks All Time"} />
+        <DeckDisplay decks={topDecksWeek} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
+          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks This Week"}/>
+        <DeckDisplay decks={newDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
+          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Newest Decks"} />
       </div>
     </div >
   );

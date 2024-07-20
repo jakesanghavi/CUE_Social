@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import SearchBar from '../components/SearchBar';
+import DeckDisplay from '../components/DeckDisplay';
 import { ROUTE } from '../constants';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
 const DeckSearchResults = ({ loggedInUser }) => {
@@ -150,33 +149,8 @@ const DeckSearchResults = ({ loggedInUser }) => {
           <div>
             <h2>Search Results</h2>
             <div className="grid-container">
-              {decks.map(deck => (
-                <div key={deck._id} className="grid-item">
-                  <div className="deck-info">
-                    <div className="deck-title">
-                      {deck.title}{deck.deckcode && <span> ({deck.deckcode})</span>}<br />
-                      by <Link to={`/users/${deck.user}`} style={{ textDecoration: 'underline' }}>{deck.user}</Link>
-                    </div>
-                    <div className="deck-upvotes">
-                      <span>Upvotes: </span>
-                      <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck)}
-                        style={{ cursor: 'pointer', color: loggedInUser && deck.voters.includes(loggedInUser.username) ? 'yellow' : 'inherit' }}
-                        className="thumbs-up-icon" />
-                      {deck.score}
-                    </div>
-                  </div>
-                  {/* <div>Description: {deck.description}</div> */}
-                  <Link to={`/decks/${deck._id}`}>
-                    {deck.image && (
-                      <img
-                        src={deck.image} // Replace with your actual image URL
-                        alt="Decklist"
-                      />
-                    )}
-                  </Link>
-                  <hr />
-                </div>
-              ))}
+              <DeckDisplay decks={decks} styleClass={""} handleDeckSearch={null}
+                upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} />
             </div>
             <div className="pagination-controls">
               {Array.from({ length: Math.ceil(totalDecks / limit) }, (_, index) => (
