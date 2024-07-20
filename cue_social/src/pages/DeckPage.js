@@ -33,10 +33,10 @@ const DeckPage = ({ loggedInUser }) => {
 
   return (
     <div className='deck-details'>
-      <h2>
+      <h2 className='deckTitle'>
         {deck.title} {deck.deckcode !== 'null' ? `- Deck Code: ${deck.deckcode}` : ''}
       </h2>
-      <h3>Author: <Link to={`/users/${deck.user}`} style={{ color: 'black' }}>{deck.user}</Link></h3>
+      <h3 className='deckAuthor'>Author: <Link to={`/users/${deck.user}`} style={{ color: 'black' }}>{deck.user}</Link></h3>
       <div className="deck-upvotes">
         <span>Upvotes: </span>
         <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck, loggedInUser, setOne, ...[setDeck])}
@@ -44,7 +44,7 @@ const DeckPage = ({ loggedInUser }) => {
           className="thumbs-up-icon" />
         {deck.score}
       </div>
-      <p>Description: {deck.description}</p>
+      <p className='deckDescription'>Description: {deck.description}</p>
       {deck.image && (
         <img
           src={deck.image} // Replace with your actual image URL

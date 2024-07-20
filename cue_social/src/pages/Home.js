@@ -16,7 +16,7 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
   const [topDecksWeek, setTopDecksWeek] = useState(null);
 
   const limit = 5
-  const setOne=false
+  const setOne = false
 
   const handleDeckSearch = (sortBy, restricted) => {
     const searchParams = {
@@ -106,11 +106,13 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
       )}
       <div className="custom-grid-wrapper">
         <DeckDisplay decks={topDecksWeek} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks This Week"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]}/>
+          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks This League"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
+        <div className="vertical-line"></div>
         <DeckDisplay decks={newDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Newest Decks"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]}/>
-          <DeckDisplay decks={topDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks All Time"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]}/>
+          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Newest Decks"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
+        <div className="vertical-line second-line"></div>
+        <DeckDisplay decks={topDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
+          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks All Time"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
       </div>
     </div >
   );

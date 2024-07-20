@@ -10,10 +10,9 @@ const DeckDisplay = ({ decks, styleClass, handleDeckSearch, upvoteCheck, loggedI
         <>
             {decks && (
                 <div className={`${a}grid-container new-decks`} style={{ textAlign: 'center' }}>
-                    {deckType && <span onClick={() => handleDeckSearch('', null)} style={{ textDecoration: 'underline', cursor: 'pointer' }}>{deckType}</span>}
+                    {deckType && <h2 onClick={() => handleDeckSearch('', null)} style={{ textDecoration: 'underline', cursor: 'pointer' }}>{deckType}</h2>}
                     {decks.map(deck => (
                         <div key={deck._id} className={`${a}grid-item`}>
-
                             <div className="deck-info">
                                 <div className="deck-title">
                                     {deck.title}{deck.deckcode !== 'null' && <span> ({deck.deckcode})</span>}<br />

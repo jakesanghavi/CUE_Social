@@ -45,3 +45,14 @@
     text-decoration: none;
     /* Maintain no underline on hover */
 }
+
+.deck-info {
+    text-align: center; /* Center text inside the container */
+}
+
+.deck-upvotes {
+    display: flex;
+    justify-content: center; /* Center contents horizontally */
+    align-items: center; /* Center contents vertically */
+    margin: 10px 0; /* Add some margin for spacing */
+}

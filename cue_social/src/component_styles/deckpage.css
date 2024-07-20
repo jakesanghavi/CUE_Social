@@ -7,7 +7,9 @@
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
-.deck-details h2, .deck-details h3, .deck-details p {
+.deck-details h2,
+.deck-details h3,
+.deck-details p {
   margin: 10px 0;
 }
 
@@ -33,7 +35,8 @@
 .deckImage {
   width: 100%;
   height: auto;
-  max-width: 100vw; /* Ensure the image does not exceed the viewport width */
+  max-width: 100vw;
+  /* Ensure the image does not exceed the viewport width */
   margin-top: 20px;
   border-radius: 10px;
 }
@@ -49,4 +52,19 @@
     margin-left: 0;
     margin-right: 0;
   }
+}
+
+.deckDescription {
+  text-align: center;
+  /* Center the text inside the paragraph */
+}
+
+.deckTitle {
+  text-align: center;
+  /* Center the text inside the paragraph */
+}
+
+.deckAuthor {
+  text-align: center;
+  /* Center the text inside the paragraph */
 }

@@ -89,3 +89,19 @@
     text-decoration: none;
     /* Maintain no underline on hover */
 }
+
+.vertical-line {
+    width: 1px;
+    background-color: #000;
+    /* Change color as needed */
+    margin: 0 10px;
+    /* Adjust the margin to add space between the DeckDisplay components and the line */
+}
+
+@media (max-width: 768px) {
+
+    /* Adjust the max-width as per your mobile breakpoint */
+    .vertical-line.second-line {
+        display: none;
+    }
+}
