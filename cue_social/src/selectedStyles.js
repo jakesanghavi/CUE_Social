@@ -183,14 +183,24 @@ export const optionsCollections = [
 
 export const optionsTags = [
     {
-        "label": "9 and 9",
-        "value": "9 and 9",
-        "color": "#DE3163"
+        "label": "9 Space Boxing",
+        "value": "9 Space Boxing",
+        "color": "#a764fd"
+    },
+    {
+        "label": "Autotune",
+        "value": "Autotune",
+        "color": "#1dfdc5"
     },
     {
         "label": "Commons",
         "value": "Commons",
         "color": "#B2BEB5"
+    },
+    {
+        "label": "Dadaism",
+        "value": "Dadaism",
+        "color": "#f792e4"
     },
     {
         "label": "Debuff",
@@ -206,6 +216,11 @@ export const optionsTags = [
         "label": "Epics",
         "value": "Epics",
         "color": "#C0C0C0"
+    },
+    {
+        "label": "Great Dying",
+        "value": "Great Dying",
+        "color": "#fc9512"
     },
     {
         "label": "High Energy",
@@ -296,6 +311,15 @@ export const optionsTags = [
         "label": "Rares",
         "value": "Rares",
         "color": "#8B4000"
+    },{
+        "label": "Statue of Liberty",
+        "value": "Statue of Liberty",
+        "color": "#1dfdc5"
+    },
+    {
+        "label": "The World Turtle",
+        "value": "The World Turtle",
+        "color": "#b3ee4c"
     },
     {
         "label": "Tiny",
