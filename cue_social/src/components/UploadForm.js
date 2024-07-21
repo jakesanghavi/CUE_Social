@@ -63,8 +63,6 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
             setDeckCode(data.deck_code);
         } catch (error) {
             console.error('Error:', error);
-        } finally {
-            setLoading(false);
         }
     };
 
@@ -157,6 +155,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                 }
                 // console.log(dummyArray)
                 setCardData(dummyArray);
+                setLoading(false);
                 console.log('Final dummyArray:', dummyArray);
             }
         };
@@ -282,7 +281,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                                             {errors.cardData && <span style={{ color: 'red' }}>{errors.cardData}</span>}
                                         </div>
                                     )}
-                                    {!loading && (receivedData && receivedData.length === 0) && (
+                                    {!loading && (receivedData && cardData.length === 0) && (
                                         <div className="data">
                                             <label htmlFor="receivedCardData">Cards Detected:</label>
                                             <textarea
@@ -298,7 +297,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                             </div>
                             <div style={{ flex: 1, display: 'flex', alignItems: 'center' }}>
                                 <button onClick={handleTextFormSubmit} style={{ marginTop: '10px' }}>Submit</button>
-                                {submitting && <div className="loading">Submitting...</div>}
+                                {submitting && !errors.cardData && !errors.selection && !errors.title && <div className="loading">Submitting...</div>}
                             </div>
                         </div>
                     </div>
