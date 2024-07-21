@@ -33,7 +33,8 @@ const {
     getDecksForUser,
     getOneDeck,
     getDecksBySearch,
-    patchUpvotes
+    patchUpvotes,
+    deleteOneDeck
 } = require('../controllers/deckController')
 
 const { recognizeText } = require('../controllers/textrecognizer')
@@ -100,6 +101,10 @@ router.get('/api/decks/onedeck/:id', getOneDeck)
 // PATCH deck by ID
 router.post('/api/decks/onedeck/:id', patchUpvotes)
 
+// DELETE deck by ID
+router.delete('/api/decks/deleteone/:id', deleteOneDeck)
+
+// Recognize the image
 router.post('/api/uploadimage/', upload.single('image'), recognizeText)
 
 module.exports = router

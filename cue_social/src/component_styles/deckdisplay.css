@@ -56,3 +56,27 @@
     align-items: center; /* Center contents vertically */
     margin: 10px 0; /* Add some margin for spacing */
 }
+
+.custom-delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.custom-delete-button:hover {
+    background-color: darkred;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.delete-button:hover {
+    background-color: darkred;
+}

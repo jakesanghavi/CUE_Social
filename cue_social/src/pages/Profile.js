@@ -8,7 +8,7 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 const Profile = ({ onLogout, loggedInUser }) => {
   const [user, setUser] = useState(null);
   const [decks, setDecks] = useState([]);
-  const setOne=false
+  const setOne = false
 
   useEffect(() => {
     if (loggedInUser) {
@@ -32,6 +32,30 @@ const Profile = ({ onLogout, loggedInUser }) => {
     }
   };
 
+  const deleteDeckFunction = async (deckId) => {
+    const userConfirmed = window.confirm('Are you sure you want to delete this deck?');
+    if (!userConfirmed) {
+      return; // Exit if the user cancels the confirmation
+    }
+
+    try {
+      const response = await fetch(`${ROUTE}/api/decks/deleteone/${deckId}`, {
+        method: 'DELETE'
+      });
+      if (!response.ok) {
+        console.log(response)
+        throw new Error('Failed to delete deck');
+      }
+      const result = await response.json();
+      // Update state or perform any other actions after deletion
+      console.log('Deck deleted successfully:', result);
+      // Optionally, you can remove the deleted deck from the UI
+      setDecks(decks => decks.filter(deck => deck._id !== deckId));
+    } catch (error) {
+      console.error('Error deleting deck:', error);
+    }
+  };
+
   const handleLogoutAndRedirect = () => {
     onLogout();
     console.log("Logout successful, waiting 1 second before redirecting...");
@@ -48,8 +72,8 @@ const Profile = ({ onLogout, loggedInUser }) => {
       <div>
         <h2>Decks</h2>
         <div className="grid-container">
-        <DeckDisplay decks={decks} styleClass={""} handleDeckSearch={null}
-                upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setOne={setOne} setDecks={[setDecks]} />
+          <DeckDisplay decks={decks} styleClass={""} handleDeckSearch={null}
+            upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setOne={setOne} setDecks={[setDecks]} deleteDeck={true} deleteDeckFunction={deleteDeckFunction} />
         </div>
       </div>
       <button onClick={handleLogoutAndRedirect}>

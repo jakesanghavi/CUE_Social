@@ -174,4 +174,20 @@ const patchUpvotes = async (request, response) => {
     }
 };
 
-module.exports = { getDecksForUser, getDecksBySearch, postDeck, getOneDeck, patchUpvotes };
+const deleteOneDeck = async (request, response) => {
+    const { id } = request.params; // Assuming you have user information in req.user
+
+    try {
+        const result = await Deck.deleteOne({ _id: id });
+        if (result.deletedCount === 1) {
+            response.status(200).json({ message: 'Deck successfully deleted' });
+        } else {
+            response.status(404).json({ message: 'Deck not found' });
+        }
+    } catch (error) {
+        console.error('Error deleting deck:', error);
+        response.status(500).json({ message: 'Server error' });
+    }
+};
+
+module.exports = { getDecksForUser, getDecksBySearch, postDeck, getOneDeck, patchUpvotes, deleteOneDeck };
