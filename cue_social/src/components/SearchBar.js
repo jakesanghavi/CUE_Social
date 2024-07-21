@@ -29,6 +29,17 @@ const customStyles = {
         ...provided,
         margin: 0, // Remove extra margin from placeholder
     }),
+    menu: (provided) => ({
+        ...provided,
+        width: 'auto',
+        minWidth: '100%', // Ensure it does not shrink smaller than the control
+        // left: '50%',
+        // transform: 'translateX(-50%)',
+    }),
+    menuList: (provided) => ({
+        ...provided,
+        width: 'auto', // Let the menu list width be auto
+    }),
 };
 
 const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cardsPass = [], userPass = [], allCardsPass = [], usersPass = [] }) => {
