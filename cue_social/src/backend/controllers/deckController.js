@@ -46,14 +46,25 @@ const getDecksBySearch = async (request, response) => {
         }
 
         if (restricted) {
-            // Calculate the date for the most recent Monday at 12:00 AM GMT
+            // Get the current date and time
             const now = new Date();
-            const dayOfWeek = now.getUTCDay(); // Get day of week (0=Sunday, 1=Monday, etc.)
-            const daysSinceMonday = (dayOfWeek + 6) % 7; // Number of days since most recent Monday
+        
+            // Get the day of the week (0=Sunday, 1=Monday, etc.)
+            const dayOfWeek = now.getUTCDay();
+        
+            // Calculate the number of days since the most recent Monday
+            let daysSinceMonday = (dayOfWeek + 6) % 7;
+            
+            // Create a new Date object for the most recent Monday
             const recentMonday = new Date(now);
             recentMonday.setUTCDate(now.getUTCDate() - daysSinceMonday);
-            recentMonday.setUTCHours(10, 0, 0, 0); // Set time to 12:00 AM GMT
-
+            recentMonday.setUTCHours(10, 0, 0, 0); // Set time to 10:00 AM GMT
+        
+            // If today is Monday and the current time is before 10:00 AM GMT, set the date to the previous Monday
+            if (dayOfWeek === 1 && now.getUTCHours() < 10) {
+                recentMonday.setUTCDate(recentMonday.getUTCDate() - 7);
+            }
+                
             // Add date filter to the query
             query.createdAt = { $gte: recentMonday.toISOString() };
         }
