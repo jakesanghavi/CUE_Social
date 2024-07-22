@@ -5,6 +5,7 @@ import '../component_styles/deckdisplay.css';
 
 const DeckDisplay = ({ decks, styleClass, handleDeckSearch, sortBy, restricted, upvoteCheck, loggedInUser, deckType, setOne, setDecks, deleteDeck, deleteDeckFunction }) => {
     const a = styleClass.startsWith("custom") ? "custom-" : "";
+    console.log(decks)
 
     return (
         <>
@@ -15,7 +16,7 @@ const DeckDisplay = ({ decks, styleClass, handleDeckSearch, sortBy, restricted, 
                         <div key={deck._id} className={`${a}grid-item`}>
                             <div className="deck-info">
                                 <div className="deck-title">
-                                    {deck.title}{deck.deckcode !== 'null' && <span> ({deck.deckcode})</span>}<br />
+                                    {deck.title}{deck.deckcode !== 'null' && deck.deckcode !== "" && <span> ({deck.deckcode})</span>}<br />
                                     by <Link to={`/users/${deck.user}`} style={{ textDecoration: 'underline' }}>{deck.user}</Link>
                                 </div>
                                 <div className="deck-upvotes">

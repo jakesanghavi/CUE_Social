@@ -34,7 +34,7 @@ const DeckPage = ({ loggedInUser }) => {
   return (
     <div className='deck-details'>
       <h2 className='deckTitle'>
-        {deck.title} {deck.deckcode !== 'null' ? `- Deck Code: ${deck.deckcode}` : ''}
+        {deck.title} {deck.deckcode !== 'null' && deck.deckcode !== "" ? `- Deck Code: ${deck.deckcode}` : ''}
       </h2>
       <h3 className='deckAuthor'>Author: <Link to={`/users/${deck.user}`} style={{ color: 'black' }}>{deck.user}</Link></h3>
       <div className="deck-upvotes">
