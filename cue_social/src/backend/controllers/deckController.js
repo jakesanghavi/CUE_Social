@@ -58,10 +58,10 @@ const getDecksBySearch = async (request, response) => {
             // Create a new Date object for the most recent Monday
             const recentMonday = new Date(now);
             recentMonday.setUTCDate(now.getUTCDate() - daysSinceMonday);
-            recentMonday.setUTCHours(10, 0, 0, 0); // Set time to 10:00 AM GMT
+            recentMonday.setUTCHours(11, 0, 0, 0); // Set time to 10:00 AM GMT
         
             // If today is Monday and the current time is before 10:00 AM GMT, set the date to the previous Monday
-            if (dayOfWeek === 1 && now.getUTCHours() < 10) {
+            if (dayOfWeek === 1 && now.getUTCHours() < 11) {
                 recentMonday.setUTCDate(recentMonday.getUTCDate() - 7);
             }
                 
