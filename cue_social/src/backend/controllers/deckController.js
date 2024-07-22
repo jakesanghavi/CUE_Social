@@ -109,6 +109,7 @@ const postDeck = async (request, response) => {
     const file = request.file; // The uploaded file
     const tempDir = os.tmpdir();
     const filePath = path.join(tempDir, file.originalname);
+    const createdAt = new Date().toISOString();
 
     if (!email) {
         response.status(400).json({ error: 'Not logged in!' });
@@ -136,6 +137,7 @@ const postDeck = async (request, response) => {
                 resource_type: "auto",
             });
             imageOutput = result;
+            console.log(imageOutput)
         } catch (error) {
             console.error(error);
         }
@@ -147,9 +149,11 @@ const postDeck = async (request, response) => {
             collections: JSON.parse(collections),
             tags: JSON.parse(tags),
             image: imageOutput.url, // Use resized image buffer
+            public_id: imageOutput.public_id,
             cards: JSON.parse(cards), // Parse the cards JSON string
             deckcode,
-            user: user
+            user: user,
+            createdAt
         });
 
         response.status(200).json(deck);
@@ -189,9 +193,22 @@ const deleteOneDeck = async (request, response) => {
     const { id } = request.params; // Assuming you have user information in req.user
 
     try {
-        const result = await Deck.deleteOne({ _id: id });
-        if (result.deletedCount === 1) {
+        const result = await Deck.findOneAndDelete({ _id: id });
+        if (result) {
             response.status(200).json({ message: 'Deck successfully deleted' });
+            cloudinary.config({
+                cloud_name: 'defal1ruq',
+                api_key: process.env.CLOUDINARY_PK,
+                api_secret: process.env.CLOUDINARY_SK // Click 'View Credentials' below to copy your API secret
+            });
+
+            try {
+                const output = await cloudinary.uploader.destroy(result.public_id);
+                console.log(output)
+            } catch (error) {
+                console.error(error);
+            }
+
         } else {
             response.status(404).json({ message: 'Deck not found' });
         }

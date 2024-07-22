@@ -31,6 +31,10 @@ const deckSchema = new Schema({
         type: String,
         required: true
     },
+    public_id: {
+        type: String,
+        required: true
+    },
     cards: {
         type: [String],
         required: true
@@ -46,7 +50,7 @@ const deckSchema = new Schema({
     },
     createdAt: {
         type: Date,
-        default: new Date().toISOString()
+        required: true
     },
     score: {
         type: Number,
