@@ -52,7 +52,7 @@ const getDecksBySearch = async (request, response) => {
             const daysSinceMonday = (dayOfWeek + 6) % 7; // Number of days since most recent Monday
             const recentMonday = new Date(now);
             recentMonday.setUTCDate(now.getUTCDate() - daysSinceMonday);
-            recentMonday.setUTCHours(0, 0, 0, 0); // Set time to 12:00 AM GMT
+            recentMonday.setUTCHours(10, 0, 0, 0); // Set time to 12:00 AM GMT
 
             // Add date filter to the query
             query.createdAt = { $gte: recentMonday.toISOString() };
