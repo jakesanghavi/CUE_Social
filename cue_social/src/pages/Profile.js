@@ -8,24 +8,29 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 const Profile = ({ onLogout, loggedInUser }) => {
   const [user, setUser] = useState(null);
   const [decks, setDecks] = useState([]);
+  const [page, setPage] = useState(1);
+  const [totalDecks, setTotalDecks] = useState(0);
+  const limit = 12;
   const setOne = false
 
   useEffect(() => {
     if (loggedInUser) {
       setUser(loggedInUser);
-      fetchDecksForUser(loggedInUser.username);
+      fetchDecksForUser(loggedInUser.username, page);
     }
-  }, [loggedInUser]);
+  }, [loggedInUser, page]);
 
-  const fetchDecksForUser = async (user) => {
+  const fetchDecksForUser = async (user, page) => {
     if (user) {
       try {
-        const response = await fetch(`${ROUTE}/api/decks/${user}`);
+        const response = await fetch(`${ROUTE}/api/decks/${user}?page=${page}&limit=${limit}`);
         if (!response.ok) {
           throw new Error('Failed to fetch decks');
         }
         const decksData = await response.json();
-        setDecks(decksData);
+        console.log(decksData)
+        setDecks(decksData.decks);
+        setTotalDecks(decksData.totalDecks);
       } catch (error) {
         console.error('Error fetching decks:', error);
       }
@@ -64,6 +69,10 @@ const Profile = ({ onLogout, loggedInUser }) => {
     }, 500);
   };
 
+  const handlePageChange = (newPage) => {
+    setPage(newPage);
+  };
+
   return (
     <div>
       <div>
@@ -75,6 +84,17 @@ const Profile = ({ onLogout, loggedInUser }) => {
           <DeckDisplay decks={decks} styleClass={""} handleDeckSearch={null}
             upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setOne={setOne} setDecks={[setDecks]} deleteDeck={true} deleteDeckFunction={deleteDeckFunction} />
         </div>
+      </div>
+      <div className="pagination-controls">
+        {Array.from({ length: Math.ceil(totalDecks / limit) }, (_, index) => (
+          <button
+            key={index}
+            onClick={() => handlePageChange(index + 1)}
+            className={page === index + 1 ? 'active' : ''}
+          >
+            {index + 1}
+          </button>
+        ))}
       </div>
       <button onClick={handleLogoutAndRedirect}>
         Sign out

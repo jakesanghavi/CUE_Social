@@ -8,12 +8,13 @@ const path = require('path');
 const getDecksForUser = async (request, response) => {
     const { id } = request.params // Assuming you have user information in req.user
     const page = parseInt(request.query.page) || 1; // Page number from query parameter
-    const limit = 16; // Number of decks per page
+    const limit = parseInt(request.query.limit) || 12; // Number of decks per page
 
     try {
         const skips = (page - 1) * limit;
         const decks = await Deck.find({ user: id }).skip(skips).limit(limit);
-        response.status(200).json(decks);
+        const totalDecks = await Deck.countDocuments({ user: id });
+        response.status(200).json({ decks, totalDecks });
     } catch (error) {
         console.error('Error fetching decks:', error);
         response.status(500).json({ message: 'Server error' });
