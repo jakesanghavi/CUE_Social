@@ -9,13 +9,15 @@ window.Buffer = window.Buffer || require("buffer").Buffer;
 const DeckSearchResults = ({ loggedInUser }) => {
   const location = useLocation();
   const {
-    selectedAlbums = [], selectedCollections = [], selectedTags = [], selectedCards = [], selectedUser = null, allCards = [], users = [], sortBy = 'score'
+    selectedAlbums = [], selectedCollections = [], selectedTags = [], selectedCards = [], selectedUser = null, allCards = [], users = [], sortBy = 'score', restricted=null
   } = location.state?.searchParams || {};
 
   const cards = selectedCards.map(card => card.label)
   const albums = selectedAlbums.map(album => album.value)
   const collections = selectedCollections.map(collection => collection.value)
   const tags = selectedTags.map(tag => tag.value)
+  const toSortby = sortBy
+  const toRestricted = restricted
 
   const [decks, setDecks] = useState(null);
   const [totalDecks, setTotalDecks] = useState(0);
@@ -32,7 +34,7 @@ const DeckSearchResults = ({ loggedInUser }) => {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ albums, collections, tags, cards, sortBy })
+        body: JSON.stringify({ albums, collections, tags, cards, sortBy: toSortby, restricted: toRestricted })
       });
       if (!response.ok) {
         throw new Error('Failed to fetch decks');
@@ -45,7 +47,7 @@ const DeckSearchResults = ({ loggedInUser }) => {
     } finally {
       setLoading(false);
     }
-  }, [albums, collections, tags, cards, sortBy]);
+  }, [albums, collections, tags, cards, toSortby, toRestricted]);
 
   useEffect(() => {
     fetchDecks(page);

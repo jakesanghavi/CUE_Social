@@ -19,16 +19,18 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
   const setOne = false
 
   const handleDeckSearch = (sortBy, restricted) => {
+    console.log(sortBy)
+    console.log(restricted)
     const searchParams = {
       selectedAlbums: [],
       selectedCollections: [],
       selectedTags: [],
       selectedCards: [],
-      selectedUser: [],
-      cards: [],
-      users: [],
+      // selectedUser: [],
+      // cards: [],
+      // users: [],
       sortBy,
-      restricted
+      restricted: restricted
     };
     navigate('/deck-search-results', { state: { searchParams } });
   };
@@ -105,13 +107,13 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
         </div>
       )}
       <div className="custom-grid-wrapper">
-        <DeckDisplay decks={topDecksWeek} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
+        <DeckDisplay decks={topDecksWeek} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'score'} restricted={'yes'}
           upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks This League"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
         <div className="vertical-line"></div>
-        <DeckDisplay decks={newDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
+        <DeckDisplay decks={newDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'new'}
           upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Newest Decks"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
         <div className="vertical-line second-line"></div>
-        <DeckDisplay decks={topDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch}
+        <DeckDisplay decks={topDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'score'}
           upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks All Time"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
       </div>
     </div >

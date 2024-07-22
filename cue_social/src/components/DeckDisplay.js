@@ -3,14 +3,14 @@ import { faThumbsUp, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import '../component_styles/deckdisplay.css';
 
-const DeckDisplay = ({ decks, styleClass, handleDeckSearch, upvoteCheck, loggedInUser, deckType, setOne, setDecks, deleteDeck, deleteDeckFunction }) => {
+const DeckDisplay = ({ decks, styleClass, handleDeckSearch, sortBy, restricted, upvoteCheck, loggedInUser, deckType, setOne, setDecks, deleteDeck, deleteDeckFunction }) => {
     const a = styleClass.startsWith("custom") ? "custom-" : "";
 
     return (
         <>
             {decks && (
                 <div className={`${a}grid-container new-decks`} style={{ textAlign: 'center' }}>
-                    {deckType && <h2 onClick={() => handleDeckSearch('', null)} style={{ textDecoration: 'underline', cursor: 'pointer' }}>{deckType}</h2>}
+                    {deckType && <h2 onClick={() => handleDeckSearch(sortBy, restricted)} style={{ textDecoration: 'underline', cursor: 'pointer' }}>{deckType}</h2>}
                     {decks.map(deck => (
                         <div key={deck._id} className={`${a}grid-item`}>
                             <div className="deck-info">
