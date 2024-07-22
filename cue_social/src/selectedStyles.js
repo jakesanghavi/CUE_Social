@@ -109,7 +109,7 @@ export const optionsCollections = [
     { label: "Mega Math", value: "SMA", album: "Science" },
     { label: "Molluscs Worms and Water Bugs", value: "OMM", album: "Oceans & Seas" },
     { label: "Money Money Money", value: "ACMO", album: "Arts & Culture" },
-    { label: "Monsters of the Deep", value: "PMC", album: "Paleontology" },
+    { label: "Monsters of the Deep", value: "PMO", album: "Paleontology" },
     { label: "Moon in Motion", value: "SLP", album: "Space" },
     { label: "Musically Minded", value: "ACMU", album: "Arts & Culture" },
     { label: "Mythical Creatures", value: "LMC", album: "Life on Land" },
