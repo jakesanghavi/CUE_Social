@@ -235,7 +235,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                                     value={selectedAlbums}
                                     onChange={setSelectedAlbums}
                                     placeholder="Search for Albums"
-                                    styles={customStylesAlbums}
+                                    styles={{ ...customStylesAlbums, container: (provided) => ({ ...provided, marginBottom: '10px' }) }}
                                 />
                                 <Select
                                     isMulti
@@ -243,7 +243,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                                     value={selectedCollections}
                                     onChange={setSelectedCollections}
                                     placeholder="Search for Collections"
-                                    styles={customStylesCollections}
+                                    styles={{ ...customStylesCollections, container: (provided) => ({ ...provided, marginBottom: '10px' })}}
                                 />
                                 <Select
                                     isMulti
@@ -251,7 +251,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                                     value={selectedTags}
                                     onChange={setSelectedTags}
                                     placeholder="Search for Tags"
-                                    styles={customStylesTags}
+                                    styles={{ ...customStylesTags, container: (provided) => ({ ...provided, marginBottom: '10px' })}}
                                 />
                                 {errors.selection && <div style={{ color: 'red', marginBottom: '10px' }}>{errors.selection}</div>}
                             </div>

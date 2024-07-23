@@ -340,6 +340,11 @@ export const customStylesAlbums = {
         backgroundColor: state.isSelected ? colorMapping[state.data.value] : provided.backgroundColor,
         color: state.isSelected ? 'white' : 'black',
     }),
+    control: (provided, state) => ({
+        ...provided,
+        maxHeight: state.hasValue && state.getValue().length >= 5 ? '110px' : 'auto', // Set the max height for the control
+        overflowY: 'scroll', // Make the control scrollable if needed
+    }),
     multiValue: (provided, state) => ({
         ...provided,
         backgroundColor: colorMapping[state.data.value],
@@ -365,6 +370,11 @@ export const customStylesCollections = {
         backgroundColor: state.isSelected ? colorMapping[state.data.album] : provided.backgroundColor,
         color: state.isSelected ? 'white' : 'black',
     }),
+    control: (provided, state) => ({
+        ...provided,
+        maxHeight: state.hasValue && state.getValue().length >= 5 ? '110px' : 'auto', // Set the max height for the control
+        overflowY: 'scroll', // Make the control scrollable if needed
+    }),
     multiValue: (provided, state) => ({
         ...provided,
         backgroundColor: colorMapping[state.data.album],
@@ -389,6 +399,11 @@ export const customStylesTags = {
         ...provided,
         backgroundColor: state.isSelected ? state.data.color : provided.backgroundColor,
         color: state.isSelected ? 'white' : 'black',
+    }),
+    control: (provided, state) => ({
+        ...provided,
+        maxHeight: state.hasValue && state.getValue().length >= 5 ? '110px' : 'auto', // Set the max height for the control
+        overflowY: 'scroll', // Make the control scrollable if needed
     }),
     multiValue: (provided, state) => ({
         ...provided,

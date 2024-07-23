@@ -1,6 +1,9 @@
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
+from pymongo import MongoClient
+
+albums = ['Arts_%26_Culture_Cards', 'History_Cards', 'Life_on_Land_Cards', 'Oceans_Cards', 'Paleontology_Cards', 'Science_Cards', 'Space_Cards']
 
 for album in albums:
     # URL of the website with the tables
@@ -37,3 +40,11 @@ for album in albums:
 big_df = pd.concat(dfs, ignore_index=True)
 
 big_df.to_csv('all_cue_cards.csv', index=False)
+
+client = MongoClient("<CLIENT SECRET>")
+db = client['<DB NAME>']
+collection = db['<COLLECTION NAME>']
+
+list_of_dicts = big_df.to_dict(orient='records')
+
+result = collection.insert_many(list_of_dicts)
