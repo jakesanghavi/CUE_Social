@@ -183,6 +183,46 @@ export const optionsCollections = [
 
 export const optionsTags = [
     {
+        "label": "8 Energy",
+        "value": "8 Energy",
+        "color": "#a764fd"
+    },
+    {
+        "label": "9 A&C 9 History",
+        "value": "9 A&C 9 History",
+        "color": "#f792e4"
+    },
+    {
+        "label": "9 A&C 9 Science",
+        "value": "9 A&C 9 Science",
+        "color": "#f792e4"
+    },
+    {
+        "label": "9 History 9 Oceans and Seas",
+        "value": "9 History 9 Oceans and Seas",
+        "color": "#fbe22b"
+    },
+    {
+        "label": "9 History 9 Space",
+        "value": "9 History 9 Space",
+        "color": "#fbe22b"
+    },
+    {
+        "label": "9 Life on Land 9 Science",
+        "value": "9 Life on Land 9 Science",
+        "color": "#b3ee4c"
+    },
+    {
+        "label": "9 Paleo 9 Science",
+        "value": "9 Paleo 9 Science",
+        "color": "#fc9512"
+    },
+    {
+        "label": "9 Science 9 Space",
+        "value": "9 Science 9 Space",
+        "color": "#1dfdc5"
+    },
+    {
         "label": "9 Space Boxing",
         "value": "9 Space Boxing",
         "color": "#a764fd"
@@ -191,6 +231,36 @@ export const optionsTags = [
         "label": "Autotune",
         "value": "Autotune",
         "color": "#1dfdc5"
+    },
+    {
+        "label": "Bigshot",
+        "value": "Bigshot",
+        "color": "#ff5a00"
+    },
+    {
+        "label": "Blitz",
+        "value": "Blitz",
+        "color": "#f792e4"
+    },
+    {
+        "label": "Blood",
+        "value": "Blood",
+        "color": "#E50000"
+    },
+    {
+        "label": "Boxing",
+        "value": "Boxing",
+        "color": "#f792e4"
+    },
+    {
+        "label": "Burn",
+        "value": "Burn",
+        "color": "#ff5a00"
+    },
+    {
+        "label": "Chaos",
+        "value": "Chaos",
+        "color": "#f792e4"
     },
     {
         "label": "Commons",
@@ -208,9 +278,24 @@ export const optionsTags = [
         "color": "#FFEA00"
     },
     {
+        "label": "Delta IV Heavy",
+        "value": "Delta IV Heavy",
+        "color": "#a764fd"
+    },
+    {
+        "label": "Devil",
+        "value": "Devil",
+        "color": "#f792e4"
+    },
+    {
         "label": "Drain",
         "value": "Drain",
         "color": "#0096FF"
+    },
+    {
+        "label": "Egg",
+        "value": "Egg",
+        "color": "#0090fe"
     },
     {
         "label": "Epics",
@@ -218,9 +303,49 @@ export const optionsTags = [
         "color": "#C0C0C0"
     },
     {
+        "label": "Eros",
+        "value": "Eros",
+        "color": "#f792e4"
+    },
+    {
+        "label": "Experimental",
+        "value": "Experimental",
+        "color": "#fbe22b"
+    },
+    {
+        "label": "Fairy",
+        "value": "Fairy",
+        "color": "#b3ee4c"
+    },
+    {
+        "label": "Fun",
+        "value": "Fun",
+        "color": "#fbe22b"
+    },
+    {
+        "label": "Fusions",
+        "value": "Fusions",
+        "color": "#f792e4"
+    },
+    {
+        "label": "Golden",
+        "value": "Golden",
+        "color": "#FDDA0D"
+    },
+    {
+        "label": "Golden Lion Tamarin",
+        "value": "Golden Lion Tamarin",
+        "color": "#b3ee4c"
+    },
+    {
         "label": "Great Dying",
         "value": "Great Dying",
         "color": "#fc9512"
+    },
+    {
+        "label": "Hell",
+        "value": "Hell",
+        "color": "#ff5a00"
     },
     {
         "label": "High Energy",
@@ -283,6 +408,11 @@ export const optionsTags = [
         "color": "#a764fd"
     },
     {
+        "label": "Moon",
+        "value": "Moon",
+        "color": "#a764fd"
+    },
+    {
         "label": "Mythics",
         "value": "Mythics",
         "color": "#FFBF00"
@@ -291,6 +421,11 @@ export const optionsTags = [
         "label": "Non-Limited",
         "value": "Non-Limited",
         "color": "#DE3163"
+    },
+    {
+        "label": "Overlock",
+        "value": "Overlock",
+        "color": "#fbe22b"
     },
     {
         "label": "Permanent Buffs",
@@ -311,7 +446,23 @@ export const optionsTags = [
         "label": "Rares",
         "value": "Rares",
         "color": "#8B4000"
-    },{
+    },
+    {
+        "label": "Scorched Earth",
+        "value": "Scorched Earth",
+        "color": "#FFEA00"
+    },
+    {
+        "label": "Snake",
+        "value": "Snake",
+        "color": "#b3ee4c"
+    },
+    {
+        "label": "Spider",
+        "value": "Spider",
+        "color": "#b3ee4c"
+    },
+    {
         "label": "Statue of Liberty",
         "value": "Statue of Liberty",
         "color": "#1dfdc5"
