@@ -188,43 +188,38 @@ export const optionsTags = [
         "color": "#a764fd"
     },
     {
-        "label": "9 A&C 9 History",
-        "value": "9 A&C 9 History",
+        "label": "9 Arts and Culture",
+        "value": "9 Arts and Culture",
         "color": "#f792e4"
     },
     {
-        "label": "9 A&C 9 Science",
-        "value": "9 A&C 9 Science",
-        "color": "#f792e4"
-    },
-    {
-        "label": "9 History 9 Oceans and Seas",
-        "value": "9 History 9 Oceans and Seas",
+        "label": "9 History",
+        "value": "9 History",
         "color": "#fbe22b"
     },
     {
-        "label": "9 History 9 Space",
-        "value": "9 History 9 Space",
-        "color": "#fbe22b"
-    },
-    {
-        "label": "9 Life on Land 9 Science",
-        "value": "9 Life on Land 9 Science",
+        "label": "9 Life on Land",
+        "value": "9 Life on Land",
         "color": "#b3ee4c"
     },
     {
-        "label": "9 Paleo 9 Science",
-        "value": "9 Paleo 9 Science",
+        "label": "9 Oceans & Seas",
+        "value": "9 Oceans & Seas",
+        "color": "#0090fe"
+    },
+    {
+        "label": "9 Paleontology",
+        "value": "9 Paleontology",
         "color": "#fc9512"
     },
     {
-        "label": "9 Science 9 Space",
-        "value": "9 Science 9 Space",
+        "label": "9 Science",
+        "value": "9 Science",
         "color": "#1dfdc5"
     },
     {
-        "label": "9 Space Boxing",
-        "value": "9 Space Boxing",
+        "label": "9 Space",
+        "value": "9 Space",
         "color": "#a764fd"
     },
     {
@@ -310,7 +305,7 @@ export const optionsTags = [
     {
         "label": "Experimental",
         "value": "Experimental",
-        "color": "#fbe22b"
+        "color": "#1dfdc5"
     },
     {
         "label": "Fairy",
@@ -346,6 +341,11 @@ export const optionsTags = [
         "label": "Hell",
         "value": "Hell",
         "color": "#ff5a00"
+    },
+    {
+        "label": "Henrietta Leavitt Swan",
+        "value": "Henrietta Leavitt Swan",
+        "color": "#a764fd"
     },
     {
         "label": "High Energy",
