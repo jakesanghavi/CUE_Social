@@ -1,3 +1,4 @@
+const users = require('../models/users.js');
 const User = require('../models/users.js')
 const mongoose = require('mongoose')
 
@@ -6,7 +7,7 @@ const getUserByEmail = async (request, response) => {
   const { id } = request.params
 
   try {
-    const userData = await User.findOne({ email_address: id });
+    const userData = await User.findOne({ email_address: id }).select('-password');;
     if (!userData) {
       // Returning 201 instead of the proper 404 prevents errors from coming up in the console.
       return response.status(201).json({ "error": "User does not exist" })
@@ -23,7 +24,7 @@ const getUserByUsername = async (request, response) => {
   const { id } = request.params
 
   try {
-    const userData = await User.findOne({ username: { $regex: new RegExp(`^${id}$`, 'i') } });
+    const userData = await User.findOne({ username: { $regex: new RegExp(`^${id}$`, 'i') } }).select('-password');;
     if (!userData) {
       // Returning 201 instead of the proper 404 prevents errors from coming up in the console.
       return response.status(201).json({ "error": "User does not exist" })
@@ -98,6 +99,7 @@ const getUsers = async (request, response) => {
   const users = await User.aggregate([
     { $match: { email_address: { $ne: null } } }, // Filter for non-null emails
     { $sort: { username: 1 } },
+    { $project: { password: 0 } },
   ]);
   response.status(200).json(users)
 }
@@ -106,7 +108,7 @@ const getOneUser = async (request, response) => {
   const { id } = request.params // Assuming you have user information in req.user
 
   try {
-    const user = await User.findOne({ username: id });
+    const user = await User.findOne({ username: id }).select('-password');;
     response.status(200).json(user);
   } catch (error) {
     console.error('Error fetching decks:', error);
@@ -114,11 +116,32 @@ const getOneUser = async (request, response) => {
   }
 }
 
+// POST /login
+const loginUserWithPassword = async (request, response) => {
+  const { username, password } = request.query;
+  try {
+    // Find the user with the given username
+    const user = await User.findOne({ username: username });
+
+    // Check if the user exists and if the password matches
+    if (user && user.password === password) {
+      // Exclude the password field from the response
+      const { password, ...userWithoutPassword } = user.toObject();
+      response.status(200).json(userWithoutPassword);
+    } else {
+      response.status(404).json({ 0: 'User not found or incorrect password' });
+    }
+  } catch (error) {
+    response.status(500).json({ error: 'Internal Server Error' });
+  }
+};
+
 module.exports = {
   getUserByUsername,
   getUserByEmail,
   postUser,
   updateUser,
   getUsers,
-  getOneUser
+  getOneUser,
+  loginUserWithPassword
 }

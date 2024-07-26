@@ -34,9 +34,9 @@ const NavBar = ({ openLoginModal, loggedInUser, onLoginSuccess, uid }) => {
           {loggedInUser === null || loggedInUser.email === null ? (
             // Render Google Sign-In button when loggedInUser is null
             // Add any additional styling or classes as needed
-            <button onClick={handleShowLogin}>
+            <h1 onClick={handleShowLogin}>
               Sign In
-            </button>
+            </h1>
           ) : (
             // Render "Profile" button when loggedInUser is not null
             <div>

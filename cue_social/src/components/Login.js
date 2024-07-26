@@ -69,14 +69,27 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
       }
       else {
         // dev
-        const resp = await fetch(route + '/api/users/username/' + username);
-        const respJson = await resp.json();
-        if (respJson.password !== password) {
-          console.log("Password is incorrect.")
-        }
-        else {
-          console.log("Logged in!")
-          closeModal();
+        console.log('hm')
+        console.log(route)
+        const resp = await fetch(`${route}/api/users/passwordlogin/?username=${username}&password=${password}`, {
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+        });
+        if (resp.ok) {
+          const respJson = await resp.json();
+
+          // If the response is {0}, handle it as an incorrect login
+          if (respJson.hasOwnProperty('0')) {
+            console.log("Password is incorrect or user not found.");
+          } else {
+            console.log("Logged in!");
+            onLoginSuccess(respJson.email_address, respJson.username);
+            // Optionally, you can handle the user object here
+            closeModal();
+          }
         }
       }
     }
@@ -211,7 +224,7 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
         const userID = uid()
         const userDataResponse = await fetch(route + '/api/users/email/' + email);
         const respJson = await userDataResponse.json();
-        fetch(route + '/api/users/patchcookie/' + userID, {
+        await fetch(route + '/api/users/patchcookie/' + userID, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -219,6 +232,8 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
           },
           body: JSON.stringify({ "email_address": respJson.email_address, "username": respJson.username, "uid": userID })
         });
+
+        console.log(respJson)
 
         // After fixing the database, log in the user.
         onLoginSuccess(respJson.email_address, respJson.username);
@@ -240,6 +255,8 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
             <label htmlFor="signup" className="slide signup" onClick={signUpSelect}>Register</label>
             <div className="slider-tab"></div>
           </div>
+          <div id='signInDiv'  style={{ justifyContent: 'center', paddingBottom: '15px' }}></div>
+          <div style={{ textAlign: 'center', fontSize: '20px' }}>OR</div>
           <div className="form-inner">
             <form className="login" onSubmit={checkLogin}>
               <div className="field">
@@ -262,9 +279,9 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
                   required
                 />
               </div>
-              <div className="pass-link">
+              {/* <div className="pass-link">
                 <a href="#">Forgot password?</a>
-              </div>
+              </div> */}
               <div className="field btn">
                 <div className="btn-layer"></div>
                 <input type="submit" value="Login" />
@@ -317,7 +334,6 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
               </div>
             </form>
           </div>
-          <div id='signInDiv'></div>
         </div>
       </div>
     </div>

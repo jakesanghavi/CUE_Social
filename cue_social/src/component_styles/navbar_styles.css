@@ -24,18 +24,6 @@ header {
     padding: 0 10px;
   }
   
-  #signInDiv {
-    flex: 20;
-    padding: 0 10px;
-  }
-  
-  /* Media query for small screens */
-  @media (max-width: 768px) {
-    #signInDiv {
-      padding: 0 20px; /* Increase padding on small screens */
-    }
-  }
-  
   .headerText {
     font-size: .9rem;
     color: white;
@@ -57,4 +45,12 @@ header {
     max-width: 1400px;
     padding: 20px;
     margin: 0 auto;
+  }
+
+  #signIn {
+    font-size: .9rem;
+    color: white;
+    text-align: center;
+    padding: 0 2rem;
+    cursor: pointer;
   }

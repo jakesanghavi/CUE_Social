@@ -18,7 +18,8 @@ const {
     postUser ,
     updateUser,
     getUsers,
-    getOneUser
+    getOneUser,
+    loginUserWithPassword
 } = require('../controllers/usersController')
 
 const {
@@ -67,6 +68,9 @@ router.post('/api/users/patchcookie/:id', updateUser)
 
 // GET all users
 router.get('/api/users/getall', getUsers)
+
+// POST a user to see if credentials are right
+router.get('/api/users/passwordlogin', loginUserWithPassword)
 
 // GET a single user
 router.get('/api/users/getone/:id', getOneUser)
