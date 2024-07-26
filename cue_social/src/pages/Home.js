@@ -8,7 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../constants';
 import { upvoteCheck } from '../UsefulFunctions'
 
-const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
+const Home = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newDecks, setNewDecks] = useState(null);
@@ -85,7 +85,7 @@ const Home = ({ loggedInUser, onLoginSuccess, uid }) => {
 
   return (
     <div className="Home" id="home">
-      <Login onLoginSuccess={onLoginSuccess} uid={uid} />
+      <Login onLoginSuccess={onLoginSuccess} uid={uid} openLoginModal={openLoginModal} />
       <SearchBar />
       {loggedInUser && loggedInUser.email ? (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '50px 50px' }}>

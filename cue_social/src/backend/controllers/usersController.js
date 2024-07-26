@@ -40,12 +40,24 @@ const postUser = async (request, response) => {
   const email_address = request.body.email_address
   const username = request.body.username
 
+  const generateRandomPassword = (minLength, maxLength) => {
+    const length = Math.floor(Math.random() * (maxLength - minLength + 1)) + minLength;
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_+?';
+    let result = '';
+    for (let i = 0; i < length; i++) {
+        result += characters.charAt(Math.floor(Math.random() * characters.length));
+    }
+    return result;
+}
+
+  const password = request.body.password || generateRandomPassword(12, 16);
+
   const existingUser = await User.findOne({ email_address: email_address });
 
   if (!existingUser) {
     // add a user to database if one with that email address doesn't exist
     try {
-      const user = await User.create({ email_address, username })
+      const user = await User.create({ email_address, username, password })
       response.status(200).json(user)
     }
     catch (error) {
