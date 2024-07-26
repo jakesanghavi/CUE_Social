@@ -189,7 +189,7 @@ function App() {
           <Routes>
             <Route
               path="/"
-              element={<Home loggedInUser={loggedInUser} onLoginSuccess={handleLoginSuccess} uid={getUserID} />}
+              element={<Home loggedInUser={loggedInUser} onLoginSuccess={handleLoginSuccess} uid={getUserID} openLoginModal={openLoginModal} />}
             />
             <Route
               path='/profile'

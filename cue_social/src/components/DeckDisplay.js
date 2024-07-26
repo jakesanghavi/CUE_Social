@@ -5,7 +5,6 @@ import '../component_styles/deckdisplay.css';
 
 const DeckDisplay = ({ decks, styleClass, handleDeckSearch, sortBy, restricted, upvoteCheck, loggedInUser, deckType, setOne, setDecks, deleteDeck, deleteDeckFunction }) => {
     const a = styleClass.startsWith("custom") ? "custom-" : "";
-    console.log(decks)
 
     return (
         <>
