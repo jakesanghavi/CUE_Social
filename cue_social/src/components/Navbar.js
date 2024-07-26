@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom'
 import '../component_styles/navbar_styles.css'
-import { useEffect, useCallback } from 'react';
+import { useEffect } from 'react';
 
 // Navbar is available on every page. Contains Google OAuth, game info, and menu icon
-const NavBar = ({ openLoginModal, loggedInUser, onLoginSuccess, uid }) => {
+const NavBar = ({ loggedInUser }) => {
+  console.log(loggedInUser)
 
   const handleShowLogin = () => setShowLogin(true);
-  const handleCloseLogin = () => setShowLogin(false);
 
   const setShowLogin = (bool) => {
     if (bool) {
@@ -16,6 +16,9 @@ const NavBar = ({ openLoginModal, loggedInUser, onLoginSuccess, uid }) => {
       document.getElementById('sign-in-modal').style.display = 'none';
     }
   };
+
+  useEffect(() => {
+  }, [loggedInUser])
 
   return (
     <header>
@@ -40,8 +43,8 @@ const NavBar = ({ openLoginModal, loggedInUser, onLoginSuccess, uid }) => {
           ) : (
             // Render "Profile" button when loggedInUser is not null
             <div>
-              <Link to="/profile">
-                <h1>
+              <Link to="/profile" style={{ pointerEvents: 'auto', zIndex: 1000, cursor: "pointer" }}>
+                <h1 onClick={() => console.log('Link clicked')} >
                   My Profile
                 </h1>
               </Link>

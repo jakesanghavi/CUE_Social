@@ -9,7 +9,6 @@ import UserPage from './pages/UserPage';
 import DeckSearchResults from './pages/DeckSearchResults';
 
 function App() {
-  console.log(process.env.OCR_KEY)
   const [loggedInUser, setLoggedInUser] = useState(null);
 
   // Function to generate a unique identifier

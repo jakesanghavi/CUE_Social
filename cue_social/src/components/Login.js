@@ -13,7 +13,6 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
     password: '',
     confirmPassword: '',
   });
-  const [isLoginSelected, setIsLoginSelected] = useState(true);
 
   const loginForm = document.querySelector("form.login");
 
@@ -34,12 +33,10 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
   };
 
   const signUpSelect = () => {
-    setIsLoginSelected(false);
     loginForm.style.marginLeft = "-50%";
   };
 
   const loginSelect = () => {
-    setIsLoginSelected(true);
     loginForm.style.marginLeft = "0%";
   };
   const route = ROUTE;
@@ -54,10 +51,10 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
 
     if (username === '' || !username || password === '' || !password) {
       if (username === '' || !username) {
-        console.log("Please input your email address.")
+        alert("Please input your email address.")
       }
       if (password === '' || !password) {
-        console.log("Please input your password.")
+        alert("Please input your password.")
       }
       return;
     }
@@ -65,12 +62,10 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
     try {
       const response = await fetch(route + '/api/users/username/' + username);
       if (response.status === 400) {
-        console.log("User does not exist!")
+        alert("User does not exist!")
       }
       else {
         // dev
-        console.log('hm')
-        console.log(route)
         const resp = await fetch(`${route}/api/users/passwordlogin/?username=${username}&password=${password}`, {
           method: 'GET',
           headers: {
@@ -83,9 +78,8 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
 
           // If the response is {0}, handle it as an incorrect login
           if (respJson.hasOwnProperty('0')) {
-            console.log("Password is incorrect or user not found.");
+            alert("Password is incorrect or user not found.");
           } else {
-            console.log("Logged in!");
             onLoginSuccess(respJson.email_address, respJson.username);
             // Optionally, you can handle the user object here
             closeModal();
@@ -94,32 +88,31 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
       }
     }
     catch (error) {
-      console.log(error);
+      alert(error);
     }
   }
 
   const checkSignup = async (event) => {
     event.preventDefault();
     const { email, username, password, confirmPassword } = signUpForm
-    console.log(signUpForm)
 
     const emailRegex = /^[a-zA-Z0-9!#$%&*+\-/=?^_{|}~]+@[a-zA-Z0-9!#$%&*+\-/=?^_{|}~]+\.[a-zA-Z0-9!#$%&*+\-/=?^_{|}~]{2,}$/;
     if (email === '' || !email || password === '' || !password || confirmPassword === '' ||
       !confirmPassword || username === '' || !username || !emailRegex.test(email)) {
       if (email === '' | !email) {
-        console.log("Please input your email address.")
+        alert("Please input your email address.")
       }
       if (username === '' || !username) {
-        console.log("Please input your username.")
+        alert("Please input your username.")
       }
       if (password === '' || !password) {
-        console.log("Please input your password.")
+        alert("Please input your password.")
       }
       if (confirmPassword === '' || !confirmPassword) {
-        console.log("Please confirm password.")
+        alert("Please confirm password.")
       }
       if (!emailRegex.test(email)) {
-        console.log("Please input a valid email address.")
+        alert("Please input a valid email address.")
       }
       return;
     }
@@ -128,34 +121,34 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
     try {
       const response = await fetch(route + '/api/users/email/' + email);
       if (response.status === 200) {
-        console.log("Email Address already in use!")
+        alert("Email Address already in use!")
         return;
       }
 
       const response2 = await fetch(route + '/api/users/username/' + username);
       if (response2.status === 200) {
-        console.log("Username already in use!")
+        alert("Username already in use!")
         return;
       }
 
       else {
         if (password !== confirmPassword) {
-          console.log("Passwords must match!")
+          alert("Passwords must match!")
           return;
         }
 
         if (password.length < 8) {
-          console.log("Password must contain at least 8 characters!")
+          alert("Password must contain at least 8 characters!")
           return;
         }
 
         const passwordRegex = /^[a-zA-Z0-9!#$^*]+$/;
         if (!passwordRegex.test(password)) {
-          console.log("Password can only contain letters, numbers, !, #, $, ^, and *.")
+          alert("Password can only contain letters, numbers, !, #, $, ^, and *.")
           return;
         }
         // dev
-        fetch(route + '/api/users/' + email, {
+        const newUser = await fetch(route + '/api/users/' + email, {
           method: 'POST',
           headers: {
             'Accept': 'application/json',
@@ -163,12 +156,13 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
           },
           body: JSON.stringify({ "email_address": email, "username": username, "password": password })
         });
-        console.log("Signed up successfully!")
+        const newUserJSON = await newUser.json();
+        onLoginSuccess(newUserJSON.email_address, newUserJSON.username);
         closeModal();
       }
     }
     catch (error) {
-      console.log(error);
+      alert(error);
     }
   }
 
@@ -188,19 +182,6 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
     return () => {
       document.removeEventListener('click', handleClickOutside);
     };
-  }, []);
-
-  useEffect(() => {
-    /* global google */
-    google.accounts.id.initialize({
-      client_id: "974013126679-kauk60isd77u3857mln4n64gehunanmj.apps.googleusercontent.com",
-      callback: handleLoginResponse
-    });
-
-    google.accounts.id.renderButton(
-      document.getElementById('signInDiv'),
-      { theme: 'outline', size: 'large', ux_mode: 'popup' }
-    )
   }, []);
 
   const handleLoginResponse = useCallback(async (response) => {
@@ -233,14 +214,26 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
           body: JSON.stringify({ "email_address": respJson.email_address, "username": respJson.username, "uid": userID })
         });
 
-        console.log(respJson)
-
         // After fixing the database, log in the user.
         onLoginSuccess(respJson.email_address, respJson.username);
+        closeModal();
       }
     } catch (error) {
     }
   }, [loginModal, route, onLoginSuccess, uid]);
+
+  useEffect(() => {
+    /* global google */
+    google.accounts.id.initialize({
+      client_id: "974013126679-kauk60isd77u3857mln4n64gehunanmj.apps.googleusercontent.com",
+      callback: handleLoginResponse
+    });
+
+    google.accounts.id.renderButton(
+      document.getElementById('signInDiv'),
+      { theme: 'outline', size: 'large', ux_mode: 'popup' }
+    )
+  }, [handleLoginResponse]);
 
 
   return (

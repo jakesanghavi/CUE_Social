@@ -214,7 +214,6 @@ form .btn input[type="submit"]{
 
 #signInDiv {
   display: flex;
-  flex: 1;
   padding: 0 10px;
   width: 100%; 
 }
