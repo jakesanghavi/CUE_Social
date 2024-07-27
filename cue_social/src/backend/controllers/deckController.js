@@ -49,23 +49,23 @@ const getDecksBySearch = async (request, response) => {
         if (restricted) {
             // Get the current date and time
             const now = new Date();
-        
+
             // Get the day of the week (0=Sunday, 1=Monday, etc.)
             const dayOfWeek = now.getUTCDay();
-        
+
             // Calculate the number of days since the most recent Monday
             let daysSinceMonday = (dayOfWeek + 6) % 7;
-            
+
             // Create a new Date object for the most recent Monday
             const recentMonday = new Date(now);
             recentMonday.setUTCDate(now.getUTCDate() - daysSinceMonday);
             recentMonday.setUTCHours(11, 0, 0, 0); // Set time to 10:00 AM GMT
-        
+
             // If today is Monday and the current time is before 10:00 AM GMT, set the date to the previous Monday
             if (dayOfWeek === 1 && now.getUTCHours() < 11) {
                 recentMonday.setUTCDate(recentMonday.getUTCDate() - 7);
             }
-                
+
             // Add date filter to the query
             query.createdAt = { $gte: recentMonday.toISOString() };
         }
@@ -219,4 +219,44 @@ const deleteOneDeck = async (request, response) => {
     }
 };
 
-module.exports = { getDecksForUser, getDecksBySearch, postDeck, getOneDeck, patchUpvotes, deleteOneDeck };
+const editDeck = async (request, response) => {
+    const { id } = request.params; // Assuming you have user information in req.user
+    const { title, albums, collections, tags, description, user, email } = request.body;
+
+    if (!email) {
+        response.status(400).json({ error: 'Not logged in!' });
+        return;
+    }
+
+    try {
+        // Fetch the existing deck to get its current schema-defined fields
+        const updatedDeck = await Deck.findByIdAndUpdate(
+            id, // The ID of the deck to find
+            {
+              $set: { // Use $set to update specific fields
+                title: title,
+                description: description,
+                albums: JSON.parse(albums),
+                collections: JSON.parse(collections),
+                tags: JSON.parse(tags),
+                user: user
+              }
+            },
+            { new: true, runValidators: true } // Return the updated document and run schema validators
+          );
+
+
+        if (updatedDeck.nModified > 0) {
+            response.status(200).json({ message: 'Deck successfully updated' });
+        } else if (updatedDeck.n === 0) {
+            response.status(404).json({ message: 'Deck not found' });
+        } else {
+            response.status(200).json({ message: 'Deck successfully updated' });
+        }
+    } catch (error) {
+        console.error('Error editing deck:', error);
+        response.status(500).json({ message: 'Server error' });
+    }
+};
+
+module.exports = { getDecksForUser, getDecksBySearch, postDeck, getOneDeck, patchUpvotes, deleteOneDeck, editDeck };

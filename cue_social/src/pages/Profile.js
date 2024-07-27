@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ROUTE } from '../constants';
 import '../component_styles/profile.css';
 import DeckDisplay from '../components/DeckDisplay';
+import EditUploadForm from '../components/EditUploadForm'
 import { upvoteCheck } from '../UsefulFunctions';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
@@ -10,6 +11,7 @@ const Profile = ({ onLogout, loggedInUser }) => {
   const [decks, setDecks] = useState([]);
   const [page, setPage] = useState(1);
   const [totalDecks, setTotalDecks] = useState(0);
+  const [editDeck, setEditDeck] = useState(null); // State to manage the deck being edited
   const limit = 12;
   const setOne = false
 
@@ -61,6 +63,10 @@ const Profile = ({ onLogout, loggedInUser }) => {
     }
   };
 
+  const editDeckFunction = async (body) => {
+    setEditDeck(body)
+  };
+
   const handleLogoutAndRedirect = () => {
     onLogout();
     console.log("Logout successful, waiting 1 second before redirecting...");
@@ -73,16 +79,28 @@ const Profile = ({ onLogout, loggedInUser }) => {
     setPage(newPage);
   };
 
+  const closeModal = () => {
+    setEditDeck(null);
+  };
+
   return (
     <div>
       <div>
         {user ? <div>Username: {user.username}</div> : null}
       </div>
+      {editDeck &&
+        <div className="modal-overlay">
+          <div className="modal-content">
+            <button className="modal-close" onClick={closeModal}>Close</button>
+            <EditUploadForm deckId={editDeck._id} loggedInUser={loggedInUser} file={editDeck.image} cardData={editDeck.cards} oldDescription={editDeck.description} oldTitle={editDeck.title} oldSelectedAlbums={editDeck.albums} oldSelectedCollections={editDeck.collections} oldSelectedTags={editDeck.tags} closeModal={closeModal} />
+          </div>
+        </div>
+      }
       <div>
         <h2>Decks</h2>
         <div className="grid-container">
           <DeckDisplay decks={decks} styleClass={""} handleDeckSearch={null}
-            upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setOne={setOne} setDecks={[setDecks]} deleteDeck={true} deleteDeckFunction={deleteDeckFunction} />
+            upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setOne={setOne} setDecks={[setDecks]} deleteDeck={true} deleteDeckFunction={deleteDeckFunction} editDeckFunction={editDeckFunction} />
         </div>
       </div>
       <div className="pagination-controls">

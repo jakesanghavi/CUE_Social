@@ -1,9 +1,9 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faThumbsUp, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faThumbsUp, faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import '../component_styles/deckdisplay.css';
 
-const DeckDisplay = ({ decks, styleClass, handleDeckSearch, sortBy, restricted, upvoteCheck, loggedInUser, deckType, setOne, setDecks, deleteDeck, deleteDeckFunction }) => {
+const DeckDisplay = ({ decks, styleClass, handleDeckSearch, sortBy, restricted, upvoteCheck, loggedInUser, deckType, setOne, setDecks, deleteDeck, deleteDeckFunction, editDeckFunction }) => {
     const a = styleClass.startsWith("custom") ? "custom-" : "";
 
     return (
@@ -35,6 +35,16 @@ const DeckDisplay = ({ decks, styleClass, handleDeckSearch, sortBy, restricted, 
                                     />
                                 )}
                             </Link>
+                            {deleteDeck && (
+                                <button
+                                    onClick={() => editDeckFunction(deck)}
+                                    className={`${a}edit-button`}
+                                    style={{ display: 'block', margin: '10px auto' }}
+                                >
+                                    <FontAwesomeIcon icon={faEdit} style={{ marginRight: '5px' }} />
+                                    Edit Deck
+                                </button>
+                            )}
                             {deleteDeck && (
                                 <button
                                     onClick={() => deleteDeckFunction(deck._id)}

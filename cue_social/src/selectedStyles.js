@@ -323,6 +323,11 @@ export const optionsTags = [
         "color": "#f792e4"
     },
     {
+        "label": "Goatman",
+        "value": "Goatman",
+        "color": "#fbe22b"
+    },
+    {
         "label": "Golden",
         "value": "Golden",
         "color": "#FDDA0D"
@@ -353,9 +358,19 @@ export const optionsTags = [
         "color": "#0096FF"
     },
     {
+        "label": "Hohenzollern Castle",
+        "value": "Hohenzollern Castle",
+        "color": "#fbe22b"
+    },
+    {
         "label": "Inflation",
         "value": "Inflation",
         "color": "#0096FF"
+    },
+    {
+        "label": "James VI & I",
+        "value": "James VI & I",
+        "color": "#fbe22b"
     },
     {
         "label": "Legendaries",
@@ -471,6 +486,11 @@ export const optionsTags = [
         "label": "The World Turtle",
         "value": "The World Turtle",
         "color": "#b3ee4c"
+    },
+    {
+        "label": "Time Machine",
+        "value": "Time Machine",
+        "color": "#1dfdc5"
     },
     {
         "label": "Tiny",

@@ -1,32 +1,62 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ROUTE } from '../constants';
 import Select from 'react-select';
 import { optionsAlbums, optionsCollections, optionsTags, customStylesAlbums, customStylesCollections, customStylesTags } from '../selectedStyles';
 import '../component_styles/uploadform.css';
 
-const UploadForm = ({ loggedInUser, closeModal }) => {
-    const [file, setFile] = useState(null);
-    const [description, setDescription] = useState('');
-    const [title, setTitle] = useState('');
-    const [loading, setLoading] = useState(false);
-    const [receivedData, setReceivedData] = useState([]);
-    const [deckCode, setDeckCode] = useState([]);
-    const [cardData, setCardData] = useState([]);
-    const [submitted, setSubmitted] = useState(false);
-    const [selectedAlbums, setSelectedAlbums] = useState([]);
-    const [selectedCollections, setSelectedCollections] = useState([]);
-    const [selectedTags, setSelectedTags] = useState([]);
+const EditUploadForm = ({ deckId, loggedInUser, file, cardData, oldDescription, oldTitle, oldSelectedAlbums, oldSelectedCollections, oldSelectedTags, closeModal }) => {
+
+    const transformArray = (list) => {
+        return list.map(l1 => ({
+            value: l1,
+            label: l1
+        }));
+    };
+
+    const transformCollections = (list) => {
+        return list.map(l1 => {
+            // Find the entry in h1 where the value matches l1
+            const matchingEntry = optionsCollections.find(entry => entry.value === l1);
+
+            // Return the transformed object with value and label
+            return matchingEntry
+        });
+    };
+
+    const transformTags = (list) => {
+        return list.map(l1 => {
+            // Find the entry in h1 where the value matches l1
+            const matchingEntry = optionsTags.find(entry => entry.value === l1);
+
+            // Return the transformed object with value and label
+            return matchingEntry
+        });
+    };
+
+    const formDataToJSON = (formData) => {
+        const jsonObject = {};
+      
+        // Iterate over FormData entries
+        for (let [key, value] of formData.entries()) {
+          // If the value is an array, convert it to JSON
+          if (value instanceof FileList) {
+            jsonObject[key] = Array.from(value).map(file => file.name); // or file objects
+          } else {
+            jsonObject[key] = value;
+          }
+        }
+      
+        return jsonObject;
+      };
+
+    const [description, setDescription] = useState(oldDescription);
+    const [title, setTitle] = useState(oldTitle);
+    const submitted = true;
+    const [selectedAlbums, setSelectedAlbums] = useState(transformArray(oldSelectedAlbums));
+    const [selectedCollections, setSelectedCollections] = useState(transformCollections(oldSelectedCollections));
+    const [selectedTags, setSelectedTags] = useState(transformTags(oldSelectedTags));
     const [errors, setErrors] = useState({});
     const [submitting, setSubmitting] = useState(false);
-
-    const handleFileChange = (event) => {
-        const selectedFile = event.target.files[0];
-        if (selectedFile && selectedFile.type.startsWith('image/')) {
-            setFile(selectedFile);
-        } else {
-            alert('Please upload a valid image file.');
-        }
-    };
 
     const handleDescriptionChange = (event) => {
         setDescription(event.target.value);
@@ -34,36 +64,6 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
 
     const handleTitleChange = (event) => {
         setTitle(event.target.value);
-    };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-
-        if (!file) {
-            alert('Please select an image file to upload.');
-            return;
-        }
-
-        const formData = new FormData();
-        formData.append('image', file);
-
-        setLoading(true);
-        setReceivedData(null);
-        setSubmitted(true);
-
-        try {
-            const response = await fetch(ROUTE + '/api/uploadimage/', {
-                method: 'POST',
-                body: formData,
-            });
-
-            const data = await response.json();
-            // console.log('Received data:', data);
-            setReceivedData(data.cards);
-            setDeckCode(data.deck_code);
-        } catch (error) {
-            console.error('Error:', error);
-        }
     };
 
     const validateForm = () => {
@@ -92,126 +92,46 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
 
         // Add your logic for handling the text form submission
         const formData = new FormData();
-        formData.append('image', file);
         formData.append('title', title);
         formData.append('albums', JSON.stringify(selectedAlbums.map(album => album.value)));
         formData.append('collections', JSON.stringify(selectedCollections.map(collection => collection.value)));
         formData.append('tags', JSON.stringify(selectedTags.map(tag => tag.value)));
         formData.append('description', description);
-        const cardNames = cardData.map(card => card.Name); // Assuming cardData is an array of objects with a 'Name' field
-        formData.append('cards', JSON.stringify(cardNames));
-        formData.append('deckcode', deckCode);
         formData.append('user', loggedInUser.username);
         formData.append('email', loggedInUser.email)
 
-        console.log(formData)
+        const formDataJson = formDataToJSON(formData)
 
         try {
-            const response = await fetch(ROUTE + '/api/decks/post/', {
+            const response = await fetch(`${ROUTE}/api/decks/editdeck/${deckId}`, {
                 method: 'POST',
-                body: formData,
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                  },
+                body: JSON.stringify(formDataJson)
             });
-
-            const data = await response.json();
-            console.log('Received data:', data);
+            if (!response.ok) {
+                throw new Error('Failed to edit deck');
+            }
+            await response.json();
             setSubmitting(false);
             closeModal();
-            alert("Deck uploaded successfully.")
+            alert("Deck edited successfully.")
         } catch (error) {
-            // console.error('Error:', error);
-            alert("Deck upload failed. Please try again later.")
-        } finally {
-            setLoading(false);
+            console.error('Error edited deck:', error);
         }
     };
 
-    useEffect(() => {
-        const fetchData = async () => {
-            if (receivedData && receivedData.length > 0) {
-                receivedData.sort((a, b) => b.length - a.length);
-                const dummyArray = [];
-                for (let i = 0; i < receivedData.length; i++) {
-                    const lowercaseCard = receivedData[i].toLowerCase();
-                    const encodedCard = lowercaseCard.replace(/ /g, '%20');
-                    const url = `${ROUTE}/api/cards/cardname/${encodedCard}`;
-                    // console.log(url);
-
-                    try {
-                        const response = await fetch(url);
-                        if (response.ok) {
-                            const result = await response.json();
-                            // console.log(result);
-                            if (result.Code) {
-                                dummyArray.push(result);
-                            }
-                        } else {
-                            // console.error(`Error fetching data for card: ${receivedData[i]}`);
-                        }
-                    } catch (error) {
-                        // console.error(`Error fetching data for card: ${receivedData[i]}`, error);
-                    }
-
-                    if (dummyArray.length >= 18) {
-                        break; // Terminate loop if dummyArray has 18 or more items
-                    }
-                }
-                // console.log(dummyArray)
-                setCardData(dummyArray);
-                setLoading(false);
-                console.log('Final dummyArray:', dummyArray);
-            }
-        };
-
-        fetchData();
-    }, [receivedData]);
-
-    useEffect(() => {
-        if (!loading) {
-            delete errors.cardData
-        }
-    }, [loading, errors.cardData])
-
     return (
-        <form onSubmit={handleSubmit} encType="multipart/form-data">
-            {!submitted && (
-                <label htmlFor="imageFile" style={{ cursor: 'pointer' }}>
-                    {file ? (
-                        <img src={URL.createObjectURL(file)} alt="Uploaded preview" style={{ maxWidth: '100%', maxHeight: '300px', marginTop: '10px' }} />
-                    ) : (
-                        <div style={{ border: '1px dashed #ccc', padding: '20px', textAlign: 'center' }}>
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="64"
-                                height="64"
-                                viewBox="0 0 24 24"
-                                fill="none"
-                                stroke="currentColor"
-                                strokeWidth="2"
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                            >
-                                <path d="M12 5v14M19 12l-7 7-7-7" />
-                            </svg>
-                            <br />
-                            Click to upload
-                        </div>
-                    )}
-                    <input type="file" id="imageFile" name="image" onChange={handleFileChange} accept="image/*" style={{ display: 'none' }} />
-                </label>
-            )}
-            {file && !submitted && (
-                <>
-                    {/* <img src={URL.createObjectURL(file)} alt="Uploaded preview" style={{ maxWidth: '100%', maxHeight: '300px', marginTop: '10px' }} /> */}
-                    <button type="submit">Upload Image</button>
-                </>
-            )}
+        <form encType="multipart/form-data">
             {submitted && (
                 <>
                     <div style={{ display: 'flex', marginTop: '10px' }}>
                         <div style={{ flex: 1, marginRight: '10px', display: 'flex', justifyContent: 'center', alignItems: 'flex-start' }}>
                             {file && (
                                 <img
-                                    src={URL.createObjectURL(file)}
+                                    src={file}
                                     alt="Uploaded preview"
                                     style={{ maxWidth: '100%', maxHeight: '70vh', objectFit: 'contain' }}
                                 />
@@ -245,7 +165,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                                     value={selectedCollections}
                                     onChange={setSelectedCollections}
                                     placeholder="Search for Collections"
-                                    styles={{ ...customStylesCollections, container: (provided) => ({ ...provided, marginBottom: '10px' })}}
+                                    styles={{ ...customStylesCollections, container: (provided) => ({ ...provided, marginBottom: '10px' }) }}
                                 />
                                 <Select
                                     isMulti
@@ -253,7 +173,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                                     value={selectedTags}
                                     onChange={setSelectedTags}
                                     placeholder="Search for Tags"
-                                    styles={{ ...customStylesTags, container: (provided) => ({ ...provided, marginBottom: '10px' })}}
+                                    styles={{ ...customStylesTags, container: (provided) => ({ ...provided, marginBottom: '10px' }) }}
                                 />
                                 {errors.selection && <div style={{ color: 'red', marginBottom: '10px' }}>{errors.selection}</div>}
                             </div>
@@ -269,21 +189,20 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                                     />
                                 </div>
                                 <div style={{ flex: 1 }}>
-                                    {loading && <div className="loading">Loading...</div>}
-                                    {errors.cardData && cardData.length === 0 && loading && <span style={{ color: 'red' }}>{errors.cardData}</span>}
-                                    {!loading && cardData && cardData.length > 0 && (
+                                    {errors.cardData && cardData.length === 0 && <span style={{ color: 'red' }}>{errors.cardData}</span>}
+                                    {cardData && cardData.length > 0 && (
                                         <div className="data">
                                             <label htmlFor="receivedCardData">Cards Detected:</label>
                                             <textarea
                                                 id="receivedCardData"
-                                                value={cardData.map(card => card.Name).join('\n')}
+                                                value={cardData.map(card => card).join('\n')}
                                                 readOnly
                                                 style={{ width: '100%', height: '200px' }}
                                             />
                                             {errors.cardData && <span style={{ color: 'red' }}>{errors.cardData}</span>}
                                         </div>
                                     )}
-                                    {!loading && (receivedData && cardData.length === 0) && (
+                                    {(cardData.length === 0) && (
                                         <div className="data">
                                             <label htmlFor="receivedCardData">Cards Detected:</label>
                                             <textarea
@@ -309,4 +228,4 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
     );
 };
 
-export default UploadForm;
+export default EditUploadForm;
