@@ -192,8 +192,6 @@ const resetPassword = async (request, response) => {
       return response.status(400).send('Token is invalid or has expired.');
     }
 
-    console.log(password)
-
     await User.findOneAndUpdate({ email_address: reset.email }, { password: password });
 
     await PasswordReset.deleteOne({ token });

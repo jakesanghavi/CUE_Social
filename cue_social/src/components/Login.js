@@ -20,9 +20,6 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
   const signUpUsername = useRef(null);
   const [forgotEmail, setForgotEmail] = useState('');
 
-  console.log(forgotPassword)
-
-
   const loginForm = document.querySelector("form.login");
 
   const handleLoginChange = (e) => {
@@ -82,7 +79,6 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
             'Content-Type': 'application/json'
           },
         });
-        if (resp.ok) {
           const respJson = await resp.json();
 
           // If the response is {0}, handle it as an incorrect login
@@ -94,7 +90,6 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
             closeModal();
             setGoogleSignin(false)
           }
-        }
       }
     }
     catch (error) {
