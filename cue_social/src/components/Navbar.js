@@ -30,8 +30,9 @@ const NavBar = ({ loggedInUser }) => {
             </h1>
           </Link>
         </div>
-        <div className="blank-space">
-        </div>
+        {/* <div className="blank-space">
+        </div> */}
+
 
         <div id="signIn">
           {loggedInUser === null || loggedInUser.email === null ? (
@@ -42,13 +43,13 @@ const NavBar = ({ loggedInUser }) => {
             </h1>
           ) : (
             // Render "Profile" button when loggedInUser is not null
-            <div>
-              <Link to="/profile" style={{ pointerEvents: 'auto', zIndex: 1000, cursor: "pointer" }}>
+           
+              <a href="/profile" >
                 <h1 onClick={() => console.log('Link clicked')} >
-                  My Profile
+                My Profile
                 </h1>
-              </Link>
-            </div>
+              </a>
+
           )}
         </div>
       </div>

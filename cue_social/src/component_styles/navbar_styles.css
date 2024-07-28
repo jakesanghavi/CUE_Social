@@ -4,17 +4,22 @@ header {
   }
   header .container {
     /* max-width: 1400px; */
-    margin: 0 auto;
+    /* margin: 0 auto; */
     /* padding: 10px 20px; */
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: space-between; */
     /* justify-content: space-between; */
     /* justify-content: space-between;  */
+
+
+    display:flex;
+    flex-direction: row;
+    justify-content: space-between;
   }
   
   .home-name-holder {
-    flex: 10;
+    /* flex: 10; */
     padding: 0 20px;
     text-align: center;
   }
@@ -53,4 +58,6 @@ header {
     text-align: center;
     padding: 0 2rem;
     cursor: pointer;
+    margin-top: auto;
+    margin-bottom: auto;
   }

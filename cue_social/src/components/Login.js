@@ -13,6 +13,9 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
     password: '',
     confirmPassword: '',
   });
+  const [googleSignin, setGoogleSignin] = useState(false);
+  const signUpEmail = useRef(null);
+  const signUpUsername = useRef(null);
 
   const loginForm = document.querySelector("form.login");
 
@@ -83,6 +86,7 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
             onLoginSuccess(respJson.email_address, respJson.username);
             // Optionally, you can handle the user object here
             closeModal();
+            setGoogleSignin(false)
           }
         }
       }
@@ -166,8 +170,62 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
     }
   }
 
+  const checkGoogleSignup = async () => {
+    // In the future, we should pass email_address from navbar into login. This prevents unforseen tampering.
+    const email_address = signUpEmail.current.value;
+    const username = signUpUsername.current.value;
+    // In the future, we should change this regex so it doesn't coincide with auto-generated cookie usernames
+    // const usernameRegex = /^[a-zA-Z0-9]*$/;
+    if (email_address === '' || !email_address || username === '' || !username ) {
+      if (email_address === '' | !email_address) {
+        alert("Please input your email address.")
+      }
+      if (username === '' || !username) {
+        alert("Please input your username.")
+      }
+      // if (!usernameRegex.test(username)) {
+      //   alert("Username may only include letters and numbers.")
+      // }
+      return;
+    }
+    try {
+      // Check if the user's email is already registered
+      const response = await fetch(route + '/api/users/email/' + email_address);
+      if (response.status === 200) {
+        alert("Email Address already in use!")
+        return;
+      }
+      // Check if the user's username already exists
+      const response2 = await fetch(route + '/api/users/username/' + username);
+      if (response2.status === 200) {
+        alert("Username already in use!")
+        return;
+      }
+      // If the email and username are new and valid ...
+      else {
+        // Get the user's userID
+        const userID = uid()
+        // Add their email to their cookie user
+        fetch(route + '/api/users/' + userID, {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ "email_address": email_address, "username": username, "uid": userID })
+        });
+        // Log in the user and close the login modal
+        onLoginSuccess(email_address, username);
+        closeModal();
+      }
+    }
+    catch (error) {
+    }
+  }
+
   const closeModal = () => {
     modalRef.current.style.display = 'none';
+    setGoogleSignin(false)
   };
 
   useEffect(() => {
@@ -185,6 +243,7 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
   }, []);
 
   const handleLoginResponse = useCallback(async (response) => {
+    setGoogleSignin(true);
     try {
       // Get the user's google credentials. We only use their email
       var userToken = jwtDecode(response.credential);
@@ -237,99 +296,128 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
 
 
   return (
-    <div id="sign-in-modal" ref={modalRef}>
-      <div className="sign-in">
-        <span className="close" onClick={closeModal}>&times;</span>
-        <div className="form-container">
-          <div className="slide-controls">
-            <input type="radio" name="slide" id="login" defaultChecked />
-            <input type="radio" name="slide" id="signup" />
-            <label htmlFor="login" className="slide login" onClick={loginSelect}>Login</label>
-            <label htmlFor="signup" className="slide signup" onClick={signUpSelect}>Register</label>
-            <div className="slider-tab"></div>
-          </div>
-          <div id='signInDiv'  style={{ justifyContent: 'center', paddingBottom: '15px' }}></div>
-          <div style={{ textAlign: 'center', fontSize: '20px' }}>OR</div>
-          <div className="form-inner">
-            <form className="login" onSubmit={checkLogin}>
-              <div className="field">
-                <input
-                  type="text"
-                  placeholder="Username"
-                  name="username"
-                  value={logForm.username}
-                  onChange={handleLoginChange}
-                  required
-                />
+    <>
+      {!googleSignin &&
+        <div id="sign-in-modal" ref={modalRef}>
+          <div className="sign-in">
+            <span className="close" onClick={closeModal}>&times;</span>
+            <div className="form-container">
+              <div className="slide-controls">
+                <input type="radio" name="slide" id="login" defaultChecked />
+                <input type="radio" name="slide" id="signup" />
+                <label htmlFor="login" className="slide login" onClick={loginSelect}>Login</label>
+                <label htmlFor="signup" className="slide signup" onClick={signUpSelect}>Register</label>
+                <div className="slider-tab"></div>
               </div>
-              <div className="field">
-                <input
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  value={logForm.password}
-                  onChange={handleLoginChange}
-                  required
-                />
-              </div>
-              {/* <div className="pass-link">
+              <div id='signInDiv' style={{ justifyContent: 'center', paddingBottom: '15px' }}></div>
+              <div style={{ textAlign: 'center', fontSize: '20px' }}>OR</div>
+              <div className="form-inner">
+                <form className="login" onSubmit={checkLogin}>
+                  <div className="field">
+                    <input
+                      type="text"
+                      placeholder="Username"
+                      name="username"
+                      value={logForm.username}
+                      onChange={handleLoginChange}
+                      required
+                    />
+                  </div>
+                  <div className="field">
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      name="password"
+                      value={logForm.password}
+                      onChange={handleLoginChange}
+                      required
+                    />
+                  </div>
+                  {/* <div className="pass-link">
                 <a href="#">Forgot password?</a>
               </div> */}
-              <div className="field btn">
-                <div className="btn-layer"></div>
-                <input type="submit" value="Login" />
+                  <div className="field btn">
+                    <div className="btn-layer"></div>
+                    <input type="submit" value="Login" />
+                  </div>
+                </form>
+                <form className="signup" onSubmit={checkSignup}>
+                  <div className="field">
+                    <input
+                      type="text"
+                      placeholder="Email"
+                      name="email"
+                      value={signUpForm.email}
+                      onChange={handleSignUpChange}
+                      required
+                    />
+                  </div>
+                  <div className="field">
+                    <input
+                      type="text"
+                      placeholder="Username"
+                      name="username"
+                      value={signUpForm.username}
+                      onChange={handleSignUpChange}
+                      required
+                    />
+                  </div>
+                  <div className="field">
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      name="password"
+                      value={signUpForm.password}
+                      onChange={handleSignUpChange}
+                      required
+                    />
+                  </div>
+                  <div className="field">
+                    <input
+                      type="password"
+                      placeholder="Confirm password"
+                      name="confirmPassword"
+                      value={signUpForm.confirmPassword}
+                      onChange={handleSignUpChange}
+                      required
+                    />
+                  </div>
+                  <div className="field btn">
+                    <div className="btn-layer"></div>
+                    <input type="submit" value="Signup" />
+                  </div>
+                </form>
               </div>
-            </form>
-            <form className="signup" onSubmit={checkSignup}>
-              <div className="field">
-                <input
-                  type="text"
-                  placeholder="Email"
-                  name="email"
-                  value={signUpForm.email}
-                  onChange={handleSignUpChange}
-                  required
-                />
-              </div>
-              <div className="field">
-                <input
-                  type="text"
-                  placeholder="Username"
-                  name="username"
-                  value={signUpForm.username}
-                  onChange={handleSignUpChange}
-                  required
-                />
-              </div>
-              <div className="field">
-                <input
-                  type="password"
-                  placeholder="Password"
-                  name="password"
-                  value={signUpForm.password}
-                  onChange={handleSignUpChange}
-                  required
-                />
-              </div>
-              <div className="field">
-                <input
-                  type="password"
-                  placeholder="Confirm password"
-                  name="confirmPassword"
-                  value={signUpForm.confirmPassword}
-                  onChange={handleSignUpChange}
-                  required
-                />
-              </div>
-              <div className="field btn">
-                <div className="btn-layer"></div>
-                <input type="submit" value="Signup" />
-              </div>
-            </form>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      }
+      {googleSignin &&
+        <div id="sign-in-modal" ref={modalRef}>
+          <div className="sign-in">
+            <span className="close" onClick={closeModal}>&times;</span>
+            <div className="form-container">
+              <div className="form-inner gsignin">
+                <div className="signup">
+                  <div className="field">
+                    <input type="text" id="signUpEmail" placeholder="Email Address" required ref={signUpEmail} disabled />
+                  </div>
+                  <div className="field">
+                    <input type="text" id="signUpUsername" placeholder="CUE Username" required ref={signUpUsername} />
+                  </div>
+                  <div className="field btn">
+                    <div className="btn-layer"></div>
+                    <input type="button" style={{ width: "100%" }} value="Sign Up" onClick={checkGoogleSignup} />
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div id='signInDiv'>
+            </div>
+          </div>
+        </div>
+      }
+    </>
   );
 };
 

@@ -127,9 +127,9 @@ function App() {
 
     setLoggedInUser({ email: email, username: username });
 
-    const user = await fetch(ROUTE + '/api/users/email/' + email);
-    const user_resp = await user.json();
-    setLoggedInUser({ email: user_resp.email_address, username: user_resp.username });
+    // const user = await fetch(ROUTE + '/api/users/email/' + email);
+    // const user_resp = await user.json();
+    // setLoggedInUser({ email: user_resp.email_address, username: user_resp.username });
   };
 
   // Deal with users logging out
