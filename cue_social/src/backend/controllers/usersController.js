@@ -4,6 +4,8 @@ const mongoose = require('mongoose')
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
 const bcrypt = require('bcrypt');
+const constants = require('../../constants');
+
 
 const transporter = nodemailer.createTransport({
   service: 'Gmail',
@@ -165,7 +167,7 @@ const forgotPassword = async (request, response) => {
       expires,
     });
 
-    const resetLink = `http://localhost:3000/reset-password/${token}`;
+    const resetLink = `${constants.ORIGIN}/reset-password/${token}`;
     const mailOptions = {
       from: process.env.SUPPORT_EMAIL,
       to: forgotEmail,
