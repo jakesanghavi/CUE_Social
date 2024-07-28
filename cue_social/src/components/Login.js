@@ -19,6 +19,7 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
   const signUpEmail = useRef(null);
   const signUpUsername = useRef(null);
   const [forgotEmail, setForgotEmail] = useState('');
+  console.log(forgotPassword)
 
   const loginForm = document.querySelector("form.login");
 
@@ -79,17 +80,17 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
             'Content-Type': 'application/json'
           },
         });
-          const respJson = await resp.json();
+        const respJson = await resp.json();
 
-          // If the response is {0}, handle it as an incorrect login
-          if (respJson.hasOwnProperty('0')) {
-            alert("Password is incorrect or user not found.");
-          } else {
-            onLoginSuccess(respJson.email_address, respJson.username);
-            // Optionally, you can handle the user object here
-            closeModal();
-            setGoogleSignin(false)
-          }
+        // If the response is {0}, handle it as an incorrect login
+        if (respJson.hasOwnProperty('0')) {
+          alert("Password is incorrect or user not found.");
+        } else {
+          onLoginSuccess(respJson.email_address, respJson.username);
+          // Optionally, you can handle the user object here
+          closeModal();
+          setGoogleSignin(false)
+        }
       }
     }
     catch (error) {
@@ -225,7 +226,12 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
   }
 
   const closeModal = () => {
-    modalRef.current.style.display = 'none';
+    if (forgotModalRef.current) {
+      forgotModalRef.current.style.display = 'none';
+    }
+    if (modalRef.current) {
+      modalRef.current.style.display = 'none';
+    }
     // forgotModalRef.current.style.display = 'none';
     setGoogleSignin(false)
     setForgotPassword(false)
@@ -234,8 +240,9 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
   const resetMode = () => {
     // modalRef.current.style.display = 'none';
     setForgotPassword(true)
-    console.log(forgotModalRef)
-    // forgotModalRef.current.style.display = 'block';
+    if (forgotModalRef.current) {
+      forgotModalRef.current.style.display = 'block';
+    }
   };
 
   useEffect(() => {
@@ -450,9 +457,10 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
           </div>
         </div>
       }
-      {forgotPassword &&
-        <div id="forgot-modal">
+      {forgotPassword === true &&
+        <div id="forgot-modal" ref={forgotModalRef}>
           <div className="sign-in">
+            <span className="close" onClick={closeModal}>&times;</span>
             <h2 className="title">Reset Password</h2>
             <div className="input-field">
               <i className="fas fa-envelope"></i>
