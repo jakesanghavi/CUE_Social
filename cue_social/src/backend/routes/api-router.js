@@ -19,7 +19,9 @@ const {
     updateUser,
     getUsers,
     getOneUser,
-    loginUserWithPassword
+    loginUserWithPassword,
+    forgotPassword,
+    resetPassword
 } = require('../controllers/usersController')
 
 const {
@@ -114,5 +116,12 @@ router.post('/api/uploadimage/', upload.single('image'), recognizeText)
 
 // PATCH deck by ID (non-upvotes)
 router.post('/api/decks/editdeck/:id', editDeck)
+
+// REQUEST PASSWORD RESET
+router.post('/api/request-password-reset/', forgotPassword)
+
+// RESET PASSWORD
+router.post('/api/reset-password/', resetPassword);
+
 
 module.exports = router

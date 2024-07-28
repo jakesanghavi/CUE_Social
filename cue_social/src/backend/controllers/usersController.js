@@ -1,6 +1,17 @@
-const users = require('../models/users.js');
 const User = require('../models/users.js')
+const PasswordReset = require('../models/password_reset_model.js');
 const mongoose = require('mongoose')
+const nodemailer = require('nodemailer');
+const crypto = require('crypto');
+const bcrypt = require('bcrypt');
+
+const transporter = nodemailer.createTransport({
+  service: 'Gmail',
+  auth: {
+    user: process.env.SUPPORT_EMAIL, // Use environment variables for security
+    pass: process.env.SUPPORT_PASSWORD,
+  },
+});
 
 // GET a specific user
 const getUserByEmail = async (request, response) => {
@@ -46,10 +57,10 @@ const postUser = async (request, response) => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*_+?';
     let result = '';
     for (let i = 0; i < length; i++) {
-        result += characters.charAt(Math.floor(Math.random() * characters.length));
+      result += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     return result;
-}
+  }
 
   const password = request.body.password || generateRandomPassword(12, 16);
 
@@ -136,6 +147,62 @@ const loginUserWithPassword = async (request, response) => {
   }
 };
 
+const forgotPassword = async (request, response) => {
+  const { forgotEmail } = request.body;
+
+  try {
+    const user = await User.findOne({ email_address: forgotEmail });
+    if (!user) {
+      return response.status(400).send('No user found with that email.');
+    }
+
+    const token = crypto.randomBytes(20).toString('hex');
+    const expires = Date.now() + 3600000; // 1 hour
+
+    await PasswordReset.create({
+      email: forgotEmail,
+      token,
+      expires,
+    });
+
+    const resetLink = `http://localhost:3000/reset-password/${token}`;
+    const mailOptions = {
+      from: process.env.SUPPORT_EMAIL,
+      to: forgotEmail,
+      subject: 'Password Reset',
+      text: `Please click on the following link to reset your password: ${resetLink}`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    response.status(200).send('Password reset email sent.');
+  } catch (error) {
+    console.error('Error:', error);
+    response.status(500).send('Failed to send email.');
+  }
+};
+
+const resetPassword = async (request, response) => {
+  const { token, password } = request.body;
+
+  try {
+    const reset = await PasswordReset.findOne({ token });
+    if (!reset || reset.expires < Date.now()) {
+      return response.status(400).send('Token is invalid or has expired.');
+    }
+
+    console.log(password)
+
+    await User.findOneAndUpdate({ email_address: reset.email }, { password: password });
+
+    await PasswordReset.deleteOne({ token });
+
+    response.status(200).send('Password has been reset.');
+  } catch (error) {
+    console.error('Error:', error);
+    response.status(500).send('Failed to reset password.');
+  }
+};
+
 module.exports = {
   getUserByUsername,
   getUserByEmail,
@@ -143,5 +210,7 @@ module.exports = {
   updateUser,
   getUsers,
   getOneUser,
-  loginUserWithPassword
+  loginUserWithPassword,
+  forgotPassword,
+  resetPassword
 }

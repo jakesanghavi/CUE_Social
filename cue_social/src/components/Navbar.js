@@ -4,8 +4,6 @@ import { useEffect } from 'react';
 
 // Navbar is available on every page. Contains Google OAuth, game info, and menu icon
 const NavBar = ({ loggedInUser }) => {
-  console.log(loggedInUser)
-
   const handleShowLogin = () => setShowLogin(true);
 
   const setShowLogin = (bool) => {

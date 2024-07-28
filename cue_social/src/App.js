@@ -7,6 +7,7 @@ import { ROUTE } from './constants';
 import DeckPage from './pages/DeckPage'; // Import the new DeckPage component
 import UserPage from './pages/UserPage';
 import DeckSearchResults from './pages/DeckSearchResults';
+import ResetPassword from './pages/ResetPassword';
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -201,6 +202,7 @@ function App() {
             />
             <Route path="/deck-search-results" element={<DeckSearchResults loggedInUser={loggedInUser}/>} />
             <Route path="/users/:userId" element={<UserPage loggedInUser={loggedInUser}/>} />
+            <Route path="/reset-password/:token" element={<ResetPassword />} />
           </Routes>
         </div>
       </BrowserRouter>

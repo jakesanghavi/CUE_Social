@@ -6,6 +6,7 @@ import { jwtDecode } from "jwt-decode";
 // Login button 
 const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
   const modalRef = useRef(null);
+  const forgotModalRef = useRef(null);
   const [logForm, setLogForm] = useState({ username: '', password: '' });
   const [signUpForm, setSignUpForm] = useState({
     email: '',
@@ -14,8 +15,13 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
     confirmPassword: '',
   });
   const [googleSignin, setGoogleSignin] = useState(false);
+  const [forgotPassword, setForgotPassword] = useState(false)
   const signUpEmail = useRef(null);
   const signUpUsername = useRef(null);
+  const [forgotEmail, setForgotEmail] = useState('');
+
+  console.log(forgotPassword)
+
 
   const loginForm = document.querySelector("form.login");
 
@@ -176,7 +182,7 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
     const username = signUpUsername.current.value;
     // In the future, we should change this regex so it doesn't coincide with auto-generated cookie usernames
     // const usernameRegex = /^[a-zA-Z0-9]*$/;
-    if (email_address === '' || !email_address || username === '' || !username ) {
+    if (email_address === '' || !email_address || username === '' || !username) {
       if (email_address === '' | !email_address) {
         alert("Please input your email address.")
       }
@@ -225,7 +231,16 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
 
   const closeModal = () => {
     modalRef.current.style.display = 'none';
+    // forgotModalRef.current.style.display = 'none';
     setGoogleSignin(false)
+    setForgotPassword(false)
+  };
+
+  const resetMode = () => {
+    // modalRef.current.style.display = 'none';
+    setForgotPassword(true)
+    console.log(forgotModalRef)
+    // forgotModalRef.current.style.display = 'block';
   };
 
   useEffect(() => {
@@ -295,9 +310,30 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
   }, [handleLoginResponse]);
 
 
+  const handleRequestReset = async () => {
+    try {
+      const response = await fetch(`${ROUTE}/api/request-password-reset/`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ forgotEmail }),
+      });
+      if (response.ok) {
+        alert('Password reset email sent.');
+      } else {
+        console.log(response)
+        alert('Failed to send password reset email.');
+      }
+    } catch (error) {
+      console.error('Error:', error);
+      alert('An error occurred while sending the email.');
+    }
+  };
+
   return (
     <>
-      {!googleSignin &&
+      {!googleSignin && !forgotPassword &&
         <div id="sign-in-modal" ref={modalRef}>
           <div className="sign-in">
             <span className="close" onClick={closeModal}>&times;</span>
@@ -333,9 +369,9 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
                       required
                     />
                   </div>
-                  {/* <div className="pass-link">
-                <a href="#">Forgot password?</a>
-              </div> */}
+                  <div className="pass-link">
+                    <span onClick={resetMode}>Forgot password?</span>
+                  </div>
                   <div className="field btn">
                     <div className="btn-layer"></div>
                     <input type="submit" value="Login" />
@@ -392,30 +428,51 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
           </div>
         </div>
       }
-      {googleSignin &&
-        <div id="sign-in-modal" ref={modalRef}>
+      {googleSignin && !forgotPassword &&
+        <div id="forgot-modal">
           <div className="sign-in">
             <span className="close" onClick={closeModal}>&times;</span>
             <div className="form-container">
-              <div className="form-inner gsignin">
-                <div className="signup">
-                  <div className="field">
-                    <input type="text" id="signUpEmail" placeholder="Email Address" required ref={signUpEmail} disabled />
-                  </div>
-                  <div className="field">
-                    <input type="text" id="signUpUsername" placeholder="CUE Username" required ref={signUpUsername} />
-                  </div>
-                  <div className="field btn">
-                    <div className="btn-layer"></div>
-                    <input type="button" style={{ width: "100%" }} value="Sign Up" onClick={checkGoogleSignup} />
-                  </div>
+              <div className="form-inner">
+                <h2 className="title">Reset Password</h2>
+                <div className="field">
+                  <i className="fas fa-envelope"></i>
+                  <input
+                    type="email"
+                    placeholder="Email"
+                    name="forgotEmail"
+                    value={forgotEmail}
+                    onChange={(e) => setForgotEmail(e.target.value)}
+                    required
+                  />
+                </div>
+                <div className="field btn">
+                  <div className="btn-layer"></div>
+                  <input type="button" style={{ width: "100%" }} value="Submit" onClick={checkGoogleSignup} />
                 </div>
               </div>
             </div>
-            <div id='signInDiv'>
-            </div>
           </div>
         </div>
+      }
+      {forgotPassword &&
+        <div id="forgot-modal">
+          <div className="sign-in">
+            <h2 className="title">Reset Password</h2>
+            <div className="input-field">
+              <i className="fas fa-envelope"></i>
+              <input
+                type="email"
+                placeholder="Email"
+                name="forgotEmail"
+                value={forgotEmail}
+                onChange={(e) => setForgotEmail(e.target.value)}
+                required
+              />
+            </div>
+            <button type="button" className="btn" onClick={handleRequestReset}>Submit</button>
+          </div>
+        </div >
       }
     </>
   );

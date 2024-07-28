@@ -1,6 +1,8 @@
 require('dotenv').config()
 const express = require('express')
 const mongoose = require('mongoose')
+const bodyParser = require('body-parser');
+const jwt = require('jsonwebtoken');
 
 const app = express()
 const songRoutes = require('./routes/api-router')
@@ -9,6 +11,7 @@ const constants = require('../constants');
 
 // middleware
 
+app.use(bodyParser.json());
 //if the request has some data, attach it to the request
 app.use(express.json())
 
