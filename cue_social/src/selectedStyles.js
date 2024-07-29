@@ -443,6 +443,11 @@ export const optionsTags = [
         "color": "#fbe22b"
     },
     {
+        "label": "Outdated",
+        "value": "Outdated",
+        "color": "#808080"
+    },
+    {
         "label": "Permanent Buffs",
         "value": "Permanent Buffs",
         "color": "#DE3163"

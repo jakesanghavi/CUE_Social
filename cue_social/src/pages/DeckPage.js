@@ -4,6 +4,7 @@ import { ROUTE } from '../constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { upvoteCheck } from '../UsefulFunctions';
+import CommentDisplay from '../components/CommentDisplay'
 import '../component_styles/deckpage.css';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
@@ -55,6 +56,7 @@ const DeckPage = ({ loggedInUser }) => {
       <div>
         <strong>Tags:</strong> {deck.tags}
       </div>
+      <CommentDisplay loggedInUser={ loggedInUser } />
     </div>
   );
 };

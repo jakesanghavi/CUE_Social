@@ -41,6 +41,13 @@ const {
     editDeck
 } = require('../controllers/deckController')
 
+const {
+    getCommentsByDeck,
+    postComment,
+    deleteComment,
+    updateComment
+} = require('../controllers/commentsController')
+
 const { recognizeText } = require('../controllers/textrecognizer')
 
 const router = express.Router()
@@ -123,5 +130,16 @@ router.post('/api/request-password-reset/', forgotPassword)
 // RESET PASSWORD
 router.post('/api/reset-password/', resetPassword);
 
+// GET comments by Deck
+router.get('/api/comments/get/:id', getCommentsByDeck)
+
+// POST a comment
+router.post('/api/comments/post/:id', postComment)
+
+// DELETE a comment
+router.delete('/api/comments/delete/:id', deleteComment)
+
+// PATCH a comment by ID
+router.post('/api/comments/patch/:id', updateComment)
 
 module.exports = router
