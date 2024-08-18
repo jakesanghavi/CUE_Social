@@ -21,13 +21,20 @@ const NavBar = ({ loggedInUser }) => {
   return (
     <header>
       <div className='container'>
+        {/* <div className='logo-holder'>
+          <img id='logo' src='../favicon.png'/>
+        </div>
         <div className="home-name-holder">
           <Link to="/">
             <h1>
               Cue Tavern
             </h1>
           </Link>
-        </div>
+        </div> */}
+        <Link to="/" className='logo-name-holder'>
+          <img id='logo' src='../favicon.png' alt='Cue Tavern Logo' />
+          <h1>Cue Tavern</h1>
+        </Link>
         {/* <div className="blank-space">
         </div> */}
 
@@ -41,12 +48,12 @@ const NavBar = ({ loggedInUser }) => {
             </h1>
           ) : (
             // Render "Profile" button when loggedInUser is not null
-           
-              <a href="/profile" >
-                <h1 onClick={() => console.log('Link clicked')} >
+
+            <a href="/profile" >
+              <h1 onClick={() => console.log('Link clicked')} >
                 My Profile
-                </h1>
-              </a>
+              </h1>
+            </a>
 
           )}
         </div>

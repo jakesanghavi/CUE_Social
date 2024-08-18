@@ -1,63 +1,89 @@
-
 header {
-    background: #333;
-  }
-  header .container {
-    /* max-width: 1400px; */
-    /* margin: 0 auto; */
-    /* padding: 10px 20px; */
-    /* display: flex; */
-    /* align-items: center; */
-    /* justify-content: space-between; */
-    /* justify-content: space-between; */
-    /* justify-content: space-between;  */
+  background: #333;
+}
+
+/*
+header .container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.logo-holder {
+  padding: 0 2rem;
+
+}
+
+#logo {
+  width: 100px;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.home-name-holder {
+  padding: 0 2rem;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+} */
+
+header .container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.logo-name-holder {
+  display: flex;
+  align-items: center;
+  text-decoration: none; /* Remove underline from the link */
+  padding: 0 2rem;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+#logo {
+  width: 100px;
+  margin-right: 1rem; /* Adds some space between the logo and text */
+}
+
+h1 {
+  margin: 0;
+  font-size: 2rem;
+  color: inherit; /* Inherits the color from the parent element */
+}
 
 
-    display:flex;
-    flex-direction: row;
-    justify-content: space-between;
-  }
-  
-  .home-name-holder {
-    /* flex: 10; */
-    padding: 0 20px;
-    text-align: center;
-  }
-  
-  .blank-space {
-    flex: 40;
-    padding: 0 10px;
-  }
-  
-  .headerText {
-    font-size: .9rem;
-    color: white;
-    text-align: center;
-    padding: 0 2rem;
-  }
-  
-  
-  .headerText:hover {
-    cursor: pointer;
-  }
-  
-  header a {
-    color: white;
-    text-decoration: none;
-  }
-  
-  .pages{
-    max-width: 1400px;
-    padding: 20px;
-    margin: 0 auto;
-  }
+.headerText {
+  font-size: .9rem;
+  color: white;
+  text-align: center;
+  padding: 0 2rem;
+}
 
-  #signIn {
-    font-size: .9rem;
-    color: white;
-    text-align: center;
-    padding: 0 2rem;
-    cursor: pointer;
-    margin-top: auto;
-    margin-bottom: auto;
-  }
+
+.headerText:hover {
+  cursor: pointer;
+}
+
+header a {
+  color: white;
+  text-decoration: none;
+}
+
+.pages {
+  max-width: 1400px;
+  padding: 20px;
+  margin: 0 auto;
+}
+
+#signIn {
+  font-size: .9rem;
+  color: white;
+  text-align: center;
+  padding: 0 2rem;
+  cursor: pointer;
+  margin-top: auto;
+  margin-bottom: auto;
+}
