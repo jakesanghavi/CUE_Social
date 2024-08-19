@@ -243,6 +243,11 @@ export const optionsTags = [
         "color": "#E50000"
     },
     {
+        "label": "Bobbit Worm",
+        "value": "Bobbit Worm",
+        "color": "#0090fe"
+    },
+    {
         "label": "Boxing",
         "value": "Boxing",
         "color": "#f792e4"
@@ -311,6 +316,11 @@ export const optionsTags = [
         "label": "Fairy",
         "value": "Fairy",
         "color": "#b3ee4c"
+    },
+    {
+        "label": "Female",
+        "value": "Female",
+        "color": "#f792e4"
     },
     {
         "label": "Fun",
@@ -386,6 +396,11 @@ export const optionsTags = [
         "label": "Low Energy",
         "value": "Low Energy",
         "color": "#0096FF"
+    },
+    {
+        "label": "Male",
+        "value": "Male",
+        "color": "#0090fe"
     },
     {
         "label": "Mono Arts & Culture",
