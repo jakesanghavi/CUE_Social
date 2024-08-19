@@ -1,0 +1,63 @@
+.modern-button {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #343a40; /* Dark gray for the base color */
+    color: #fff;
+    border: none;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.modern-button:hover {
+    background-color: #495057; /* Slightly lighter gray for hover */
+    transform: translateY(-2px);
+}
+
+.modern-button:active {
+    background-color: #212529; /* Darker gray for active state */
+    transform: translateY(0);
+}
+
+.modern-button:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(108, 117, 125, 0.5); /* Light gray focus ring */
+}
+
+.modern-button2 {
+    padding: 10px 20px;
+    border-radius: 8px;
+    background-color: #adb5bd; /* Light/medium gray for the base color */
+    color: #343a40; /* Dark gray text for contrast */
+    border: none;
+    font-size: 16px;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+.modern-button2:hover {
+    background-color: #ced4da; /* Slightly lighter gray for hover */
+    transform: translateY(-2px);
+}
+
+.modern-button2:active {
+    background-color: #6c757d; /* Darker medium gray for active state */
+    transform: translateY(0);
+}
+
+.modern-button2:focus {
+    outline: none;
+    box-shadow: 0 0 0 4px rgba(173, 181, 189, 0.5); /* Light/medium gray focus ring */
+}

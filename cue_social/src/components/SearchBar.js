@@ -5,6 +5,7 @@ import { ROUTE } from '../constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+import '../component_styles/searchbar.css'
 import { optionsAlbums, optionsCollections, optionsTags, customStylesAlbums, customStylesCards, customStylesCollections, customStylesTags } from '../selectedStyles';
 
 const customStyles = {
@@ -127,14 +128,15 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: fontSize }}>
-            <div style={{ marginBottom: '10px' }}>
-                <button onClick={() => setSearchType('decks')} style={{ marginRight: '10px', padding: '8px' }}>
+            <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                <button onClick={() => setSearchType('decks')} className="modern-button">
                     Search for Decks
                 </button>
-                <button onClick={() => setSearchType('users')} style={{ padding: '8px' }}>
+                <button onClick={() => setSearchType('users')} className="modern-button">
                     Search for Users
                 </button>
             </div>
+
 
             <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {searchType === 'decks' && (
@@ -192,7 +194,7 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
                 )}
                 {searchType === 'decks' && (
                     <>
-                        <button onClick={handleDeckSearch} style={{ marginLeft: '5px', padding: '8px' }}>
+                        <button onClick={handleDeckSearch} style={{ marginLeft: '5px', padding: '12px' }} className='modern-button'>
                             <FontAwesomeIcon icon={faSearch} />
                         </button>
                     </>
@@ -202,14 +204,14 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
                         {selectedUser && (
                             <Link to={{ pathname: `/users/${selectedUser.label}`, state: { selectedAlbums, selectedCollections, selectedTags, selectedCards, selectedUser, cards, users } }}
                             >
-                                <button style={{ marginLeft: '5px', padding: '8px' }}>
+                                <button style={{ marginLeft: '5px', padding: '12px' }} className='modern-button'>
                                     <FontAwesomeIcon icon={faSearch} />
                                 </button>
                             </Link>
                         )}
                         {!selectedUser && (
-                            <button style={{ marginLeft: '5px', padding: '8px' }} disabled={true}>
-                                <FontAwesomeIcon icon={faSearch} />
+                            <button style={{ marginLeft: '5px', padding: '12px' }} disabled={true}>
+                                <FontAwesomeIcon icon={faSearch} className='modern-button'/>
                             </button>
                         )}
                     </>

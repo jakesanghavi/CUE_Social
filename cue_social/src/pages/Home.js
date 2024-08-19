@@ -89,7 +89,7 @@ const Home = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
       <SearchBar />
       {loggedInUser && loggedInUser.email ? (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '50px 50px' }}>
-          <button onClick={openModal} style={{ padding: '10px 5px' }}>
+          <button onClick={openModal} className='modern-button'>
             Upload a deck
           </button>
         </div>
