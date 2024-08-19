@@ -51,7 +51,14 @@ header .container {
 h1 {
   margin: 0;
   font-size: 2rem;
-  color: inherit; /* Inherits the color from the parent element */
+  color: inherit;
+}
+
+@media (max-width: 768px) {
+  h1 {
+    font-size: 1.4rem;
+    /* Change to 3 columns for mobile screens */
+  }
 }
 
 
