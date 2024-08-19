@@ -102,7 +102,7 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
     event.preventDefault();
     const { email, username, password, confirmPassword } = signUpForm
 
-    const emailRegex = /^[a-zA-Z0-9!#$%&*+\-/=?^_{|}~]+@[a-zA-Z0-9!#$%&*+\-/=?^_{|}~]+\.[a-zA-Z0-9!#$%&*+\-/=?^_{|}~]{2,}$/;
+    const emailRegex = /^[a-zA-Z0-9.!#$%&*+\-/=?^_{|}~]+@[a-zA-Z0-9!#$%&*+\-/=?^_{|}~]+\.[a-zA-Z0-9.!#$%&*+\-/=?^_{|}~]{2,}$/
     if (email === '' || !email || password === '' || !password || confirmPassword === '' ||
       !confirmPassword || username === '' || !username || !emailRegex.test(email)) {
       if (email === '' | !email) {
