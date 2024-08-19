@@ -108,7 +108,7 @@ const Home = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
       )}
       <div className="custom-grid-wrapper">
         <DeckDisplay decks={topDecksWeek} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'score'} restricted={'yes'}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks This League"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
+          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks This Week"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
         <div className="vertical-line"></div>
         <DeckDisplay decks={newDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'new'}
           upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Newest Decks"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
