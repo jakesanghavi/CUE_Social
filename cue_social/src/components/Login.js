@@ -19,7 +19,6 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
   const signUpEmail = useRef(null);
   const signUpUsername = useRef(null);
   const [forgotEmail, setForgotEmail] = useState('');
-  console.log(forgotPassword)
 
   const loginForm = document.querySelector("form.login");
 
@@ -49,6 +48,8 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
   const route = ROUTE;
 
   const loginModal = useCallback(email => {
+    document.getElementById('sign-in-modal').style.display = 'block';
+    document.getElementById('signUpEmail').value = email;
     openLoginModal(email);
   }, [openLoginModal]);
 
@@ -260,7 +261,7 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
   }, []);
 
   const handleLoginResponse = useCallback(async (response) => {
-    setGoogleSignin(true);
+    setGoogleSignin(true)
     try {
       // Get the user's google credentials. We only use their email
       var userToken = jwtDecode(response.credential);
@@ -295,6 +296,7 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
         closeModal();
       }
     } catch (error) {
+      console.log(error)
     }
   }, [loginModal, route, onLoginSuccess, uid]);
 
@@ -431,28 +433,26 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
         </div>
       }
       {googleSignin && !forgotPassword &&
-        <div id="forgot-modal">
+        <div id="sign-in-modal" ref={modalRef}>
           <div className="sign-in">
             <span className="close" onClick={closeModal}>&times;</span>
             <div className="form-container">
-              <div className="form-inner">
-                <h2 className="title">Reset Password</h2>
-                <div className="field">
-                  <i className="fas fa-envelope"></i>
-                  <input
-                    type="email"
-                    placeholder="Email"
-                    name="forgotEmail"
-                    value={forgotEmail}
-                    onChange={(e) => setForgotEmail(e.target.value)}
-                    required
-                  />
-                </div>
-                <div className="field btn">
-                  <div className="btn-layer"></div>
-                  <input type="button" style={{ width: "100%" }} value="Submit" onClick={checkGoogleSignup} />
+              <div className="form-inner gsignin">
+                <div className="signup">
+                  <div className="field">
+                    <input type="text" id="signUpEmail" placeholder="Email Address" required ref={signUpEmail} disabled />
+                  </div>
+                  <div className="field">
+                    <input type="text" id="signUpUsername" placeholder="CUE Username" required ref={signUpUsername} />
+                  </div>
+                  <div className="field btn">
+                    <div className="btn-layer"></div>
+                    <input type="button" style={{ width: "100%" }} value="Sign Up" onClick={checkGoogleSignup} />
+                  </div>
                 </div>
               </div>
+            </div>
+            <div id='signInDiv'>
             </div>
           </div>
         </div>
