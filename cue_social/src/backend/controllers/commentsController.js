@@ -2,10 +2,11 @@ const Comment = require('../models/comments_model.js')
 const mongoose = require('mongoose')
 
 const getCommentsByDeck = async (request, response) => {
-    const { deckId } = request.params;
+    const { id } = request.params;
 
     try {
-        const matches = await Comment.find({ DeckID: deckId });
+        const matches = await Comment.find({ DeckID: id });
+        console.log(matches)
         if (matches.length === 0) {
             // Returning 201 instead of the proper 404 prevents errors from coming up in the console.
             return response.status(201).json({ "comments": [] });
@@ -27,7 +28,7 @@ const postComment = async (request, response) => {
     }
 
     try {
-        const commentAdd = await Deck.create({
+        const commentAdd = await Comment.create({
             DeckID: id,
             Username: username,
             Comment: comment,
@@ -41,15 +42,15 @@ const postComment = async (request, response) => {
 };
 
 const deleteComment = async (request, response) => {
-    const { commentId } = request.params;
+    const { id } = request.params;
 
-    if (!commentId) {
+    if (!id) {
         response.status(400).json({ error: 'Comment ID is required!' });
         return;
     }
 
     try {
-        const deletedComment = await Deck.findOneAndDelete({ _id: commentId });
+        const deletedComment = await Comment.findOneAndDelete({ _id: id });
 
         if (!deletedComment) {
             return response.status(404).json({ error: 'Comment not found!' });
@@ -62,10 +63,10 @@ const deleteComment = async (request, response) => {
 };
 
 const updateComment = async (request, response) => {
-    const { commentId } = request.params;
+    const { id } = request.params;
     const { username, comment } = request.body;
 
-    if (!commentId) {
+    if (!id) {
         response.status(400).json({ error: 'Comment ID is required!' });
         return;
     }
@@ -80,8 +81,8 @@ const updateComment = async (request, response) => {
     if (comment) updateFields.Comment = comment;
 
     try {
-        const updatedComment = await Deck.findOneAndUpdate(
-            { _id: commentId },
+        const updatedComment = await Comment.findOneAndUpdate(
+            { _id: id },
             { $set: updateFields },
             { new: true }
         );

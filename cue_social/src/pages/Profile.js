@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { ROUTE } from '../constants';
 import '../component_styles/profile.css';
 import DeckDisplay from '../components/DeckDisplay';
-import EditUploadForm from '../components/EditUploadForm'
+import EditUploadForm from '../components/EditUploadForm';
 import { upvoteCheck } from '../UsefulFunctions';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
@@ -12,8 +12,9 @@ const Profile = ({ onLogout, loggedInUser }) => {
   const [page, setPage] = useState(1);
   const [totalDecks, setTotalDecks] = useState(0);
   const [editDeck, setEditDeck] = useState(null); // State to manage the deck being edited
+  const [deckToDelete, setDeckToDelete] = useState(null); // State to manage the deck being deleted
   const limit = 12;
-  const setOne = false
+  const setOne = false;
 
   useEffect(() => {
     if (loggedInUser) {
@@ -30,7 +31,7 @@ const Profile = ({ onLogout, loggedInUser }) => {
           throw new Error('Failed to fetch decks');
         }
         const decksData = await response.json();
-        console.log(decksData)
+        console.log(decksData);
         setDecks(decksData.decks);
         setTotalDecks(decksData.totalDecks);
       } catch (error) {
@@ -39,32 +40,32 @@ const Profile = ({ onLogout, loggedInUser }) => {
     }
   };
 
-  const deleteDeckFunction = async (deckId) => {
-    const userConfirmed = window.confirm('Are you sure you want to delete this deck?');
-    if (!userConfirmed) {
-      return; // Exit if the user cancels the confirmation
-    }
+  const confirmDeleteDeck = (deckId) => {
+    setDeckToDelete(deckId); // Set the deck to delete and show the confirmation modal
+  };
+
+  const deleteDeckFunction = async () => {
+    if (!deckToDelete) return;
 
     try {
-      const response = await fetch(`${ROUTE}/api/decks/deleteone/${deckId}`, {
-        method: 'DELETE'
+      const response = await fetch(`${ROUTE}/api/decks/deleteone/${deckToDelete}`, {
+        method: 'DELETE',
       });
       if (!response.ok) {
-        console.log(response)
+        console.log(response);
         throw new Error('Failed to delete deck');
       }
       const result = await response.json();
-      // Update state or perform any other actions after deletion
       console.log('Deck deleted successfully:', result);
-      // Optionally, you can remove the deleted deck from the UI
-      setDecks(decks => decks.filter(deck => deck._id !== deckId));
+      setDecks(decks => decks.filter(deck => deck._id !== deckToDelete));
+      setDeckToDelete(null); // Reset the delete state after successful deletion
     } catch (error) {
       console.error('Error deleting deck:', error);
     }
   };
 
   const editDeckFunction = async (body) => {
-    setEditDeck(body)
+    setEditDeck(body);
   };
 
   const handleLogoutAndRedirect = () => {
@@ -83,6 +84,10 @@ const Profile = ({ onLogout, loggedInUser }) => {
     setEditDeck(null);
   };
 
+  const closeDeleteModal = () => {
+    setDeckToDelete(null); // Close the delete confirmation modal
+  };
+
   return (
     <div>
       <div>
@@ -96,11 +101,22 @@ const Profile = ({ onLogout, loggedInUser }) => {
           </div>
         </div>
       }
+      {deckToDelete && (
+        <div className="delete-popup-overlay">
+          <div className="delete-popup">
+            <p>Are you sure you want to delete this deck?</p>
+            <div className="popup-buttons">
+              <button onClick={deleteDeckFunction} className="popup-button confirm">Yes</button>
+              <button onClick={closeDeleteModal} className="popup-button cancel">No</button>
+            </div>
+          </div>
+        </div>
+      )}
       <div>
         <h2>Decks</h2>
         <div className="grid-container">
           <DeckDisplay decks={decks} styleClass={""} handleDeckSearch={null}
-            upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setOne={setOne} setDecks={[setDecks]} deleteDeck={true} deleteDeckFunction={deleteDeckFunction} editDeckFunction={editDeckFunction} />
+            upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={null} setOne={setOne} setDecks={[setDecks]} deleteDeck={true} deleteDeckFunction={confirmDeleteDeck} editDeckFunction={editDeckFunction} />
         </div>
       </div>
       <div className="pagination-controls">
