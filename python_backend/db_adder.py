@@ -2,8 +2,10 @@ from unidecode import unidecode
 from pymongo import MongoClient
 import pandas as pd
 
+MONGOSRV = 'XXXXX'
+
 big_df = pd.read_csv('all_cue_cards.csv')
-client = MongoClient("mongodb+srv://jake123:GRBcVTSxB2AXh9H6@cluster0.ojx9tbc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0")
+client = MongoClient(MONGOSRV)
 
 def remove_accents_unidecode(text):
     """
