@@ -112,9 +112,9 @@ const getUsers = async (request, response) => {
   const users = await User.aggregate([
     { $match: { email_address: { $ne: null } } }, // Filter for non-null emails
     { $sort: { username: 1 } },
-    { $project: { password: 0 } },
+    { $project: { password: 0, email_address: 0 } }, // Exclude email_address and password fields
   ]);
-  response.status(200).json(users)
+  response.status(200).json(users);
 }
 
 const getOneUser = async (request, response) => {
