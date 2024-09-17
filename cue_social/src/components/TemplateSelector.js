@@ -1,13 +1,39 @@
 import React from 'react';
 
-const TemplateSelector = ({ templates, onSelect }) => {
+const TemplateSelector = ({ icons, templates, onTemplateSelect, onIconSelect }) => {
+
+  const handleTemplateSelect = (event) => {
+    const selectedIndex = parseInt(event.target.value, 10);
+    if (!isNaN(selectedIndex)) {
+      onTemplateSelect(templates[selectedIndex]);
+    }
+  };
+
+  const handleIconSelect = (event) => {
+    const selectedIndex = parseInt(event.target.value, 10);
+    if (!isNaN(selectedIndex)) {
+      onIconSelect(icons[selectedIndex]);
+    }
+  };
+
   return (
     <div className="template-selector">
-      {templates.map((template, index) => (
-        <button key={index} onClick={() => onSelect(template)}>
-          Template {index + 1}
-        </button>
-      ))}
+      <select onChange={handleTemplateSelect}>
+        <option value="" disabled>Select a template</option>
+        {templates.map((template, index) => (
+          <option key={index} value={index}>
+            Template {index + 1}
+          </option>
+        ))}
+      </select>
+      <select onChange={handleIconSelect}>
+        <option value="" disabled>Select an icon</option>
+        {icons.map((icon, index) => (
+          <option key={index} value={index}>
+            Template {index + 1}
+          </option>
+        ))}
+      </select>
     </div>
   );
 };
