@@ -1,0 +1,65 @@
+.editor {
+    position: relative;
+    width: 50%; /* Adjust as necessary */
+    margin: auto;
+  }
+  
+  .template-img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .card-field {
+    position: absolute;
+    font-family: 'Poppins', sans-serif;
+    color: white;
+  }
+  
+  #card-name {
+    bottom: 19%; /* Adjust these values based on your template */
+    left: 20%;
+    width: 60%;
+    font-size: 3vw;
+    text-align: center;
+  }
+  
+  #energy-cost {
+    top: 3.5%;
+    left: 1%;
+    width: 15%;
+    font-size: 1.8vw;
+    text-align: center;
+  }
+  
+  #power {
+    top: 16%;
+    left: 1%;
+    width: 15%;
+    font-size: 1.8vw;
+    text-align: center;
+  }
+  
+  #ability-name {
+    bottom: 13%;
+    left: 20%;
+    width: 60%;
+    font-size: 2vw;
+    text-align: center;
+  }
+
+  #ability-description {
+    bottom: 9%;
+    left: 20%;
+    width: 60%;
+    font-size: 2vw;
+    text-align: center;
+  }
+
+  #card-code {
+    bottom: 30%;
+    left: 75%;
+    width: 20%;
+    font-size: 1vw;
+    text-align: center;
+  }
+  

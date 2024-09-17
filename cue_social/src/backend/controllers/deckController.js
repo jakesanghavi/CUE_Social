@@ -27,6 +27,21 @@ const getDecksBySearch = async (request, response) => {
     const page = parseInt(request.query.page) || 1; // Page number from query parameter
     const limit = parseInt(request.query.limit) || 12; // Number of decks per page
 
+    // cloudinary.config({
+    //     cloud_name: 'defal1ruq',
+    //     api_key: process.env.CLOUDINARY_PK,
+    //     api_secret: process.env.CLOUDINARY_SK // Click 'View Credentials' below to copy your API secret
+    // });
+
+    // const { resources } = await cloudinary.search
+    //     .expression('folder:CustomCardTemplates/Backgrounds/*')
+    //     .max_results(200)
+    //     .execute()
+
+    // resources.forEach(item => {
+    //     console.log(item.url);
+    // });
+
     try {
         const query = {};
 
@@ -233,17 +248,17 @@ const editDeck = async (request, response) => {
         const updatedDeck = await Deck.findByIdAndUpdate(
             id, // The ID of the deck to find
             {
-              $set: { // Use $set to update specific fields
-                title: title,
-                description: description,
-                albums: JSON.parse(albums),
-                collections: JSON.parse(collections),
-                tags: JSON.parse(tags),
-                user: user
-              }
+                $set: { // Use $set to update specific fields
+                    title: title,
+                    description: description,
+                    albums: JSON.parse(albums),
+                    collections: JSON.parse(collections),
+                    tags: JSON.parse(tags),
+                    user: user
+                }
             },
             { new: true, runValidators: true } // Return the updated document and run schema validators
-          );
+        );
 
 
         if (updatedDeck.nModified > 0) {

@@ -8,6 +8,7 @@ import DeckPage from './pages/DeckPage'; // Import the new DeckPage component
 import UserPage from './pages/UserPage';
 import DeckSearchResults from './pages/DeckSearchResults';
 import ResetPassword from './pages/ResetPassword';
+import CustomCards from './pages/CustomCardPage';
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -203,6 +204,7 @@ function App() {
             <Route path="/deck-search-results" element={<DeckSearchResults loggedInUser={loggedInUser}/>} />
             <Route path="/users/:userId" element={<UserPage loggedInUser={loggedInUser}/>} />
             <Route path="/reset-password/:token" element={<ResetPassword />} />
+            <Route path='/customcards' element={<CustomCards />} />
           </Routes>
         </div>
       </BrowserRouter>

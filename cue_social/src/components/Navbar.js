@@ -39,6 +39,14 @@ const NavBar = ({ loggedInUser }) => {
         </div> */}
 
 
+        {/* <Link to="/">
+          <h3>Decks</h3>
+        </Link>
+
+        <Link to="/customcards">
+          <h3>Custom Cards</h3>
+        </Link> */}
+
         <div id="signIn">
           {loggedInUser === null || loggedInUser.email === null ? (
             // Render Google Sign-In button when loggedInUser is null
