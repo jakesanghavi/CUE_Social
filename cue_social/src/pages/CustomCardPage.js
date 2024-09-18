@@ -41,10 +41,10 @@ function CustomCards() {
       <TemplateSelector icons={icons} templates={templates} onTemplateSelect={handleTemplateSelect} onIconSelect={handleIconSelect} />
       <input type="file" accept="image/*" onChange={handleBackgroundUpload} /> {/* Image Upload Input */}
       {/* <input type="file" accept="image/*" onChange={handleForegroundUpload} /> */}
-      <div className="editor-container">
+      {/* <div className="editor-container">
         <CardEditor template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} />
-      </div>
-      {/* <CardEditor template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} /> */}
+      </div> */}
+      <CardEditor template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} />
       </div>
   );
 }
