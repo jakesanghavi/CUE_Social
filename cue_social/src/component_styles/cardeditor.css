@@ -3,7 +3,15 @@
   display: flex;
   flex-direction: column;
 }
-  
+
+@font-face {
+  font-family: 'Tharlon';
+  src: url("../Tharlon.eot") format("embedded-opentype"),
+      url("../Tharlon.woff") format("woff"),
+      url('../Tharlon.ttf') format('truetype');
+  font-weight: 400;
+}
+
 .editor {
   position: relative;
   width: 50%; 
@@ -11,11 +19,89 @@
   margin: auto;
   }
 
-  @media (min-width: 1200px) {
+  @media screen and (max-width: 449px) {
+    .editor {
+      position: relative;
+      width: 50%; 
+      margin: auto;
+      margin-top: 20%;
+      -webkit-transform:scale(1.4);
+      -moz-transform:scale(1.4);
+      -ms-transform:scale(1.4);
+      transform:scale(1.4);
+      }
+  }
+
+  @media screen and (min-width: 449px) and (max-width: 549px) {
+    .editor {
+      position: relative;
+      width: 50%; 
+      margin: auto;
+      margin-top: 10%;
+      -webkit-transform:scale(1.2);
+      -moz-transform:scale(1.2);
+      -ms-transform:scale(1.2);
+      transform:scale(1.2);
+      }
+  }
+
+  @media screen and (min-width: 549px) and (max-width: 699px) {
+    .editor {
+      position: relative;
+      width: 50%; 
+      margin: auto;
+      margin-top: 5%;
+      /* -webkit-transform:scale(0.7);
+      -moz-transform:scale(0.7);
+      -ms-transform:scale(0.7);
+      transform:scale(0.7); */
+      }
+  }
+
+  @media screen and (min-width: 700px) and (max-width: 999px) {
+    .editor {
+      position: relative;
+      width: 50%; 
+      margin: auto;
+      margin-top: -5%;
+      -webkit-transform:scale(0.7);
+      -moz-transform:scale(0.7);
+      -ms-transform:scale(0.7);
+      transform:scale(0.7);
+      }
+  }
+
+  @media screen and (min-width: 1000px) {
     .editor {
       position: relative;
       width: 50%; 
       /* height: 70%; */
+      margin: auto;
+      margin-top: -15%;
+      -webkit-transform:scale(0.6);
+      -moz-transform:scale(0.6);
+      -ms-transform:scale(0.6);
+      transform:scale(0.6);
+      }
+  }
+
+  /* @media (max-width: 900px) {
+    .editor {
+      position: relative;
+      width: 50%; 
+      margin: auto;
+      margin-top: -15%;
+      -webkit-transform:scale(0.7);
+      -moz-transform:scale(0.7);
+      -ms-transform:scale(0.7);
+      transform:scale(0.7);
+      }
+  } */
+
+  /* @media (max-width: 1100px) {
+    .editor {
+      position: relative;
+      width: 50%; 
       margin: auto;
       margin-top: -15%;
       -webkit-transform:scale(0.5);
@@ -23,7 +109,7 @@
       -ms-transform:scale(0.5);
       transform:scale(0.5);
       }
-  }
+  } */
 
 
   .template-img {
@@ -51,22 +137,30 @@
     transform: translateX(-50%);
     /* Center element horizontally by moving it left by half of its width */
     left: 50%;
+    font-family: 'Open Sans', sans-serif;
+    font-weight: 700; /* Bold */
   }
 
   #energy-cost {
     top: 0.75%;
-    left: 1%;
+    left: 0%;
     width: 15%;
     font-size: 5vw;
     text-align: center;
+    font-family: 'Cabin', sans-serif;
+    font-weight: 700; /* Bold */
+    font-style: italic;
   }
 
   #power {
     top: 12.5%;
-    left: 1%;
+    left: 0%;
     width: 15%;
     font-size: 5vw;
     text-align: center;
+    font-family: 'Cabin', sans-serif;
+    font-weight: 700; /* Bold */
+    font-style: italic;
   }
 
   #ability-name {
@@ -75,6 +169,8 @@
     width: 60%;
     font-size: 2vw;
     text-align: center;
+    font-family: 'Cabin', sans-serif;
+    font-weight: 700; /* Bold */
   }
 
   #ability-description {
@@ -83,6 +179,8 @@
     width: 60%;
     font-size: 2vw;
     text-align: center;
+    font-family: 'Cabin', sans-serif;
+    font-weight: 400; /* Regular */
   }
 
   #card-code {
@@ -91,4 +189,5 @@
     width: 20%;
     font-size: 1vw;
     text-align: center;
+    font-family: 'Tharlon', sans-serif;
   }

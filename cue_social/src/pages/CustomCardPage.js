@@ -3,8 +3,32 @@ import CardEditor from '../components/CardEditor';
 import TemplateSelector from '../components/TemplateSelector';
 import { customCardBorders, customCardIcons } from '../UsefulFunctions';
 
-const templates = customCardBorders();
-const icons = customCardIcons()
+// const templates = customCardBorders();
+const templates = customCardBorders().map(url => {
+  const parts = url.split('/');
+  const fileName = parts[parts.length - 1].split('.')[0]; // Get the file name without the extension
+  const nameParts = fileName.split('_').slice(0, 2); // Take the first two parts of the name
+  const name = nameParts.join(' '); // Join the name parts with a space
+
+  return {
+    url: url,
+    name: name
+  };
+});
+
+// const icons = customCardIcons()
+
+const icons = customCardIcons().map(url => {
+  const parts = url.split('/');
+  const fileName = parts[parts.length - 1].split('.')[0]; // Get the file name without the extension
+  const nameParts = fileName.split('_').slice(0, 2); // Take the first two parts of the name
+  const name = nameParts.join(' '); // Join the name parts with a space
+
+  return {
+    url: url,
+    name: name
+  };
+});
 
 function CustomCards() {
   const [selectedTemplate, setSelectedTemplate] = useState(templates[0]);
@@ -27,13 +51,13 @@ function CustomCards() {
     }
   };
 
-  const handleForegroundUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file); // Create a URL for the uploaded image
-      setForegroundImage(imageUrl); // Set the foreground image state
-    }
-  };
+  // const handleForegroundUpload = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     const imageUrl = URL.createObjectURL(file); // Create a URL for the uploaded image
+  //     setForegroundImage(imageUrl); // Set the foreground image state
+  //   }
+  // };
 
   return (
     <div className="customCardPage">

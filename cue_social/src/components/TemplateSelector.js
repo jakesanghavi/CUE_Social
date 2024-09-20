@@ -2,6 +2,8 @@ import React from 'react';
 
 const TemplateSelector = ({ icons, templates, onTemplateSelect, onIconSelect }) => {
 
+  console.log(templates)
+
   const handleTemplateSelect = (event) => {
     const selectedIndex = parseInt(event.target.value, 10);
     if (!isNaN(selectedIndex)) {
@@ -22,7 +24,7 @@ const TemplateSelector = ({ icons, templates, onTemplateSelect, onIconSelect }) 
         <option value="" disabled>Select a template</option>
         {templates.map((template, index) => (
           <option key={index} value={index}>
-            Template {index + 1}
+            {template.name}
           </option>
         ))}
       </select>
@@ -30,7 +32,7 @@ const TemplateSelector = ({ icons, templates, onTemplateSelect, onIconSelect }) 
         <option value="" disabled>Select an icon</option>
         {icons.map((icon, index) => (
           <option key={index} value={index}>
-            Template {index + 1}
+            {icon.name}
           </option>
         ))}
       </select>

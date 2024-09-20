@@ -38,8 +38,8 @@ const NavBar = ({ loggedInUser }) => {
         {/* <div className="blank-space">
         </div> */}
 
-{/* 
-        <Link to="/">
+
+        {/* <Link to="/">
           <h3>Decks</h3>
         </Link>
 

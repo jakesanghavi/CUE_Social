@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import '../component_styles/cardeditor.css'; // Custom CSS for positioning elements
 
 const CardEditor = ({ template, backgroundImage, foregroundImage }) => {
@@ -17,10 +17,10 @@ const CardEditor = ({ template, backgroundImage, foregroundImage }) => {
         lineHeight: '0'
       }}
       >
-        <img id="template" src={template} alt="Card Background" className="template-img" />
+        <img id="template" src={template.url} alt="Card Background" className="template-img" />
         {foregroundImage && (
           <img
-            src={foregroundImage}
+            src={foregroundImage.url}
             alt="Foreground"
             style={{
               position: 'absolute',
