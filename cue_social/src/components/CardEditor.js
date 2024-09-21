@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import '../component_styles/cardeditor.css'; // Custom CSS for positioning elements
 import Modal from 'react-modal'; // Use a modal package, e.g., react-modal
-import html2canvas from 'html2canvas';
 
 // Styling for the modal (you can move this to your CSS file)
 const customModalStyles = {
@@ -40,25 +39,6 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   const [fgscale, fgsetScale] = useState(1); // Track zoom scale
   const templateRef = useRef(null); // Ref to track the image's position
   const fgRef = useRef(null); // Ref to track the image's position
-
-  const templateHolderRef = useRef(null); // Ref to the template holder
-
-  const saveAsImage = () => {
-    const templateHolder = templateHolderRef.current;
-    if (templateHolder) {
-      html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: 5 }).then((canvas) => {
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = 'template-image.png';
-        link.click();
-      }).catch((error) => {
-        console.error('Error capturing the image:', error);
-      });
-    } else {
-      console.warn('templateHolderRef is null or undefined');
-    }
-  };
-
 
   useEffect(() => {
     const imageElement = templateRef.current;
@@ -284,7 +264,6 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
           borderRadius: '6%', // Set your desired border radius here
         }}
-        ref={templateHolderRef} // Attach the ref here
       >
         <input
           type="file"
@@ -433,9 +412,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           Confirm
         </button>
       </Modal>
-      <button onClick={saveAsImage} style={{ marginTop: '20px', padding: '10px 20px', borderRadius: '5px', backgroundColor: '#007BFF', color: 'white', border: 'none', cursor: 'pointer' }}>
-        Save as Image
-      </button>
+      
     </div>
   );
 };

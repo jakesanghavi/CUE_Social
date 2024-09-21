@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CardEditor from '../components/CardEditor';
 import TemplateSelector from '../components/TemplateSelector';
 import { customCardBorders, customCardIcons } from '../UsefulFunctions';
+import html2canvas from 'html2canvas';
 
 // const templates = customCardBorders();
 const templates = customCardBorders().map(url => {
@@ -48,6 +49,24 @@ const icons = customCardIcons().map(url => {
   };
 });
 
+const saveAsImage = () => {
+  const templateHolder = document.getElementById('template-holder'); // Assuming ID is used
+  if (templateHolder) {
+    html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: 1 })
+      .then((canvas) => {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = 'template-image.png';
+        link.click();
+      })
+      .catch((error) => {
+        console.error('Error capturing the image:', error);
+      });
+  } else {
+    console.warn('templateHolder is null or undefined');
+  }
+};
+
 function CustomCards() {
   const [selectedTemplate, setSelectedTemplate] = useState(templates[0]);
   const [backgroundImage, setBackgroundImage] = useState(null); // State to hold the background image
@@ -93,6 +112,9 @@ function CustomCards() {
         <CardEditor template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} />
       </div> */}
       <CardEditor icons={icons} onIconSelect={handleIconSelect} template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} handleForegroundUpload={handleForegroundUpload} setForegroundImage={setForegroundImage} handleBackgroundUpload={handleBackgroundUpload} />
+      <button onClick={saveAsImage} style={{ marginTop: '20px', padding: '10px 20px', borderRadius: '5px', backgroundColor: '#007BFF', color: 'white', border: 'none', cursor: 'pointer' }}>
+        Save as Image
+      </button>
     </div>
   );
 }
