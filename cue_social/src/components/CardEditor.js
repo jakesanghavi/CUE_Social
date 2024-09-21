@@ -176,8 +176,9 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   };
 
   const handleModalConfirm = () => {
+    const regexp = /^[a-z]+$/i;
     if (selectedURL) {
-      if (selectedURL.length > 1) {
+      if (regexp.test(selectedURL)) {
         handleForegroundUpload({ target: { files: [{ url: selectedURL }] } }); // Simulate file upload with URL
       }
       else {
@@ -297,8 +298,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             minWidth: '10%',
             position: 'absolute',
             top: `calc(62% + ${fgimagePosition.y}px)`, // Maintain initial top position and add dragging offset
-            left: `calc(50% + ${fgimagePosition.x}px)`, // Maintain initial left position and add dragging offset
-            transform: 'translateX(-50%)',
+            left: `calc(50% + ${fgimagePosition.x}px - ${(12 * fgscale) / 1.45}%)`, // Adjust left position based on image width
+            // transform: 'translateX(-50%)',
             cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
             height: `${12 * fgscale}%`,
           }}
@@ -337,6 +338,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         onRequestClose={() => setIsModalOpen(false)}
         style={customModalStyles}
         contentLabel="Foreground Upload"
+        appElement={document.getElementById('root') || undefined}
       >
         <h2 style={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '24px' }}>Select or Upload Foreground Image</h2>
 
@@ -412,7 +414,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           Confirm
         </button>
       </Modal>
-      
+
     </div>
   );
 };

@@ -52,7 +52,7 @@ const icons = customCardIcons().map(url => {
 const saveAsImage = () => {
   const templateHolder = document.getElementById('template-holder'); // Assuming ID is used
   if (templateHolder) {
-    html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: 1 })
+    html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: 10 })
       .then((canvas) => {
         const link = document.createElement('a');
         link.href = canvas.toDataURL('image/png');
@@ -90,6 +90,7 @@ function CustomCards() {
 
   const handleForegroundUpload = (e) => {
     const file = e.target.files[0];
+    console.log(file)
     if (file) {
       if (file.url && file.url.url) {
         setForegroundImage(file.url.url)
