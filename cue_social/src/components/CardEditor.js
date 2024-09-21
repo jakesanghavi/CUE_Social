@@ -23,10 +23,117 @@ const customModalStyles = {
 };
 
 // Modal component for selecting or uploading an image
-const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegroundUpload, icons, onIconSelect, handleBackgroundUpload }) => {
+const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegroundUpload, icons, handleBackgroundUpload }) => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [selectedURL, setSelectedURL] = useState(''); // Dropdown selection
   const foregroundRef = useRef(null); // Ref for hidden file input
+  const [dragging, setDragging] = useState(false);
+  const [imagePosition, setImagePosition] = useState({ x: 0, y: 0 });
+  const imageRef = useRef(null); // Ref to track the image's position
+  const [isDragging, setIsDragging] = useState(false); // New state to track dragging
+  const [scale, setScale] = useState(1); // Track zoom scale
+  const [fgdragging, fgsetDragging] = useState(false);
+  const [fgimagePosition, fgsetImagePosition] = useState({ x: 0, y: 0 });
+  const fgimageRef = useRef(null); // Ref to track the image's position
+  const [fgisDragging, fgsetIsDragging] = useState(false); // New state to track dragging
+  const [fgscale, fgsetScale] = useState(1); // Track zoom scale
+
+  const handleWheelZoom = (e) => {
+    e.preventDefault();
+    const scaleChange = e.deltaY > 0 ? 0.97 : 1.03; // Zoom out on scroll down, zoom in on scroll up
+    setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3))); // Limit zoom scale between 0.5 and 3
+  };
+
+  const handlePinchZoom = (e) => {
+    if (e.touches.length === 2) {
+      e.preventDefault(); // Prevent the page zoom
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const scaleChange = dist / (imageRef.current?.prevDist || dist);
+      setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3)));
+      imageRef.current.prevDist = dist; // Store the current distance
+    }
+  };
+
+  const handleTouchEnd = () => {
+    imageRef.current.prevDist = null; // Reset previous distance on touch end
+  };
+
+  const handleMouseDown = (e) => {
+    setDragging(true);
+    setIsDragging(false); // Reset dragging state on mouse down
+    imageRef.current = { startX: e.clientX, startY: e.clientY }; // Track the starting mouse position
+  };
+
+  const handleMouseMove = (e) => {
+    if (fgdragging) return; // Prevent background dragging if foreground is dragging
+    if (dragging) {
+      const dx = e.clientX - imageRef.current.startX;
+      const dy = e.clientY - imageRef.current.startY;
+      setImagePosition(prevPos => ({
+        x: prevPos.x + dx,
+        y: prevPos.y + dy,
+      }));
+      imageRef.current.startX = e.clientX;
+      imageRef.current.startY = e.clientY;
+      setIsDragging(true); // Set dragging to true during mouse move
+    }
+  };
+
+  const handleMouseUp = () => {
+    if (fgdragging) return; // Prevent background stop if foreground is dragging
+    setDragging(false);
+  };
+
+  const fghandleWheelZoom = (e) => {
+    e.preventDefault();
+    const scaleChange = e.deltaY > 0 ? 0.97 : 1.03; // Zoom out on scroll down, zoom in on scroll up
+    fgsetScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3))); // Limit zoom scale between 0.5 and 3
+  };
+
+  const fghandlePinchZoom = (e) => {
+    if (e.touches.length === 2) {
+      e.preventDefault(); // Prevent the page zoom
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const scaleChange = dist / (fgimageRef.current?.prevDist || dist);
+      fgsetScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3)));
+      fgimageRef.current.prevDist = dist; // Store the current distance
+    }
+  };
+  
+
+  const fghandleTouchEnd = () => {
+    fgimageRef.current.prevDist = null; // Reset previous distance on touch end
+  };
+
+  const fghandleMouseDown = (e) => {
+    fgsetDragging(true);
+    fgsetIsDragging(false); // Reset dragging state on mouse down
+    fgimageRef.current = { startX: e.clientX, startY: e.clientY }; // Track the starting mouse position
+  };
+
+  const fghandleMouseMove = (e) => {
+    if (fgdragging) {
+      const dx = e.clientX - fgimageRef.current.startX;
+      const dy = e.clientY - fgimageRef.current.startY;
+      fgsetImagePosition(prevPos => ({
+        x: prevPos.x + dx,
+        y: prevPos.y + dy,
+      }));
+      fgimageRef.current.startX = e.clientX;
+      fgimageRef.current.startY = e.clientY;
+      fgsetIsDragging(true); // Set dragging to true during mouse move
+    }
+  };
+
+  const fghandleMouseUp = () => {
+    fgsetDragging(false);
+  };
 
   const handleForegroundClick = () => {
     setIsModalOpen(true); // Open the modal on foreground click
@@ -49,17 +156,18 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   };
 
   const handleFileChange = (e) => {
+    if (fgisDragging) {
+      e.preventDefault(); // Prevent the click if dragging
+    }
     handleForegroundUpload(e); // Upload the file
     setIsModalOpen(false); // Close the modal once a file is uploaded
   };
 
-
-  // const handleIconSelect = (event) => {
-  //   const selectedIndex = parseInt(event.target.value, 10);
-  //   if (!isNaN(selectedIndex)) {
-  //     onIconSelect(icons[selectedIndex]);
-  //   }
-  // };
+  const handleBackgroundUploadClick = (e) => {
+    if (isDragging) {
+      e.preventDefault(); // Prevent the click if dragging
+    }
+  };
 
   return (
     <div id="editor" className="editor">
@@ -67,12 +175,22 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         id="template-holder"
         style={{
           backgroundImage: `url(${backgroundImage})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          // backgroundSize: 'cover',
+          backgroundSize: `${scale * 100}%`, // Scale the background image
+          backgroundPosition: `${imagePosition.x}px ${imagePosition.y}px`, // Dynamically set the background position
+          backgroundRepeat: 'no-repeat',  // Prevent image from repeating
           width: '100%',
           height: '100%',
           lineHeight: '0',
+          cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
         }}
+        onMouseDown={handleMouseDown} // Start dragging
+        onMouseMove={handleMouseMove} // Move the image
+        onMouseUp={handleMouseUp} // Stop dragging
+        onMouseLeave={handleMouseUp} // Stop dragging if the mouse leaves the container
+        onWheel={handleWheelZoom} // Add mouse wheel listener for zooming
+        onTouchMove={handlePinchZoom} // Add touch move listener for pinch zoom
+        onTouchEnd={handleTouchEnd}   // Reset pinch zoom on touch end
       >
         <input
           type="file"
@@ -80,12 +198,13 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           style={{
             opacity: 0,              // Make the input invisible
             position: 'absolute',     // Position it absolutely in the container
-            left: 0,
+            left: '25%',
             top: 0,
-            width: '100%',            // Make it cover the entire div
-            height: '100%',
+            width: '75%',            // Make it cover the entire div
+            height: '60%',
             cursor: 'pointer',        // Show the pointer when hovering over it
           }}
+          onClick={handleBackgroundUploadClick} // Attach the click handler
           onChange={handleBackgroundUpload}
         />
         <img id="template" src={template.url} alt="Card Background" className="template-img" />
@@ -94,12 +213,19 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           style={{
             minWidth: '10%',
             position: 'absolute',
-            top: '62%',
-            left: '50%',
+            top: `calc(62% + ${fgimagePosition.y}px)`, // Maintain initial top position and add dragging offset
+            left: `calc(50% + ${fgimagePosition.x}px)`, // Maintain initial left position and add dragging offset
             transform: 'translateX(-50%)',
-            cursor: 'move',
+            cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
             height: '12%',
           }}
+          onMouseDown={fghandleMouseDown} // Start dragging
+          onMouseMove={fghandleMouseMove} // Move the image
+          onMouseUp={fghandleMouseUp} // Stop dragging
+          onMouseLeave={fghandleMouseUp} // Stop dragging if the mouse leaves the container
+          onWheel={fghandleWheelZoom} // Add mouse wheel listener for zooming
+          onTouchMove={fghandlePinchZoom} // Add touch move listener for pinch zoom
+          onTouchEnd={fghandleTouchEnd}   // Reset pinch zoom on touch end
         >
           {foregroundImage && <img src={foregroundImage} alt="Foreground" style={{
             maxWidth: '100%', // Constrain the width of the image to the container

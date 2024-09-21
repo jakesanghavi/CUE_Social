@@ -2,8 +2,6 @@ import React from 'react';
 
 const TemplateSelector = ({ templates, onTemplateSelect }) => {
 
-  console.log(templates)
-
   const handleTemplateSelect = (event) => {
     const selectedIndex = parseInt(event.target.value, 10);
     if (!isNaN(selectedIndex)) {
