@@ -1,6 +1,6 @@
 import React from 'react';
 
-const TemplateSelector = ({ icons, templates, onTemplateSelect, onIconSelect }) => {
+const TemplateSelector = ({ templates, onTemplateSelect }) => {
 
   console.log(templates)
 
@@ -11,13 +11,6 @@ const TemplateSelector = ({ icons, templates, onTemplateSelect, onIconSelect }) 
     }
   };
 
-  const handleIconSelect = (event) => {
-    const selectedIndex = parseInt(event.target.value, 10);
-    if (!isNaN(selectedIndex)) {
-      onIconSelect(icons[selectedIndex]);
-    }
-  };
-
   return (
     <div className="template-selector">
       <select onChange={handleTemplateSelect}>
@@ -25,14 +18,6 @@ const TemplateSelector = ({ icons, templates, onTemplateSelect, onIconSelect }) 
         {templates.map((template, index) => (
           <option key={index} value={index}>
             {template.name}
-          </option>
-        ))}
-      </select>
-      <select onChange={handleIconSelect}>
-        <option value="" disabled>Select an icon</option>
-        {icons.map((icon, index) => (
-          <option key={index} value={index}>
-            {icon.name}
           </option>
         ))}
       </select>

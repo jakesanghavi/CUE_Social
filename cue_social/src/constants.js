@@ -6,7 +6,7 @@ function define(name, value) {
   });
 }
 
-// For Prod:
+// // For Prod:
 define("ORIGIN", 'https://cuetavern.com')
 define("ROUTE", 'https://cue-social.onrender.com');
 // // define("ORIGIN2", 'https://cuetavern.netlify.app');

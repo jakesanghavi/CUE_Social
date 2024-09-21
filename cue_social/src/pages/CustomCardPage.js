@@ -51,24 +51,31 @@ function CustomCards() {
     }
   };
 
-  // const handleForegroundUpload = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     const imageUrl = URL.createObjectURL(file); // Create a URL for the uploaded image
-  //     setForegroundImage(imageUrl); // Set the foreground image state
-  //   }
-  // };
+  const handleForegroundUpload = (e) => {
+    const file = e.target.files[0];
+    console.log(e.target.files[0])
+    if (file) {
+      if (file.url && file.url.url) {
+        setForegroundImage(file.url.url)
+      }
+      else {
+        const imageUrl = URL.createObjectURL(file); // Create a URL for the uploaded image
+        setForegroundImage(imageUrl); // Set the foreground image state
+      }
+    }
+  };
 
   return (
     <div className="customCardPage">
       <h1>Custom Card Editor</h1>
-      <TemplateSelector icons={icons} templates={templates} onTemplateSelect={handleTemplateSelect} onIconSelect={handleIconSelect} />
-      <input type="file" accept="image/*" onChange={handleBackgroundUpload} /> {/* Image Upload Input */}
+      <TemplateSelector templates={templates} onTemplateSelect={handleTemplateSelect} />
+      {/* <input type="file" accept="image/*" onChange={handleBackgroundUpload} /> */}
+      {/* Image Upload Input */}
       {/* <input type="file" accept="image/*" onChange={handleForegroundUpload} /> */}
       {/* <div className="editor-container">
         <CardEditor template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} />
       </div> */}
-      <CardEditor template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} />
+      <CardEditor icons={icons} onIconSelect={handleIconSelect} template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} handleForegroundUpload={handleForegroundUpload} setForegroundImage={setForegroundImage} handleBackgroundUpload={handleBackgroundUpload} />
       </div>
   );
 }
