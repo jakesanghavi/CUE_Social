@@ -44,18 +44,18 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3))); // Limit zoom scale between 0.5 and 3
   };
 
-  const handlePinchZoom = (e) => {
-    if (e.touches.length === 2) {
-      e.preventDefault(); // Prevent the page zoom
-      const dist = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-      const scaleChange = dist / (imageRef.current?.prevDist || dist);
-      setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3)));
-      imageRef.current.prevDist = dist; // Store the current distance
-    }
-  };
+  // const handlePinchZoom = (e) => {
+  //   if (e.touches.length === 2) {
+  //     e.preventDefault(); // Prevent the page zoom
+  //     const dist = Math.hypot(
+  //       e.touches[0].clientX - e.touches[1].clientX,
+  //       e.touches[0].clientY - e.touches[1].clientY
+  //     );
+  //     const scaleChange = dist / (imageRef.current?.prevDist || dist);
+  //     setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3)));
+  //     imageRef.current.prevDist = dist; // Store the current distance
+  //   }
+  // };
 
   const handleTouchEnd = () => {
     imageRef.current.prevDist = null; // Reset previous distance on touch end
@@ -89,22 +89,23 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
 
   const fghandleWheelZoom = (e) => {
     e.preventDefault();
+    e.stopPropagation();
     const scaleChange = e.deltaY > 0 ? 0.97 : 1.03; // Zoom out on scroll down, zoom in on scroll up
     fgsetScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3))); // Limit zoom scale between 0.5 and 3
   };
 
-  const fghandlePinchZoom = (e) => {
-    if (e.touches.length === 2) {
-      e.preventDefault(); // Prevent the page zoom
-      const dist = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-      const scaleChange = dist / (fgimageRef.current?.prevDist || dist);
-      fgsetScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3)));
-      fgimageRef.current.prevDist = dist; // Store the current distance
-    }
-  };
+  // const fghandlePinchZoom = (e) => {
+  //   if (e.touches.length === 2) {
+  //     e.preventDefault(); // Prevent the page zoom
+  //     const dist = Math.hypot(
+  //       e.touches[0].clientX - e.touches[1].clientX,
+  //       e.touches[0].clientY - e.touches[1].clientY
+  //     );
+  //     const scaleChange = dist / (fgimageRef.current?.prevDist || dist);
+  //     fgsetScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3)));
+  //     fgimageRef.current.prevDist = dist; // Store the current distance
+  //   }
+  // };
   
 
   const fghandleTouchEnd = () => {
@@ -112,12 +113,14 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   };
 
   const fghandleMouseDown = (e) => {
+    e.stopPropagation();  // Prevent event from reaching parent
     fgsetDragging(true);
     fgsetIsDragging(false); // Reset dragging state on mouse down
     fgimageRef.current = { startX: e.clientX, startY: e.clientY }; // Track the starting mouse position
   };
 
   const fghandleMouseMove = (e) => {
+    e.stopPropagation();  // Prevent event from reaching parent
     if (fgdragging) {
       const dx = e.clientX - fgimageRef.current.startX;
       const dy = e.clientY - fgimageRef.current.startY;
@@ -169,6 +172,53 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     }
   };
 
+  const handleTouchStart = (e) => {
+    setDragging(true);
+    setIsDragging(false); 
+    const touch = e.touches[0];
+    imageRef.current = { startX: touch.clientX, startY: touch.clientY };
+  };
+  
+  const handleTouchMove = (e) => {
+    if (fgdragging) return; // Prevent background dragging if foreground is dragging
+    if (dragging) {
+      const touch = e.touches[0];
+      const dx = touch.clientX - imageRef.current.startX;
+      const dy = touch.clientY - imageRef.current.startY;
+      setImagePosition(prevPos => ({
+        x: prevPos.x + dx,
+        y: prevPos.y + dy,
+      }));
+      imageRef.current.startX = touch.clientX;
+      imageRef.current.startY = touch.clientY;
+      setIsDragging(true); // Set dragging to true during touch move
+    }
+  };
+
+  const fghandleTouchStart = (e) => {
+    e.stopPropagation();
+    fgsetDragging(true);
+    fgsetIsDragging(false); 
+    const touch = e.touches[0];
+    fgimageRef.current = { startX: touch.clientX, startY: touch.clientY };
+  };
+  
+  const fghandleTouchMove = (e) => {
+    if (fgdragging) {
+      const touch = e.touches[0];
+      const dx = touch.clientX - fgimageRef.current.startX;
+      const dy = touch.clientY - fgimageRef.current.startY;
+      fgsetImagePosition(prevPos => ({
+        x: prevPos.x + dx,
+        y: prevPos.y + dy,
+      }));
+      fgimageRef.current.startX = touch.clientX;
+      fgimageRef.current.startY = touch.clientY;
+      fgsetIsDragging(true); // Set dragging to true during touch move
+    }
+  };
+  
+
   return (
     <div id="editor" className="editor">
       <div
@@ -189,8 +239,10 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         onMouseUp={handleMouseUp} // Stop dragging
         onMouseLeave={handleMouseUp} // Stop dragging if the mouse leaves the container
         onWheel={handleWheelZoom} // Add mouse wheel listener for zooming
-        onTouchMove={handlePinchZoom} // Add touch move listener for pinch zoom
+        // onTouchMove={handlePinchZoom} // Add touch move listener for pinch zoom
         onTouchEnd={handleTouchEnd}   // Reset pinch zoom on touch end
+        onTouchStart={handleTouchStart}  // For mobile dragging
+        onTouchMove={handleTouchMove}    // For mobile dragging
       >
         <input
           type="file"
@@ -217,15 +269,18 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             left: `calc(50% + ${fgimagePosition.x}px)`, // Maintain initial left position and add dragging offset
             transform: 'translateX(-50%)',
             cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
-            height: '12%',
+            height: `${12*fgscale}%`,
           }}
           onMouseDown={fghandleMouseDown} // Start dragging
           onMouseMove={fghandleMouseMove} // Move the image
           onMouseUp={fghandleMouseUp} // Stop dragging
           onMouseLeave={fghandleMouseUp} // Stop dragging if the mouse leaves the container
           onWheel={fghandleWheelZoom} // Add mouse wheel listener for zooming
-          onTouchMove={fghandlePinchZoom} // Add touch move listener for pinch zoom
+          // onTouchMove={fghandlePinchZoom} // Add touch move listener for pinch zoom
           onTouchEnd={fghandleTouchEnd}   // Reset pinch zoom on touch end
+          onTouchStart={fghandleTouchStart}  // For mobile dragging
+          onTouchMove={fghandleTouchMove}    // For mobile dragging
+          zindex={99}
         >
           {foregroundImage && <img src={foregroundImage} alt="Foreground" style={{
             maxWidth: '100%', // Constrain the width of the image to the container
@@ -235,12 +290,12 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         </div>
       </div>
 
-      <div className="card-field" id="card-name" contentEditable={true}>Card Name</div>
-      <div className="card-field" id="energy-cost" contentEditable={true}>?</div>
-      <div className="card-field" id="power" contentEditable={true}>?</div>
-      <div className="card-field" id="card-code" contentEditable={true}>CODE</div>
-      <div className="card-field" id="ability-name" contentEditable={true}>Ability Name</div>
-      <div className="card-field" id="ability-description" contentEditable={true}>Ability Description</div>
+      <div className="card-field" id="card-name" contentEditable={true} suppressContentEditableWarning={true}>Card Name</div>
+      <div className="card-field" id="energy-cost" contentEditable={true} suppressContentEditableWarning={true}>?</div>
+      <div className="card-field" id="power" contentEditable={true} suppressContentEditableWarning={true}>?</div>
+      <div className="card-field" id="card-code" contentEditable={true} suppressContentEditableWarning={true}>CODE</div>
+      <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true}>Ability Name</div>
+      <div className="card-field" id="ability-description" contentEditable={true} suppressContentEditableWarning={true}>Ability Description</div>
 
       {/* Modal for selecting foreground image */}
       <Modal
