@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import '../component_styles/cardeditor.css'; // Custom CSS for positioning elements
 import Modal from 'react-modal'; // Use a modal package, e.g., react-modal
+import html2canvas from 'html2canvas';
 
 // Styling for the modal (you can move this to your CSS file)
 const customModalStyles = {
@@ -39,6 +40,25 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   const [fgscale, fgsetScale] = useState(1); // Track zoom scale
   const templateRef = useRef(null); // Ref to track the image's position
   const fgRef = useRef(null); // Ref to track the image's position
+
+  const templateHolderRef = useRef(null); // Ref to the template holder
+
+  const saveAsImage = () => {
+    const templateHolder = templateHolderRef.current;
+    if (templateHolder) {
+      html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: 5 }).then((canvas) => {
+        const link = document.createElement('a');
+        link.href = canvas.toDataURL('image/png');
+        link.download = 'template-image.png';
+        link.click();
+      }).catch((error) => {
+        console.error('Error capturing the image:', error);
+      });
+    } else {
+      console.warn('templateHolderRef is null or undefined');
+    }
+  };
+
 
   useEffect(() => {
     const imageElement = templateRef.current;
@@ -135,7 +155,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   //     fgimageRef.current.prevDist = dist; // Store the current distance
   //   }
   // };
-  
+
 
   const fghandleTouchEnd = () => {
     fgimageRef.current.prevDist = null; // Reset previous distance on touch end
@@ -203,11 +223,11 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
 
   const handleTouchStart = (e) => {
     setDragging(true);
-    setIsDragging(false); 
+    setIsDragging(false);
     const touch = e.touches[0];
     imageRef.current = { startX: touch.clientX, startY: touch.clientY };
   };
-  
+
   const handleTouchMove = (e) => {
     if (fgdragging) return; // Prevent background dragging if foreground is dragging
     if (dragging) {
@@ -227,11 +247,11 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   const fghandleTouchStart = (e) => {
     e.stopPropagation();
     fgsetDragging(true);
-    fgsetIsDragging(false); 
+    fgsetIsDragging(false);
     const touch = e.touches[0];
     fgimageRef.current = { startX: touch.clientX, startY: touch.clientY };
   };
-  
+
   const fghandleTouchMove = (e) => {
     if (fgdragging) {
       const touch = e.touches[0];
@@ -246,7 +266,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
       fgsetIsDragging(true); // Set dragging to true during touch move
     }
   };
-  
+
 
   return (
     <div id="editor" className="editor">
@@ -264,6 +284,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
           borderRadius: '6%', // Set your desired border radius here
         }}
+        ref={templateHolderRef} // Attach the ref here
       >
         <input
           type="file"
@@ -290,7 +311,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           onTouchMove={handleTouchMove}    // For mobile dragging
           ref={templateRef}
         />
-        <img id="template" src={template.url} alt="Card Background" className="template-img" />
+        <img id="template" src={template.url} alt="Card Background" className="template-img" crossOrigin="anonymous" />
         <div
           onClick={handleForegroundClick}
           style={{
@@ -300,7 +321,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             left: `calc(50% + ${fgimagePosition.x}px)`, // Maintain initial left position and add dragging offset
             transform: 'translateX(-50%)',
             cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
-            height: `${12*fgscale}%`,
+            height: `${12 * fgscale}%`,
           }}
           onMouseDown={fghandleMouseDown} // Start dragging
           onMouseMove={fghandleMouseMove} // Move the image
@@ -318,7 +339,9 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             maxWidth: '100%', // Constrain the width of the image to the container
             maxHeight: '100%', // Constrain the height of the image to the container
             objectFit: 'contain', // Ensure the image scales properly within the div
-          }} />}
+          }}
+            crossOrigin="anonymous"
+          />}
         </div>
       </div>
 
@@ -410,6 +433,9 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           Confirm
         </button>
       </Modal>
+      <button onClick={saveAsImage} style={{ marginTop: '20px', padding: '10px 20px', borderRadius: '5px', backgroundColor: '#007BFF', color: 'white', border: 'none', cursor: 'pointer' }}>
+        Save as Image
+      </button>
     </div>
   );
 };
