@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import '../component_styles/cardeditor.css'; // Custom CSS for positioning elements
 import Modal from 'react-modal'; // Use a modal package, e.g., react-modal
 
@@ -37,8 +37,37 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   const fgimageRef = useRef(null); // Ref to track the image's position
   const [fgisDragging, fgsetIsDragging] = useState(false); // New state to track dragging
   const [fgscale, fgsetScale] = useState(1); // Track zoom scale
+  const templateRef = useRef(null); // Ref to track the image's position
+  const fgRef = useRef(null); // Ref to track the image's position
+
+  useEffect(() => {
+    const imageElement = templateRef.current;
+    const fgImageElement = fgRef.current;
+
+    // Add event listener for background zoom
+    if (imageElement) {
+      imageElement.addEventListener('wheel', handleWheelZoom, { passive: false });
+    }
+
+    // Add event listener for foreground zoom
+    if (fgImageElement) {
+      fgImageElement.addEventListener('wheel', fghandleWheelZoom, { passive: false });
+    }
+
+    // Cleanup the event listeners when component unmounts
+    return () => {
+      console.log('glb')
+      if (imageElement) {
+        imageElement.removeEventListener('wheel', handleWheelZoom, { passive: false });
+      }
+      if (fgImageElement) {
+        fgImageElement.removeEventListener('wheel', fghandleWheelZoom, { passive: false });
+      }
+    };
+  }, []);
 
   const handleWheelZoom = (e) => {
+    console.log(e)
     e.preventDefault();
     const scaleChange = e.deltaY > 0 ? 0.97 : 1.03; // Zoom out on scroll down, zoom in on scroll up
     setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3))); // Limit zoom scale between 0.5 and 3
@@ -233,16 +262,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           height: '100%',
           lineHeight: '0',
           cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
+          borderRadius: '6%', // Set your desired border radius here
         }}
-        onMouseDown={handleMouseDown} // Start dragging
-        onMouseMove={handleMouseMove} // Move the image
-        onMouseUp={handleMouseUp} // Stop dragging
-        onMouseLeave={handleMouseUp} // Stop dragging if the mouse leaves the container
-        onWheel={handleWheelZoom} // Add mouse wheel listener for zooming
-        // onTouchMove={handlePinchZoom} // Add touch move listener for pinch zoom
-        onTouchEnd={handleTouchEnd}   // Reset pinch zoom on touch end
-        onTouchStart={handleTouchStart}  // For mobile dragging
-        onTouchMove={handleTouchMove}    // For mobile dragging
       >
         <input
           type="file"
@@ -258,6 +279,16 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           }}
           onClick={handleBackgroundUploadClick} // Attach the click handler
           onChange={handleBackgroundUpload}
+          onMouseDown={handleMouseDown} // Start dragging
+          onMouseMove={handleMouseMove} // Move the image
+          onMouseUp={handleMouseUp} // Stop dragging
+          onMouseLeave={handleMouseUp} // Stop dragging if the mouse leaves the container
+          // onWheel={handleWheelZoom} // Add mouse wheel listener for zooming
+          // onTouchMove={handlePinchZoom} // Add touch move listener for pinch zoom
+          onTouchEnd={handleTouchEnd}   // Reset pinch zoom on touch end
+          onTouchStart={handleTouchStart}  // For mobile dragging
+          onTouchMove={handleTouchMove}    // For mobile dragging
+          ref={templateRef}
         />
         <img id="template" src={template.url} alt="Card Background" className="template-img" />
         <div
@@ -275,12 +306,13 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           onMouseMove={fghandleMouseMove} // Move the image
           onMouseUp={fghandleMouseUp} // Stop dragging
           onMouseLeave={fghandleMouseUp} // Stop dragging if the mouse leaves the container
-          onWheel={fghandleWheelZoom} // Add mouse wheel listener for zooming
+          // onWheel={fghandleWheelZoom} // Add mouse wheel listener for zooming
           // onTouchMove={fghandlePinchZoom} // Add touch move listener for pinch zoom
           onTouchEnd={fghandleTouchEnd}   // Reset pinch zoom on touch end
           onTouchStart={fghandleTouchStart}  // For mobile dragging
           onTouchMove={fghandleTouchMove}    // For mobile dragging
           zindex={99}
+          ref={fgRef}
         >
           {foregroundImage && <img src={foregroundImage} alt="Foreground" style={{
             maxWidth: '100%', // Constrain the width of the image to the container

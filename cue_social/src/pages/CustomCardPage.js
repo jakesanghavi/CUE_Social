@@ -8,11 +8,29 @@ const templates = customCardBorders().map(url => {
   const parts = url.split('/');
   const fileName = parts[parts.length - 1].split('.')[0]; // Get the file name without the extension
   const nameParts = fileName.split('_').slice(0, 2); // Take the first two parts of the name
-  const name = nameParts.join(' '); // Join the name parts with a space
+  var limited = "Basic"
+  var rarity = "Common"
+
+  const map1 = new Map();
+  map1.set('comm', 'Common')
+  map1.set('rare', 'Rare')
+  map1.set('epic', 'Epic')
+  map1.set('leg', 'Legendary')
+
+  if (nameParts[1].substring(0, 3) === 'Lim') {
+    limited = 'Limited'
+    rarity = map1.get(nameParts[1].substring(3))
+  }
+  else {
+    rarity = nameParts[1]
+  }
+
 
   return {
     url: url,
-    name: name
+    album: nameParts[0],
+    limited: limited,
+    rarity: rarity
   };
 });
 
@@ -53,7 +71,6 @@ function CustomCards() {
 
   const handleForegroundUpload = (e) => {
     const file = e.target.files[0];
-    console.log(e.target.files[0])
     if (file) {
       if (file.url && file.url.url) {
         setForegroundImage(file.url.url)
@@ -76,7 +93,7 @@ function CustomCards() {
         <CardEditor template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} />
       </div> */}
       <CardEditor icons={icons} onIconSelect={handleIconSelect} template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} handleForegroundUpload={handleForegroundUpload} setForegroundImage={setForegroundImage} handleBackgroundUpload={handleBackgroundUpload} />
-      </div>
+    </div>
   );
 }
 
