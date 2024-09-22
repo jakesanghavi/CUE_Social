@@ -2,6 +2,8 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
+  touch-action: pan-x pan-y;
+  height: 100% 
 }
 
 @font-face {
@@ -51,10 +53,6 @@
       width: 50%; 
       margin: auto;
       margin-top: 5%;
-      /* -webkit-transform:scale(0.7);
-      -moz-transform:scale(0.7);
-      -ms-transform:scale(0.7);
-      transform:scale(0.7); */
       }
   }
 
@@ -75,7 +73,6 @@
     .editor {
       position: relative;
       width: 50%; 
-      /* height: 70%; */
       margin: auto;
       margin-top: -15%;
       -webkit-transform:scale(0.6);
@@ -190,4 +187,15 @@
     font-size: 1vw;
     text-align: center;
     font-family: 'Tharlon', sans-serif;
+  }
+
+  .scale-hidden {
+    /* display: none; */
+    /* z-index: -99; */
+    transform: scale(1) !important; /* Ensure it overrides existing styles */
+  }
+
+  .page-specific {
+    touch-action: pan-x pan-y;
+    height: 100%;
   }

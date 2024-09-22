@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CardEditor from '../components/CardEditor';
 import TemplateSelector from '../components/TemplateSelector';
 import { customCardBorders, customCardIcons } from '../UsefulFunctions';
@@ -51,6 +51,7 @@ const icons = customCardIcons().map(url => {
 
 const saveAsImage = () => {
   let templateHolder = document.getElementById('toCapture');
+  let editor = document.getElementById('editor')
 
   // Create a new template holder if it doesn't exist
   if (!templateHolder) {
@@ -60,23 +61,45 @@ const saveAsImage = () => {
     document.body.appendChild(templateHolder);
   }
 
-  console.log(templateHolder.innerHTML)
+  if (!editor) {
+    editor = document.createElement('div');
+    editor.id = 'editor';
+    // Add content to templateHolder dynamically
+    document.body.appendChild(editor);
+  }
+
+  // Get the current scale
+  // const currentScale = getComputedStyle(editor).transform;
+
+  editor.classList.add('scale-hidden');
+
+
+  // Set scale to 1 for image capture
+  // editor.style.transform = 'scale(1)';
 
   // Capture the element as an image
-  html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: 10 })
+  html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: 2 })
     .then((canvas) => {
       const link = document.createElement('a');
       link.href = canvas.toDataURL('image/png');
       link.download = 'template-image.png';
       link.click();
 
+      // Restore the original scale
+      // editor.style.transform = currentScale;
+      editor.classList.remove('scale-hidden');
+
       // Optionally remove dynamically created elements after the screenshot
       if (!document.getElementById('toCapture')) {
         document.body.removeChild(templateHolder);
+        document.body.removeChild(editor);
       }
     })
     .catch((error) => {
       console.error('Error capturing the image:', error);
+      // Restore the original scale in case of error
+      // editor.style.transform = currentScale;
+      editor.classList.remove('scale-hidden');
     });
 };
 
@@ -114,6 +137,19 @@ function CustomCards() {
       }
     }
   };
+
+  useEffect(() => {
+    const root = document.documentElement;
+    
+    // Add class to root when component is mounted
+    root.classList.add('page-specific');
+    console.log(root.classList)
+  
+    // Cleanup function to remove class when component is unmounted
+    return () => {
+      root.classList.remove('page-specific');
+    };
+  }, []);
 
   return (
     <div className="customCardPage">

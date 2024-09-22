@@ -276,7 +276,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
               height: 'auto', // Maintain aspect ratio
               objectFit: 'cover', // Cover the whole area
               zIndex: -1, // Ensure it stays behind other content
-              maxWidth: '100%'
+              // maxWidth: '100%'
             }}
             crossOrigin="anonymous"
           />
