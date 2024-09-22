@@ -255,18 +255,31 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         <div
           id="template-holder"
           style={{
-            backgroundImage: `url(${backgroundImage})`,
-            // backgroundSize: 'cover',
-            backgroundSize: `${scale * 100}%`, // Scale the background image
-            backgroundPosition: `${imagePosition.x}px ${imagePosition.y}px`, // Dynamically set the background position
-            backgroundRepeat: 'no-repeat',  // Prevent image from repeating
             width: '100%',
             height: '100%',
             lineHeight: '0',
             cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
             borderRadius: '6%', // Set your desired border radius here
+            overflow: 'hidden',
+            position: 'relative'
           }}
         >
+          <img
+            id="template"
+            src={backgroundImage}
+            alt="Background"
+            style={{
+              position: 'absolute',
+              top: `${imagePosition.y}px`,
+              left: `${imagePosition.x}px`,
+              width: `${scale * 100}%`, // Scale the background image
+              height: 'auto', // Maintain aspect ratio
+              objectFit: 'cover', // Cover the whole area
+              zIndex: -1, // Ensure it stays behind other content
+              maxWidth: '100%'
+            }}
+            crossOrigin="anonymous"
+          />
           <input
             type="file"
             accept="image/*"
