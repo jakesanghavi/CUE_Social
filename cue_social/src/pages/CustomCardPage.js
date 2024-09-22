@@ -50,21 +50,34 @@ const icons = customCardIcons().map(url => {
 });
 
 const saveAsImage = () => {
-  const templateHolder = document.getElementById('template-holder'); // Assuming ID is used
-  if (templateHolder) {
-    html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: 10 })
-      .then((canvas) => {
-        const link = document.createElement('a');
-        link.href = canvas.toDataURL('image/png');
-        link.download = 'template-image.png';
-        link.click();
-      })
-      .catch((error) => {
-        console.error('Error capturing the image:', error);
-      });
-  } else {
-    console.warn('templateHolder is null or undefined');
+  let templateHolder = document.getElementById('toCapture');
+
+  // Create a new template holder if it doesn't exist
+  if (!templateHolder) {
+    templateHolder = document.createElement('div');
+    templateHolder.id = 'toCapture';
+    // Add content to templateHolder dynamically
+    document.body.appendChild(templateHolder);
   }
+
+  console.log(templateHolder.innerHTML)
+
+  // Capture the element as an image
+  html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: 10 })
+    .then((canvas) => {
+      const link = document.createElement('a');
+      link.href = canvas.toDataURL('image/png');
+      link.download = 'template-image.png';
+      link.click();
+
+      // Optionally remove dynamically created elements after the screenshot
+      if (!document.getElementById('toCapture')) {
+        document.body.removeChild(templateHolder);
+      }
+    })
+    .catch((error) => {
+      console.error('Error capturing the image:', error);
+    });
 };
 
 function CustomCards() {

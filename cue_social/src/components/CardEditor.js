@@ -251,87 +251,88 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
 
   return (
     <div id="editor" className="editor">
-      <div
-        id="template-holder"
-        style={{
-          backgroundImage: `url(${backgroundImage})`,
-          // backgroundSize: 'cover',
-          backgroundSize: `${scale * 100}%`, // Scale the background image
-          backgroundPosition: `${imagePosition.x}px ${imagePosition.y}px`, // Dynamically set the background position
-          backgroundRepeat: 'no-repeat',  // Prevent image from repeating
-          width: '100%',
-          height: '100%',
-          lineHeight: '0',
-          cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
-          borderRadius: '6%', // Set your desired border radius here
-        }}
-      >
-        <input
-          type="file"
-          accept="image/*"
-          style={{
-            opacity: 0,              // Make the input invisible
-            position: 'absolute',     // Position it absolutely in the container
-            left: '25%',
-            top: 0,
-            width: '75%',            // Make it cover the entire div
-            height: '60%',
-            cursor: 'pointer',        // Show the pointer when hovering over it
-          }}
-          onClick={handleBackgroundUploadClick} // Attach the click handler
-          onChange={handleBackgroundUpload}
-          onMouseDown={handleMouseDown} // Start dragging
-          onMouseMove={handleMouseMove} // Move the image
-          onMouseUp={handleMouseUp} // Stop dragging
-          onMouseLeave={handleMouseUp} // Stop dragging if the mouse leaves the container
-          // onWheel={handleWheelZoom} // Add mouse wheel listener for zooming
-          // onTouchMove={handlePinchZoom} // Add touch move listener for pinch zoom
-          onTouchEnd={handleTouchEnd}   // Reset pinch zoom on touch end
-          onTouchStart={handleTouchStart}  // For mobile dragging
-          onTouchMove={handleTouchMove}    // For mobile dragging
-          ref={templateRef}
-        />
-        <img id="template" src={template.url} alt="Card Background" className="template-img" crossOrigin="anonymous" />
+      <div id='toCapture'>
         <div
-          onClick={handleForegroundClick}
+          id="template-holder"
           style={{
-            minWidth: '10%',
-            position: 'absolute',
-            top: `calc(62% + ${fgimagePosition.y}px)`, // Maintain initial top position and add dragging offset
-            left: `calc(50% + ${fgimagePosition.x}px - ${(12 * fgscale) / 1.45}%)`, // Adjust left position based on image width
-            // transform: 'translateX(-50%)',
+            backgroundImage: `url(${backgroundImage})`,
+            // backgroundSize: 'cover',
+            backgroundSize: `${scale * 100}%`, // Scale the background image
+            backgroundPosition: `${imagePosition.x}px ${imagePosition.y}px`, // Dynamically set the background position
+            backgroundRepeat: 'no-repeat',  // Prevent image from repeating
+            width: '100%',
+            height: '100%',
+            lineHeight: '0',
             cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
-            height: `${12 * fgscale}%`,
+            borderRadius: '6%', // Set your desired border radius here
           }}
-          onMouseDown={fghandleMouseDown} // Start dragging
-          onMouseMove={fghandleMouseMove} // Move the image
-          onMouseUp={fghandleMouseUp} // Stop dragging
-          onMouseLeave={fghandleMouseUp} // Stop dragging if the mouse leaves the container
-          // onWheel={fghandleWheelZoom} // Add mouse wheel listener for zooming
-          // onTouchMove={fghandlePinchZoom} // Add touch move listener for pinch zoom
-          onTouchEnd={fghandleTouchEnd}   // Reset pinch zoom on touch end
-          onTouchStart={fghandleTouchStart}  // For mobile dragging
-          onTouchMove={fghandleTouchMove}    // For mobile dragging
-          zindex={99}
-          ref={fgRef}
         >
-          {foregroundImage && <img src={foregroundImage} alt="Foreground" style={{
-            maxWidth: '100%', // Constrain the width of the image to the container
-            maxHeight: '100%', // Constrain the height of the image to the container
-            objectFit: 'contain', // Ensure the image scales properly within the div
-          }}
-            crossOrigin="anonymous"
-          />}
+          <input
+            type="file"
+            accept="image/*"
+            style={{
+              opacity: 0,              // Make the input invisible
+              position: 'absolute',     // Position it absolutely in the container
+              left: '25%',
+              top: 0,
+              width: '75%',            // Make it cover the entire div
+              height: '60%',
+              cursor: 'pointer',        // Show the pointer when hovering over it
+            }}
+            onClick={handleBackgroundUploadClick} // Attach the click handler
+            onChange={handleBackgroundUpload}
+            onMouseDown={handleMouseDown} // Start dragging
+            onMouseMove={handleMouseMove} // Move the image
+            onMouseUp={handleMouseUp} // Stop dragging
+            onMouseLeave={handleMouseUp} // Stop dragging if the mouse leaves the container
+            // onWheel={handleWheelZoom} // Add mouse wheel listener for zooming
+            // onTouchMove={handlePinchZoom} // Add touch move listener for pinch zoom
+            onTouchEnd={handleTouchEnd}   // Reset pinch zoom on touch end
+            onTouchStart={handleTouchStart}  // For mobile dragging
+            onTouchMove={handleTouchMove}    // For mobile dragging
+            ref={templateRef}
+          />
+          <img id="template" src={template.url} alt="Card Background" className="template-img" crossOrigin="anonymous" />
+          <div
+            onClick={handleForegroundClick}
+            style={{
+              minWidth: '10%',
+              position: 'absolute',
+              top: `calc(62% + ${fgimagePosition.y}px)`, // Maintain initial top position and add dragging offset
+              left: `calc(50% + ${fgimagePosition.x}px - ${(12 * fgscale) / 1.45}%)`, // Adjust left position based on image width
+              // transform: 'translateX(-50%)',
+              cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
+              height: `${12 * fgscale}%`,
+            }}
+            onMouseDown={fghandleMouseDown} // Start dragging
+            onMouseMove={fghandleMouseMove} // Move the image
+            onMouseUp={fghandleMouseUp} // Stop dragging
+            onMouseLeave={fghandleMouseUp} // Stop dragging if the mouse leaves the container
+            // onWheel={fghandleWheelZoom} // Add mouse wheel listener for zooming
+            // onTouchMove={fghandlePinchZoom} // Add touch move listener for pinch zoom
+            onTouchEnd={fghandleTouchEnd}   // Reset pinch zoom on touch end
+            onTouchStart={fghandleTouchStart}  // For mobile dragging
+            onTouchMove={fghandleTouchMove}    // For mobile dragging
+            zindex={99}
+            ref={fgRef}
+          >
+            {foregroundImage && <img src={foregroundImage} alt="Foreground" style={{
+              maxWidth: '100%', // Constrain the width of the image to the container
+              maxHeight: '100%', // Constrain the height of the image to the container
+              objectFit: 'contain', // Ensure the image scales properly within the div
+            }}
+              crossOrigin="anonymous"
+            />}
+          </div>
         </div>
+
+        <div className="card-field" id="card-name" contentEditable={true} suppressContentEditableWarning={true}>Card Name</div>
+        <div className="card-field" id="energy-cost" contentEditable={true} suppressContentEditableWarning={true}>?</div>
+        <div className="card-field" id="power" contentEditable={true} suppressContentEditableWarning={true}>?</div>
+        <div className="card-field" id="card-code" contentEditable={true} suppressContentEditableWarning={true}>CODE</div>
+        <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true}>Ability Name</div>
+        <div className="card-field" id="ability-description" contentEditable={true} suppressContentEditableWarning={true}>Ability Description</div>
       </div>
-
-      <div className="card-field" id="card-name" contentEditable={true} suppressContentEditableWarning={true}>Card Name</div>
-      <div className="card-field" id="energy-cost" contentEditable={true} suppressContentEditableWarning={true}>?</div>
-      <div className="card-field" id="power" contentEditable={true} suppressContentEditableWarning={true}>?</div>
-      <div className="card-field" id="card-code" contentEditable={true} suppressContentEditableWarning={true}>CODE</div>
-      <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true}>Ability Name</div>
-      <div className="card-field" id="ability-description" contentEditable={true} suppressContentEditableWarning={true}>Ability Description</div>
-
       {/* Modal for selecting foreground image */}
       <Modal
         isOpen={isModalOpen}
