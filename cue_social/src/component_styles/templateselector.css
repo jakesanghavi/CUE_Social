@@ -1,0 +1,71 @@
+.template-selector {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 20px;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+.template-selector select {
+    padding: 12px 16px; /* More padding for a cleaner look */
+    border-radius: 8px; /* Softer rounded corners */
+    border: 1px solid #e0e0e0; /* Light border for modern minimalism */
+    font-size: 16px; 
+    background-color: #f9f9f9; /* Softer background color */
+    color: #333; /* Darker text for better contrast */
+    flex: 1 1 200px;
+    min-width: 160px;
+    height: 45px;
+    box-sizing: border-box;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+    max-width: 100%;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+.template-selector select:focus {
+    border-color: #007bff; /* Subtle blue border on focus */
+    box-shadow: 0 4px 10px rgba(0, 123, 255, 0.2); /* Slight glow effect */
+}
+
+.template-selector select:hover {
+    background-color: lightgray; /* Blue border on hover */
+}
+
+
+.template-selector button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 12px 20px; /* Adjusted padding for consistency */
+    border-radius: 8px; /* Match the select's border radius */
+    background-color: #007BFF; /* Primary button color */
+    color: white; 
+    border: none; 
+    cursor: pointer; 
+    height: 45px; /* Match the select's height */
+    font-size: 16px; 
+    box-sizing: border-box; 
+    flex: 1 1 200px; 
+    max-width: 100%; 
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Added transform for hover effect */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+}
+
+/* .template-selector button:hover {
+    background-color: #0056b3;
+} */
+
+.template-selector button:hover {
+    background-color: #0056b3; /* Darker shade for hover state */
+    transform: translateY(-2px); /* Slight lift on hover for a modern effect */
+}
+
+.template-selector button:focus {
+    outline: none; /* Remove default outline */
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.5); /* Subtle focus ring */
+}

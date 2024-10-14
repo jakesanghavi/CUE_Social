@@ -143,7 +143,7 @@ function CustomCards() {
     
     // Add class to root when component is mounted
     root.classList.add('page-specific');
-    console.log(root.classList)
+    // console.log(root.classList)
   
     // Cleanup function to remove class when component is unmounted
     return () => {
@@ -154,7 +154,7 @@ function CustomCards() {
   return (
     <div className="customCardPage">
       <h1>Custom Card Editor</h1>
-      <TemplateSelector templates={templates} onTemplateSelect={handleTemplateSelect} />
+      <TemplateSelector templates={templates} onTemplateSelect={handleTemplateSelect} saveAsImage={saveAsImage} />
       {/* <input type="file" accept="image/*" onChange={handleBackgroundUpload} /> */}
       {/* Image Upload Input */}
       {/* <input type="file" accept="image/*" onChange={handleForegroundUpload} /> */}
@@ -162,9 +162,6 @@ function CustomCards() {
         <CardEditor template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} />
       </div> */}
       <CardEditor icons={icons} onIconSelect={handleIconSelect} template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} handleForegroundUpload={handleForegroundUpload} setForegroundImage={setForegroundImage} handleBackgroundUpload={handleBackgroundUpload} />
-      <button onClick={saveAsImage} style={{ marginTop: '20px', padding: '10px 20px', borderRadius: '5px', backgroundColor: '#007BFF', color: 'white', border: 'none', cursor: 'pointer' }}>
-        Save as Image
-      </button>
     </div>
   );
 }

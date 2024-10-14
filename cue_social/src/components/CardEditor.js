@@ -137,6 +137,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   // };
 
 
+  /* eslint-disable no-unused-vars */
   const fghandleTouchEnd = () => {
     fgimageRef.current.prevDist = null; // Reset previous distance on touch end
   };
@@ -247,7 +248,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
       fgsetIsDragging(true); // Set dragging to true during touch move
     }
   };
-
+  /* eslint-disable no-unused-vars */
 
   return (
     <div id="editor" className="editor">
@@ -306,7 +307,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             ref={templateRef}
           />
           <img id="template" src={template.url} alt="Card Background" className="template-img" crossOrigin="anonymous" />
-          <div
+          {/* <div
             onClick={handleForegroundClick}
             style={{
               minWidth: '10%',
@@ -326,6 +327,22 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             onTouchEnd={fghandleTouchEnd}   // Reset pinch zoom on touch end
             onTouchStart={fghandleTouchStart}  // For mobile dragging
             onTouchMove={fghandleTouchMove}    // For mobile dragging
+            zindex={99}
+            ref={fgRef}
+          > */}
+          <div
+            onClick={handleForegroundClick}
+            style={{
+              minWidth: '10%',
+              position: 'absolute',
+              top: `calc(61.4% + ${fgimagePosition.y}px)`, // Maintain initial top position and add dragging offset
+              left: `calc(50% + ${fgimagePosition.x}px - ${(13.1 * fgscale) / 1.43}%)`, // Adjust left position based on image width
+              // transform: 'translateX(-50%)',
+              cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
+              height: `${13.1 * fgscale}%`,
+            }}
+            // onWheel={fghandleWheelZoom} // Add mouse wheel listener for zooming
+            // onTouchMove={fghandlePinchZoom} // Add touch move listener for pinch zoom
             zindex={99}
             ref={fgRef}
           >
@@ -369,6 +386,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true}>Ability Name</div>
         <div className="card-field" id="ability-description" contentEditable={true} suppressContentEditableWarning={true}>Ability Description</div>
       </div>
+      
       {/* Modal for selecting foreground image */}
       <Modal
         isOpen={isModalOpen}
