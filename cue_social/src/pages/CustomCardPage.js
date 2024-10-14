@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CardEditor from '../components/CardEditor';
 import TemplateSelector from '../components/TemplateSelector';
-import { customCardBorders, customCardIcons } from '../UsefulFunctions';
+import { customCardBorders, customCardIcons, cardEditIcons } from '../UsefulFunctions';
 import html2canvas from 'html2canvas';
 
 // const templates = customCardBorders();
@@ -107,6 +107,8 @@ function CustomCards() {
   const [selectedTemplate, setSelectedTemplate] = useState(templates[0]);
   const [backgroundImage, setBackgroundImage] = useState(null); // State to hold the background image
   const [foregroundImage, setForegroundImage] = useState(null); // State to hold the foreground image
+  const isMobile = window.innerWidth <= 600; // Check if the screen width is less than or equal to 600px
+  const minSize = isMobile ? '10%' : '7%'; // Set the minimum size based on screen size
 
   const handleTemplateSelect = (template) => {
     setSelectedTemplate(template);
@@ -126,7 +128,7 @@ function CustomCards() {
 
   const handleForegroundUpload = (e) => {
     const file = e.target.files[0];
-    console.log(file)
+    // console.log(file)
     if (file) {
       if (file.url && file.url.url) {
         setForegroundImage(file.url.url)
@@ -140,30 +142,48 @@ function CustomCards() {
 
   useEffect(() => {
     const root = document.documentElement;
-    
+
     // Add class to root when component is mounted
     root.classList.add('page-specific');
     // console.log(root.classList)
-  
+
     // Cleanup function to remove class when component is unmounted
     return () => {
       root.classList.remove('page-specific');
     };
   }, []);
 
-  return (
-    <div className="customCardPage">
+
+return (
+  <div className="customCardPage">
       <h1>Custom Card Editor</h1>
       <TemplateSelector templates={templates} onTemplateSelect={handleTemplateSelect} saveAsImage={saveAsImage} />
-      {/* <input type="file" accept="image/*" onChange={handleBackgroundUpload} /> */}
-      {/* Image Upload Input */}
-      {/* <input type="file" accept="image/*" onChange={handleForegroundUpload} /> */}
-      {/* <div className="editor-container">
-        <CardEditor template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} />
-      </div> */}
-      <CardEditor icons={icons} onIconSelect={handleIconSelect} template={selectedTemplate} backgroundImage={backgroundImage} foregroundImage={foregroundImage} handleForegroundUpload={handleForegroundUpload} setForegroundImage={setForegroundImage} handleBackgroundUpload={handleBackgroundUpload} />
-    </div>
-  );
+
+      {/* Centered Grid Container */}
+      <div className='iconGridWrapper'>
+          <div className='iconGridContainer' style={{ gridTemplateColumns: `repeat(${cardEditIcons.length}, ${minSize})` }}>
+              {cardEditIcons().map((url, index) => (
+                  <div key={index} className='iconImageWrapper'>
+                      <img src={url} alt={`${index + 1}`} className='iconImage' />
+                  </div>
+              ))}
+          </div>
+      </div>
+
+      <CardEditor 
+          icons={icons} 
+          onIconSelect={handleIconSelect} 
+          template={selectedTemplate} 
+          backgroundImage={backgroundImage} 
+          foregroundImage={foregroundImage} 
+          handleForegroundUpload={handleForegroundUpload} 
+          setForegroundImage={setForegroundImage} 
+          handleBackgroundUpload={handleBackgroundUpload} 
+          cardEditIcons={cardEditIcons} 
+      />
+  </div>
+);
+
 }
 
 export default CustomCards;

@@ -23,7 +23,7 @@ const customModalStyles = {
 };
 
 // Modal component for selecting or uploading an image
-const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegroundUpload, icons, handleBackgroundUpload }) => {
+const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegroundUpload, icons, handleBackgroundUpload, cardEditIcons }) => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [selectedURL, setSelectedURL] = useState(''); // Dropdown selection
   const foregroundRef = useRef(null); // Ref for hidden file input
@@ -67,7 +67,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   }, []);
 
   const handleWheelZoom = (e) => {
-    console.log(e)
+    // console.log(e)
     e.preventDefault();
     const scaleChange = e.deltaY > 0 ? 0.97 : 1.03; // Zoom out on scroll down, zoom in on scroll up
     setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3))); // Limit zoom scale between 0.5 and 3
@@ -268,7 +268,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           <img
             id="template"
             src={backgroundImage}
-            alt="Background"
+            alt=""
             style={{
               position: 'absolute',
               top: `${imagePosition.y}px`,
@@ -306,7 +306,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             onTouchMove={handleTouchMove}    // For mobile dragging
             ref={templateRef}
           />
-          <img id="template" src={template.url} alt="Card Background" className="template-img" crossOrigin="anonymous" />
+          <img id="template" src={template.url} alt="" className="template-img" crossOrigin="anonymous" />
           {/* <div
             onClick={handleForegroundClick}
             style={{
@@ -346,7 +346,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             zindex={99}
             ref={fgRef}
           >
-            {foregroundImage && <img src={foregroundImage} alt="Foreground" style={{
+            {foregroundImage && <img src={foregroundImage} alt="" style={{
               maxWidth: '100%', // Constrain the width of the image to the container
               maxHeight: '100%', // Constrain the height of the image to the container
               objectFit: 'contain', // Ensure the image scales properly within the div
