@@ -34,7 +34,7 @@ const getDecksBySearch = async (request, response) => {
     // });
 
     // const { resources } = await cloudinary.search
-    //     .expression('folder:CustomCardTemplates/Backgrounds/*')
+    //     .expression('folder:CustomCardTemplates/bordered/*')
     //     .max_results(200)
     //     .execute()
 

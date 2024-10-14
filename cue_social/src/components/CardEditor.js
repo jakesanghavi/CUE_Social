@@ -311,11 +311,11 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             style={{
               minWidth: '10%',
               position: 'absolute',
-              top: `calc(62% + ${fgimagePosition.y}px)`, // Maintain initial top position and add dragging offset
-              left: `calc(50% + ${fgimagePosition.x}px - ${(12 * fgscale) / 1.45}%)`, // Adjust left position based on image width
+              top: `calc(61.4% + ${fgimagePosition.y}px)`, // Maintain initial top position and add dragging offset
+              left: `calc(50% + ${fgimagePosition.x}px - ${(13.1 * fgscale) / 1.43}%)`, // Adjust left position based on image width
               // transform: 'translateX(-50%)',
               cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
-              height: `${12 * fgscale}%`,
+              height: `${13.1 * fgscale}%`,
             }}
             onMouseDown={fghandleMouseDown} // Start dragging
             onMouseMove={fghandleMouseMove} // Move the image
@@ -337,6 +337,29 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
               crossOrigin="anonymous"
             />}
           </div>
+          {/* <input
+            style={{
+              position: 'absolute',
+              top: `calc(62% + ${fgimagePosition.y}px)`,
+              left: `calc(50% + ${fgimagePosition.x}px - ${(12 * fgscale) / 1.45}%)`,
+              height: `${12 * fgscale}%`,
+              cursor: 'grab',
+              opacity: 0, // Hide the input but keep it interactive
+              minWidth: '10%'
+            }}
+            onMouseDown={fghandleMouseDown} // Start dragging
+            onMouseMove={fghandleMouseMove} // Move the image
+            onMouseUp={fghandleMouseUp} // Stop dragging
+            onMouseLeave={fghandleMouseUp} // Stop dragging if the mouse leaves the container
+            onWheel={fghandleWheelZoom}
+            onTouchEnd={fghandleTouchEnd}   // Reset pinch zoom on touch end
+            onTouchStart={fghandleTouchStart}  // For mobile dragging
+            onTouchMove={fghandleTouchMove}    // For mobile dragging
+            zindex={99}
+            ref={fgRef}
+            onClick={handleForegroundClick}
+          /> */}
+          {/* <img src={foregroundImage} alt="Foreground Icon"/> */}
         </div>
 
         <div className="card-field" id="card-name" contentEditable={true} suppressContentEditableWarning={true}>Card Name</div>
