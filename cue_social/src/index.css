@@ -11,6 +11,8 @@ body {
   margin: 0;
   font-family: "Poppins";
   height: 100vh;
+  font-size: 100%;
+  line-height: 1.2;
 }
 
 html, body {

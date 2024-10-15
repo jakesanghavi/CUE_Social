@@ -183,16 +183,25 @@
     color: #323232;
   }
 
+  #ability-desc-holder {
+    top: 87.5%;
+    left: 4.5%;
+    width: 91%;
+    height: 20px;
+  }
+
   #ability-description {
     top: 87.5%;
     left: 4.5%;
     width: 91%;
     font-size: 2vw;
     /* text-align: center; */
+    /* vertical-align: middle; */
     font-family: 'Cabin', sans-serif;
     font-weight: 400; /* Regular */
     color: #323232;
     position: absolute;
+    /* height: 10%; */
   }
 
   #card-code {

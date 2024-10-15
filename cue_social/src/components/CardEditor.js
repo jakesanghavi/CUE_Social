@@ -71,6 +71,30 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     };
   }, []);
 
+  useEffect(() => {
+      const element = document.getElementById('ability-description');
+      const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
+      const containerHeight = element.offsetHeight;
+
+      // const numChars = content.replace(/<[^>]*>/g, '').length;
+
+
+      // Calculate the number of lines by dividing the container height by the line height
+      const numberOfLines = containerHeight / lineHeight;
+
+      console.log(numberOfLines)
+
+      // Adjust the font size based on the number of lines
+      if (numberOfLines > 2) {
+      // if (numChars > 200) {
+          // element.style.fontSize = `${numChars/300}vw`; // Reduce font size for more lines
+          console.log(numberOfLines/3)
+          element.style.fontSize = `${numberOfLines/3}vw`;
+      } else {
+          element.style.fontSize = "2vw"; // Default font size for fewer lines
+      }
+  }, [content])
+
   const handleWheelZoom = (e) => {
     // console.log(e)
     e.preventDefault();
@@ -390,17 +414,18 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         <div className="card-field" id="card-code" contentEditable={true} suppressContentEditableWarning={true}>CODE</div>
         <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true}>Ability Name</div>
         {/* <div className="card-field" id="ability-description" contentEditable={true} suppressContentEditableWarning={true}>Ability Description</div> */}
-        <span
-          className="card-field"
-          id="ability-description"
-          contentEditable={true}
-          suppressContentEditableWarning={true}
-          onInput={handleInputChange} // Update the state when the content changes
-          value={content}
-        >
-          Ability description
-        </span>
-
+        {/* <div id='ability-desc-holder'> */}
+          <span
+            className="card-field"
+            id="ability-description"
+            contentEditable={true}
+            suppressContentEditableWarning={true}
+            onInput={handleInputChange} // Update the state when the content changes
+            value={content}
+          >
+            Ability description
+          </span>
+        {/* </div> */}
       </div>
 
       {/* Modal for selecting foreground image */}
