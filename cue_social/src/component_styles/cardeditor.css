@@ -1,3 +1,4 @@
+
 .customCardPage {
   height: 100vh;
   display: flex;
@@ -183,14 +184,15 @@
   }
 
   #ability-description {
-    bottom: 9%;
-    left: -8%;
-    width: 60%;
+    top: 87.5%;
+    left: 4.5%;
+    width: 91%;
     font-size: 2vw;
-    text-align: center;
+    /* text-align: center; */
     font-family: 'Cabin', sans-serif;
     font-weight: 400; /* Regular */
     color: #323232;
+    position: absolute;
   }
 
   #card-code {

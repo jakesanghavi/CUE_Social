@@ -140,6 +140,41 @@ function CustomCards() {
     }
   };
 
+  const insertImageAtCursor = (url) => {
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const parentDiv = document.getElementById('ability-description');
+
+      // Check if the selection is within the ability-description div
+      if (parentDiv && parentDiv.contains(range.startContainer)) {
+        // Create a new image element
+        const img = document.createElement('img');
+        img.src = url;
+        img.alt = ""; // Set alt text for accessibility
+        const element = document.getElementById('template-holder');
+        const height = element.offsetHeight;
+        img.style.height = `${height/40}px`; // Maintain aspect ratio
+        img.style.width = "auto"; // Set max width to 100% of the container
+        // img.style.width = "5%"; // Maintain aspect ratio
+        // img.style.height = "auto"; // Set max width to 100% of the container
+        // img.style.maxHeight = '10px';
+        img.style.margin = "3px 10px 0px 0px"; // Optional: adds some spacing around the image
+
+        // Insert the image into the current range
+        range.insertNode(img);
+
+        // Clear the selection
+        selection.removeAllRanges();
+
+        // Move the cursor after the inserted image
+        range.setStartAfter(img);
+        range.collapse(true);
+        selection.addRange(range);
+      }
+    }
+  };
+
   useEffect(() => {
     const root = document.documentElement;
 
@@ -154,35 +189,36 @@ function CustomCards() {
   }, []);
 
 
-return (
-  <div className="customCardPage">
+  return (
+    <div className="customCardPage">
       <h1>Custom Card Editor</h1>
       <TemplateSelector templates={templates} onTemplateSelect={handleTemplateSelect} saveAsImage={saveAsImage} />
 
       {/* Centered Grid Container */}
       <div className='iconGridWrapper'>
-          <div className='iconGridContainer' style={{ gridTemplateColumns: `repeat(${cardEditIcons.length}, ${minSize})` }}>
-              {cardEditIcons().map((url, index) => (
-                  <div key={index} className='iconImageWrapper'>
-                      <img src={url} alt={`${index + 1}`} className='iconImage' />
-                  </div>
-              ))}
-          </div>
+        <div className='iconGridContainer' style={{ gridTemplateColumns: `repeat(${cardEditIcons.length}, ${minSize})` }}>
+          {cardEditIcons().map((url, index) => (
+            <div key={index} className='iconImageWrapper'>
+              <img src={url} alt={`${index + 1}`} className='iconImage' onClick={() => insertImageAtCursor(url)} />
+            </div>
+          ))}
+        </div>
       </div>
 
-      <CardEditor 
-          icons={icons} 
-          onIconSelect={handleIconSelect} 
-          template={selectedTemplate} 
-          backgroundImage={backgroundImage} 
-          foregroundImage={foregroundImage} 
-          handleForegroundUpload={handleForegroundUpload} 
-          setForegroundImage={setForegroundImage} 
-          handleBackgroundUpload={handleBackgroundUpload} 
-          cardEditIcons={cardEditIcons} 
+      <CardEditor
+        icons={icons}
+        onIconSelect={handleIconSelect}
+        template={selectedTemplate}
+        backgroundImage={backgroundImage}
+        foregroundImage={foregroundImage}
+        handleForegroundUpload={handleForegroundUpload}
+        setForegroundImage={setForegroundImage}
+        handleBackgroundUpload={handleBackgroundUpload}
+        cardEditIcons={cardEditIcons}
+        insertImageAtCursor={insertImageAtCursor}
       />
-  </div>
-);
+    </div>
+  );
 
 }
 

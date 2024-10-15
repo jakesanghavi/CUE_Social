@@ -23,7 +23,7 @@ const customModalStyles = {
 };
 
 // Modal component for selecting or uploading an image
-const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegroundUpload, icons, handleBackgroundUpload, cardEditIcons }) => {
+const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegroundUpload, icons, handleBackgroundUpload, insertImageAtCursor }) => {
   const [isModalOpen, setIsModalOpen] = useState(false); // Modal state
   const [selectedURL, setSelectedURL] = useState(''); // Dropdown selection
   const foregroundRef = useRef(null); // Ref for hidden file input
@@ -39,6 +39,11 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   const [fgscale, fgsetScale] = useState(1); // Track zoom scale
   const templateRef = useRef(null); // Ref to track the image's position
   const fgRef = useRef(null); // Ref to track the image's position
+  const [content, setContent] = useState('Ability description'); // Holds the current content with text and images
+
+  const handleInputChange = (e) => {
+    setContent(e.target.innerHTML.split('').reverse().join('')); // Update content state based on input
+  };
 
   useEffect(() => {
     const imageElement = templateRef.current;
@@ -384,9 +389,20 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         <div className="card-field" id="power" contentEditable={true} suppressContentEditableWarning={true}>?</div>
         <div className="card-field" id="card-code" contentEditable={true} suppressContentEditableWarning={true}>CODE</div>
         <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true}>Ability Name</div>
-        <div className="card-field" id="ability-description" contentEditable={true} suppressContentEditableWarning={true}>Ability Description</div>
+        {/* <div className="card-field" id="ability-description" contentEditable={true} suppressContentEditableWarning={true}>Ability Description</div> */}
+        <span
+          className="card-field"
+          id="ability-description"
+          contentEditable={true}
+          suppressContentEditableWarning={true}
+          onInput={handleInputChange} // Update the state when the content changes
+          value={content}
+        >
+          Ability description
+        </span>
+
       </div>
-      
+
       {/* Modal for selecting foreground image */}
       <Modal
         isOpen={isModalOpen}
