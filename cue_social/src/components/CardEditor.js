@@ -71,28 +71,82 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     };
   }, []);
 
+  const setFontSize = (element) => {
+    const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
+    const containerHeight = element.offsetHeight;
+
+    const initial = 2;
+
+    // Calculate the number of lines
+    const numberOfLines = Math.round(containerHeight / lineHeight);
+
+    let fontSize;
+
+    if (numberOfLines <= 1) {
+      fontSize = `${initial}vw`;
+    } else if (numberOfLines === 2) {
+      fontSize = `${(63 * initial) / 81}vw`;
+    } else if (numberOfLines === 3) {
+      fontSize = `${(50 * initial) / 81}vw`;
+    } else if (numberOfLines === 4) {
+      fontSize = `${(39 * initial) / 81}vw`;
+    } else {
+      fontSize = `${numberOfLines / 7}vw`; // Fallback or default size
+    }
+
+    // Set font size
+    element.style.fontSize = fontSize;
+
+    // Update the height of any embedded images based on the new font size
+    const computedFontSize = getComputedStyle(element).fontSize;
+
+    // Find all <img> tags within the element
+    const images = element.querySelectorAll('img');
+    images.forEach((img) => {
+      img.style.height = computedFontSize; // Set image height equal to font size
+    });
+  };
+
   useEffect(() => {
-      const element = document.getElementById('ability-description');
-      const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
-      const containerHeight = element.offsetHeight;
+    const desc = document.getElementById('ability-description');
+    // const lineHeight = parseFloat(getComputedStyle(desc).lineHeight);
+    // const containerHeight = element.offsetHeight;
 
-      // const numChars = content.replace(/<[^>]*>/g, '').length;
+    // const numChars = content.replace(/<[^>]*>/g, '').length;
 
 
-      // Calculate the number of lines by dividing the container height by the line height
-      const numberOfLines = containerHeight / lineHeight;
+    // Calculate the number of lines by dividing the container height by the line height
+    // const numberOfLines = containerHeight / lineHeight;
 
-      console.log(numberOfLines)
 
-      // Adjust the font size based on the number of lines
-      if (numberOfLines > 2) {
-      // if (numChars > 200) {
-          // element.style.fontSize = `${numChars/300}vw`; // Reduce font size for more lines
-          console.log(numberOfLines/3)
-          element.style.fontSize = `${numberOfLines/3}vw`;
-      } else {
-          element.style.fontSize = "2vw"; // Default font size for fewer lines
-      }
+    // Adjust the font size based on the number of lines
+    // if (Math.round(numberOfLines) > 2) {
+    //   console.log(Math.round(numberOfLines))
+    // // if (numChars > 200) {
+    //     // element.style.fontSize = `${numChars/300}vw`; // Reduce font size for more lines
+    //     element.style.fontSize = `${numberOfLines/2}vw`;
+    //     console.log(element.style.fontSize)
+    // } else {
+    //     element.style.fontSize = "2vw"; // Default font size for fewer lines
+    // }
+
+    // const initial = 2;
+
+    // Adjust the font size based on the number of lines
+    // if (Math.round(numberOfLines) <= 1) {
+    //   element.style.fontSize = `${initial}vw`;
+    // } else if (Math.round(numberOfLines) === 2) {
+    //   element.style.fontSize = `${63*initial/81}vw`;
+    // } else if (Math.round(numberOfLines) === 3) {
+    //   element.style.fontSize = `${50*initial/81}vw`;
+    // } else if (Math.round(numberOfLines) === 4) {
+    //   element.style.fontSize = `${39*initial/81}vw`;
+    // } else {
+    //   element.style.fontSize = `${Math.round(numberOfLines)/7}vw`; // Fallback or default size
+    // }
+    if (desc) {
+      setFontSize(desc);
+    }
   }, [content])
 
   const handleWheelZoom = (e) => {
@@ -414,8 +468,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         <div className="card-field" id="card-code" contentEditable={true} suppressContentEditableWarning={true}>CODE</div>
         <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true}>Ability Name</div>
         {/* <div className="card-field" id="ability-description" contentEditable={true} suppressContentEditableWarning={true}>Ability Description</div> */}
-        {/* <div id='ability-desc-holder'> */}
-          <span
+        <div id='ability-desc-holder'>
+          <div
             className="card-field"
             id="ability-description"
             contentEditable={true}
@@ -424,8 +478,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             value={content}
           >
             Ability description
-          </span>
-        {/* </div> */}
+          </div>
+        </div>
       </div>
 
       {/* Modal for selecting foreground image */}

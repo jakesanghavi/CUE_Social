@@ -152,14 +152,16 @@ function CustomCards() {
         const img = document.createElement('img');
         img.src = url;
         img.alt = ""; // Set alt text for accessibility
-        const element = document.getElementById('template-holder');
-        const height = element.offsetHeight;
-        img.style.height = `${height/40}px`; // Maintain aspect ratio
+        // const element = document.getElementById('template-holder');
+        // const height = element.offsetHeight;
+        // img.style.height = `${height/30}px`; // Maintain aspect ratio
+        img.style.height = '2vw';
+        img.className = 'custicon';
         img.style.width = "auto"; // Set max width to 100% of the container
         // img.style.width = "5%"; // Maintain aspect ratio
         // img.style.height = "auto"; // Set max width to 100% of the container
         // img.style.maxHeight = '10px';
-        img.style.margin = "3px 10px 0px 0px"; // Optional: adds some spacing around the image
+        // img.style.margin = "1vw 0px 0px 0px"; // Optional: adds some spacing around the image
 
         // Insert the image into the current range
         range.insertNode(img);
