@@ -40,6 +40,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   const templateRef = useRef(null); // Ref to track the image's position
   const fgRef = useRef(null); // Ref to track the image's position
   const [content, setContent] = useState('Ability description'); // Holds the current content with text and images
+  const [spans, setSpans] = useState([{ id: 1, content: content }]); // Array of spans with unique IDs
+  const [nextId, setNextId] = useState(2);
 
   const handleInputChange = (e) => {
     setContent(e.target.innerHTML.split('').reverse().join('')); // Update content state based on input
@@ -61,7 +63,6 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
 
     // Cleanup the event listeners when component unmounts
     return () => {
-      console.log('glb')
       if (imageElement) {
         imageElement.removeEventListener('wheel', handleWheelZoom, { passive: false });
       }
@@ -75,7 +76,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
     const containerHeight = element.offsetHeight;
 
-    const initial = 2;
+    const initial = 2.3;
 
     // Calculate the number of lines
     const numberOfLines = Math.round(containerHeight / lineHeight);
@@ -104,6 +105,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     const images = element.querySelectorAll('img');
     images.forEach((img) => {
       img.style.height = computedFontSize; // Set image height equal to font size
+      img.style.display = 'inline-block';
     });
   };
 
@@ -333,6 +335,36 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   };
   /* eslint-disable no-unused-vars */
 
+  const handleKeyDown = (e, spanIndex) => {
+    console.log('hi')
+    const updatedSpans = [...spans];
+
+    // Handle Enter key to add a new span
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const newSpan = { id: nextId, content: 'Ability Description' };
+      updatedSpans.splice(spanIndex + 1, 0, newSpan); // Insert new span after the current one
+      setSpans(updatedSpans);
+      setNextId(nextId + 1);
+    }
+
+    // Handle Delete key to remove an empty span
+    if (e.key === 'Delete' && updatedSpans[spanIndex].content === '') {
+      e.preventDefault();
+      if (updatedSpans.length > 1) {
+        updatedSpans.splice(spanIndex, 1); // Remove the empty span
+        setSpans(updatedSpans);
+      }
+    }
+  };
+
+  // Handle span content change
+  const handleSpanChange = (e, spanIndex) => {
+    const updatedSpans = [...spans];
+    updatedSpans[spanIndex].content = e.target.innerText;
+    setSpans(updatedSpans);
+  };
+
   return (
     <div id="editor" className="editor">
       <div id='toCapture'>
@@ -469,16 +501,31 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true}>Ability Name</div>
         {/* <div className="card-field" id="ability-description" contentEditable={true} suppressContentEditableWarning={true}>Ability Description</div> */}
         <div id='ability-desc-holder'>
-          <div
+          <span
             className="card-field"
             id="ability-description"
-            contentEditable={true}
-            suppressContentEditableWarning={true}
+            // contentEditable={true}
+            contentEditable={false}
+            // suppressContentEditableWarning={true}
             onInput={handleInputChange} // Update the state when the content changes
             value={content}
           >
-            Ability description
-          </div>
+            {/* <span>
+              Ability description 
+            </span> */}
+            {spans.map((span, index) => (
+              <span
+                key={span.id}
+                contentEditable={true}
+                suppressContentEditableWarning
+                className="editable-span"
+                onKeyDown={(e) => handleKeyDown(e, index)}
+                onInput={(e) => handleSpanChange(e, index)}
+              >
+                {span.content}
+              </span>
+            ))}
+          </span>
         </div>
       </div>
 
