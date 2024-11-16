@@ -54,6 +54,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     // Add event listener for background zoom
     if (imageElement) {
       imageElement.addEventListener('wheel', handleWheelZoom, { passive: false });
+      imageElement.addEventListener('touchmove', handlePinchZoom, { passive: false} )
+      imageElement.addEventListener('touchend', handleTouchEnd, { passive: false} )
     }
 
     // Add event listener for foreground zoom
@@ -65,6 +67,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     return () => {
       if (imageElement) {
         imageElement.removeEventListener('wheel', handleWheelZoom, { passive: false });
+        imageElement.removeEventListener('touchmove', handlePinchZoom, { passive: false} )
+        imageElement.removeEventListener('touchend', handleTouchEnd, { passive: false} )
       }
       if (fgImageElement) {
         fgImageElement.removeEventListener('wheel', fghandleWheelZoom, { passive: false });
@@ -158,18 +162,18 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3))); // Limit zoom scale between 0.5 and 3
   };
 
-  // const handlePinchZoom = (e) => {
-  //   if (e.touches.length === 2) {
-  //     e.preventDefault(); // Prevent the page zoom
-  //     const dist = Math.hypot(
-  //       e.touches[0].clientX - e.touches[1].clientX,
-  //       e.touches[0].clientY - e.touches[1].clientY
-  //     );
-  //     const scaleChange = dist / (imageRef.current?.prevDist || dist);
-  //     setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3)));
-  //     imageRef.current.prevDist = dist; // Store the current distance
-  //   }
-  // };
+  const handlePinchZoom = (e) => {
+    if (e.touches.length === 2) {
+      e.preventDefault(); // Prevent the page zoom
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      const scaleChange = dist / (imageRef.current?.prevDist || dist);
+      setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3)));
+      imageRef.current.prevDist = dist; // Store the current distance
+    }
+  };
 
   const handleTouchEnd = () => {
     imageRef.current.prevDist = null; // Reset previous distance on touch end
@@ -499,32 +503,16 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         <div className="card-field" id="power" contentEditable={true} suppressContentEditableWarning={true}>?</div>
         <div className="card-field" id="card-code" contentEditable={true} suppressContentEditableWarning={true}>CODE</div>
         <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true}>Ability Name</div>
-        {/* <div className="card-field" id="ability-description" contentEditable={true} suppressContentEditableWarning={true}>Ability Description</div> */}
         <div id='ability-desc-holder'>
           <span
             className="card-field"
             id="ability-description"
-            // contentEditable={true}
-            contentEditable={false}
-            // suppressContentEditableWarning={true}
+            contentEditable={true}
+            suppressContentEditableWarning={true}
             onInput={handleInputChange} // Update the state when the content changes
             value={content}
           >
-            {/* <span>
               Ability description 
-            </span> */}
-            {spans.map((span, index) => (
-              <span
-                key={span.id}
-                contentEditable={true}
-                suppressContentEditableWarning
-                className="editable-span"
-                onKeyDown={(e) => handleKeyDown(e, index)}
-                onInput={(e) => handleSpanChange(e, index)}
-              >
-                {span.content}
-              </span>
-            ))}
           </span>
         </div>
       </div>
