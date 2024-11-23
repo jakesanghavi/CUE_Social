@@ -307,7 +307,7 @@ function CustomCards() {
         cardEditIcons={cardEditIcons}
         insertImageAtCursor={insertImageAtCursor}
       />
-      <button id="add-ability-button" onClick={addAbility}>Add ability</button>
+      <button id="add-ability-button" onClick={addAbility} style={{width: '80%', margin: 'auto'}}>Add ability</button>
     </div>
   );
 

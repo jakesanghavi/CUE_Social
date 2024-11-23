@@ -42,9 +42,19 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   const [content, setContent] = useState('Ability description'); // Holds the current content with text and images
   const [spans, setSpans] = useState([{ id: 1, content: content }]); // Array of spans with unique IDs
   const [nextId, setNextId] = useState(2);
+  const [energy, setEnergy] = useState('?');
+  const [power, setPower] = useState('?');
 
   const handleInputChange = (e) => {
     setContent(e.target.innerHTML.split('').reverse().join('')); // Update content state based on input
+  };
+
+  const handlePowerChange = (e) => {
+    setPower(e.target.innerHTML.split('').reverse().join('')); // Update content state based on input
+  };
+
+  const handleEnergyChange = (e) => {
+    setEnergy(e.target.innerHTML.split('').reverse().join('')); // Update content state based on input
   };
 
   useEffect(() => {
@@ -80,6 +90,27 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
     const containerHeight = element.offsetHeight;
 
+    element.childNodes.forEach(node => {
+        node.childNodes.forEach(node2 => {
+          node2.childNodes.forEach(node3 => {
+            node3.childNodes.forEach(node4 => {
+              if (node4.nodeName === '#text') {
+                console.log(node4)
+                // node3.textContent = node.textContent.replace(/&nbsp;/, " ");
+                // node.textContent = node.textContent.replace(/(\u00A0)([^\s])/, "\u00A0 $2");
+                // node.textContent = node.textContent.replace(/([^\s])(\u00A0)/, "$1 \u00A0");
+              }
+              else {
+                console.log(node3.childNodes)
+              }
+            })
+          })
+        })
+    });
+
+    // const currentContent = element.innerHTML;
+    // const updatedContent = currentContent.replace(/^(&nbsp;|\s)+/, "").replace(/\s/g, "\u00A0");
+    // element.innerHTML = updatedContent;
     const initial = 2.3;
 
     // Calculate the number of lines
@@ -92,7 +123,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     } else if (numberOfLines === 2) {
       fontSize = `${(63 * initial) / 81}vw`;
     } else if (numberOfLines === 3) {
-      fontSize = `${(50 * initial) / 81}vw`;
+      fontSize = `${(68 * initial) / 81}vw`;
     } else if (numberOfLines === 4) {
       fontSize = `${(42 * initial) / 81}vw`;
     } else {
@@ -114,8 +145,28 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         img.style.display = 'block';
         img.style.margin = 'auto';
       }
+      else {
+        img.style.whiteSpace = "pre-wrap;"
+      }
     });
   };
+
+  const setPEFontSize = (elementID) => {
+    const element = document.getElementById(elementID)
+    const elLength = element.innerHTML.length;
+    if (elLength <= 1) {
+      element.style.fontSize = '5.75vw';
+    }
+    else if (elLength === 2) {
+      element.style.fontSize = '4.5vw';
+    }
+    else if (elLength === 3) {
+      element.style.fontSize = '3.25vw';
+    }
+    else {
+      element.style.fontSize = `${2}vw`;
+    }
+  }
 
   useEffect(() => {
     const desc = document.getElementById('ability-description');
@@ -123,6 +174,20 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
       setFontSize(desc);
     }
   }, [content])
+
+  useEffect(() => {
+    const energia = document.getElementById('energy-cost');
+    if (energia) {
+      setPEFontSize('energy-cost');
+    }
+  }, [energy])
+
+  useEffect(() => {
+    const poder = document.getElementById('power');
+    if (poder) {
+      setPEFontSize('power');
+    }
+  }, [power])
 
   const handleWheelZoom = (e) => {
     e.preventDefault();
@@ -407,8 +472,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         </div>
 
         <div className="card-field" id="card-name" contentEditable={true} suppressContentEditableWarning={true}>Card Name</div>
-        <div className="card-field" id="energy-cost" contentEditable={true} suppressContentEditableWarning={true}>?</div>
-        <div className="card-field" id="power" contentEditable={true} suppressContentEditableWarning={true}>?</div>
+        <div className="card-field" id="energy-cost" contentEditable={true} suppressContentEditableWarning={true} onInput={handleEnergyChange} value={energy}>?</div>
+        <div className="card-field" id="power" contentEditable={true} suppressContentEditableWarning={true} onInput={handlePowerChange} value={power}>?</div>
         <div className="card-field" id="card-code" contentEditable={true} suppressContentEditableWarning={true}>CODE</div>
         <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true}>Ability Name</div>
         <div id='ability-desc-holder'>
