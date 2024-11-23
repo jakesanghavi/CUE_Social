@@ -54,8 +54,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     // Add event listener for background zoom
     if (imageElement) {
       imageElement.addEventListener('wheel', handleWheelZoom, { passive: false });
-      imageElement.addEventListener('touchmove', handlePinchZoom, { passive: false} )
-      imageElement.addEventListener('touchend', handleTouchEnd, { passive: false} )
+      imageElement.addEventListener('touchmove', handlePinchZoom, { passive: false })
+      imageElement.addEventListener('touchend', handleTouchEnd, { passive: false })
     }
 
     // Add event listener for foreground zoom
@@ -67,8 +67,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     return () => {
       if (imageElement) {
         imageElement.removeEventListener('wheel', handleWheelZoom, { passive: false });
-        imageElement.removeEventListener('touchmove', handlePinchZoom, { passive: false} )
-        imageElement.removeEventListener('touchend', handleTouchEnd, { passive: false} )
+        imageElement.removeEventListener('touchmove', handlePinchZoom, { passive: false })
+        imageElement.removeEventListener('touchend', handleTouchEnd, { passive: false })
       }
       if (fgImageElement) {
         fgImageElement.removeEventListener('wheel', fghandleWheelZoom, { passive: false });
@@ -94,7 +94,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     } else if (numberOfLines === 3) {
       fontSize = `${(50 * initial) / 81}vw`;
     } else if (numberOfLines === 4) {
-      fontSize = `${(39 * initial) / 81}vw`;
+      fontSize = `${(42 * initial) / 81}vw`;
     } else {
       fontSize = `${numberOfLines / 7}vw`; // Fallback or default size
     }
@@ -109,54 +109,22 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     const images = element.querySelectorAll('img');
     images.forEach((img) => {
       img.style.height = computedFontSize; // Set image height equal to font size
-      img.style.display = 'inline-block';
+      if (img.src.includes('play') || img.src.includes('draw') | img.src.includes('return') | img.src.includes('start')) {
+        img.style.marginTop = '0%';
+        img.style.display = 'block';
+        img.style.margin = 'auto';
+      }
     });
   };
 
   useEffect(() => {
     const desc = document.getElementById('ability-description');
-    // const lineHeight = parseFloat(getComputedStyle(desc).lineHeight);
-    // const containerHeight = element.offsetHeight;
-
-    // const numChars = content.replace(/<[^>]*>/g, '').length;
-
-
-    // Calculate the number of lines by dividing the container height by the line height
-    // const numberOfLines = containerHeight / lineHeight;
-
-
-    // Adjust the font size based on the number of lines
-    // if (Math.round(numberOfLines) > 2) {
-    //   console.log(Math.round(numberOfLines))
-    // // if (numChars > 200) {
-    //     // element.style.fontSize = `${numChars/300}vw`; // Reduce font size for more lines
-    //     element.style.fontSize = `${numberOfLines/2}vw`;
-    //     console.log(element.style.fontSize)
-    // } else {
-    //     element.style.fontSize = "2vw"; // Default font size for fewer lines
-    // }
-
-    // const initial = 2;
-
-    // Adjust the font size based on the number of lines
-    // if (Math.round(numberOfLines) <= 1) {
-    //   element.style.fontSize = `${initial}vw`;
-    // } else if (Math.round(numberOfLines) === 2) {
-    //   element.style.fontSize = `${63*initial/81}vw`;
-    // } else if (Math.round(numberOfLines) === 3) {
-    //   element.style.fontSize = `${50*initial/81}vw`;
-    // } else if (Math.round(numberOfLines) === 4) {
-    //   element.style.fontSize = `${39*initial/81}vw`;
-    // } else {
-    //   element.style.fontSize = `${Math.round(numberOfLines)/7}vw`; // Fallback or default size
-    // }
     if (desc) {
       setFontSize(desc);
     }
   }, [content])
 
   const handleWheelZoom = (e) => {
-    // console.log(e)
     e.preventDefault();
     const scaleChange = e.deltaY > 0 ? 0.97 : 1.03; // Zoom out on scroll down, zoom in on scroll up
     setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3))); // Limit zoom scale between 0.5 and 3
@@ -211,20 +179,6 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     const scaleChange = e.deltaY > 0 ? 0.97 : 1.03; // Zoom out on scroll down, zoom in on scroll up
     fgsetScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3))); // Limit zoom scale between 0.5 and 3
   };
-
-  // const fghandlePinchZoom = (e) => {
-  //   if (e.touches.length === 2) {
-  //     e.preventDefault(); // Prevent the page zoom
-  //     const dist = Math.hypot(
-  //       e.touches[0].clientX - e.touches[1].clientX,
-  //       e.touches[0].clientY - e.touches[1].clientY
-  //     );
-  //     const scaleChange = dist / (fgimageRef.current?.prevDist || dist);
-  //     fgsetScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3)));
-  //     fgimageRef.current.prevDist = dist; // Store the current distance
-  //   }
-  // };
-
 
   /* eslint-disable no-unused-vars */
   const fghandleTouchEnd = () => {
@@ -340,7 +294,6 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   /* eslint-disable no-unused-vars */
 
   const handleKeyDown = (e, spanIndex) => {
-    console.log('hi')
     const updatedSpans = [...spans];
 
     // Handle Enter key to add a new span
@@ -368,6 +321,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     updatedSpans[spanIndex].content = e.target.innerText;
     setSpans(updatedSpans);
   };
+
 
   return (
     <div id="editor" className="editor">
@@ -426,29 +380,6 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             ref={templateRef}
           />
           <img id="template" src={template.url} alt="" className="template-img" crossOrigin="anonymous" />
-          {/* <div
-            onClick={handleForegroundClick}
-            style={{
-              minWidth: '10%',
-              position: 'absolute',
-              top: `calc(61.4% + ${fgimagePosition.y}px)`, // Maintain initial top position and add dragging offset
-              left: `calc(50% + ${fgimagePosition.x}px - ${(13.1 * fgscale) / 1.43}%)`, // Adjust left position based on image width
-              // transform: 'translateX(-50%)',
-              cursor: dragging ? 'grabbing' : 'grab', // Change cursor during drag
-              height: `${13.1 * fgscale}%`,
-            }}
-            onMouseDown={fghandleMouseDown} // Start dragging
-            onMouseMove={fghandleMouseMove} // Move the image
-            onMouseUp={fghandleMouseUp} // Stop dragging
-            onMouseLeave={fghandleMouseUp} // Stop dragging if the mouse leaves the container
-            // onWheel={fghandleWheelZoom} // Add mouse wheel listener for zooming
-            // onTouchMove={fghandlePinchZoom} // Add touch move listener for pinch zoom
-            onTouchEnd={fghandleTouchEnd}   // Reset pinch zoom on touch end
-            onTouchStart={fghandleTouchStart}  // For mobile dragging
-            onTouchMove={fghandleTouchMove}    // For mobile dragging
-            zindex={99}
-            ref={fgRef}
-          > */}
           <div
             onClick={handleForegroundClick}
             style={{
@@ -473,29 +404,6 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
               crossOrigin="anonymous"
             />}
           </div>
-          {/* <input
-            style={{
-              position: 'absolute',
-              top: `calc(62% + ${fgimagePosition.y}px)`,
-              left: `calc(50% + ${fgimagePosition.x}px - ${(12 * fgscale) / 1.45}%)`,
-              height: `${12 * fgscale}%`,
-              cursor: 'grab',
-              opacity: 0, // Hide the input but keep it interactive
-              minWidth: '10%'
-            }}
-            onMouseDown={fghandleMouseDown} // Start dragging
-            onMouseMove={fghandleMouseMove} // Move the image
-            onMouseUp={fghandleMouseUp} // Stop dragging
-            onMouseLeave={fghandleMouseUp} // Stop dragging if the mouse leaves the container
-            onWheel={fghandleWheelZoom}
-            onTouchEnd={fghandleTouchEnd}   // Reset pinch zoom on touch end
-            onTouchStart={fghandleTouchStart}  // For mobile dragging
-            onTouchMove={fghandleTouchMove}    // For mobile dragging
-            zindex={99}
-            ref={fgRef}
-            onClick={handleForegroundClick}
-          /> */}
-          {/* <img src={foregroundImage} alt="Foreground Icon"/> */}
         </div>
 
         <div className="card-field" id="card-name" contentEditable={true} suppressContentEditableWarning={true}>Card Name</div>
@@ -512,7 +420,6 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             onInput={handleInputChange} // Update the state when the content changes
             value={content}
           >
-              Ability description 
           </span>
         </div>
       </div>
@@ -599,7 +506,6 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           Confirm
         </button>
       </Modal>
-
     </div>
   );
 };
