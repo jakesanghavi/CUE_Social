@@ -1,89 +1,130 @@
-
 .customCardPage {
   height: 100vh;
   display: flex;
   flex-direction: column;
   touch-action: pan-x pan-y;
-  height: 100% 
+  height: 100%
 }
 
 @font-face {
   font-family: 'Tharlon';
   src: url("../Tharlon.eot") format("embedded-opentype"),
-      url("../Tharlon.woff") format("woff"),
-      url('../Tharlon.ttf') format('truetype');
+    url("../Tharlon.woff") format("woff"),
+    url('../Tharlon.ttf') format('truetype');
   font-weight: 400;
 }
 
 .editor {
   position: relative;
-  width: 50%; 
+  width: 50%;
   /* height: 70%; */
-  margin: auto;
+  /* margin: auto; */
+}
+
+@media screen and (max-width: 449px) {
+  .editor {
+    position: relative;
+    width: 50%;
+    margin: auto;
+    margin-top: 20%;
+    -webkit-transform: scale(1.4);
+    -moz-transform: scale(1.4);
+    -ms-transform: scale(1.4);
+    transform: scale(1.4);
   }
 
-  @media screen and (max-width: 449px) {
-    .editor {
-      position: relative;
-      width: 50%; 
-      margin: auto;
-      margin-top: 20%;
-      -webkit-transform:scale(1.4);
-      -moz-transform:scale(1.4);
-      -ms-transform:scale(1.4);
-      transform:scale(1.4);
-      }
+  #add-ability-button {
+    margin-top: 20%;
+    width: 50%;
+    /* margin: auto; */
+    align-self: center;
+    align-content: center;
+    justify-content: center;
+  }
+}
+
+@media screen and (min-width: 449px) and (max-width: 549px) {
+  .editor {
+    position: relative;
+    width: 50%;
+    margin: auto;
+    margin-top: 10%;
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    transform: scale(1.2);
   }
 
-  @media screen and (min-width: 449px) and (max-width: 549px) {
-    .editor {
-      position: relative;
-      width: 50%; 
-      margin: auto;
-      margin-top: 10%;
-      -webkit-transform:scale(1.2);
-      -moz-transform:scale(1.2);
-      -ms-transform:scale(1.2);
-      transform:scale(1.2);
-      }
+  #add-ability-button {
+    margin-top: 20%;
+    width: 50%;
+    /* margin: auto; */
+    align-self: center;
+    align-content: center;
+    justify-content: center;
   }
+}
 
-  @media screen and (min-width: 549px) and (max-width: 699px) {
-    .editor {
-      position: relative;
-      width: 50%; 
-      margin: auto;
-      margin-top: 5%;
-      }
+@media screen and (min-width: 549px) and (max-width: 699px) {
+  .editor {
+    position: relative;
+    width: 50%;
+    margin: auto;
+    margin-top: 5%;
   }
-
-  @media screen and (min-width: 700px) and (max-width: 999px) {
-    .editor {
-      position: relative;
-      width: 50%; 
-      margin: auto;
-      margin-top: -5%;
-      -webkit-transform:scale(0.7);
-      -moz-transform:scale(0.7);
-      -ms-transform:scale(0.7);
-      transform:scale(0.7);
-      }
+  #add-ability-button {
+    margin-top: 20%;
+    width: 50%;
+    /* margin: auto; */
+    align-self: center;
+    align-content: center;
+    justify-content: center;
   }
+}
 
-  @media screen and (min-width: 1000px) {
-    .editor {
-      position: relative;
-      width: 50%; 
-      margin: auto;
-      margin-top: -15%;
-      -webkit-transform:scale(0.6);
-      -moz-transform:scale(0.6);
-      -ms-transform:scale(0.6);
-      transform:scale(0.6);
-      }
+@media screen and (min-width: 700px) and (max-width: 999px) {
+  .editor {
+    position: relative;
+    width: 50%;
+    margin: auto;
+    margin-top: -5%;
+    -webkit-transform: scale(0.7);
+    -moz-transform: scale(0.7);
+    -ms-transform: scale(0.7);
+    transform: scale(0.7);
   }
+  #add-ability-button {
+    margin-top: 20%;
+    width: 50%;
+    /* margin: auto; */
+    align-self: center;
+    align-content: center;
+    justify-content: center;
+  }
+}
 
-  /* @media (max-width: 900px) {
+@media screen and (min-width: 1000px) {
+  .editor {
+    position: relative;
+    width: 50%;
+    margin: auto;
+    margin-top: -15%;
+    -webkit-transform: scale(0.6);
+    -moz-transform: scale(0.6);
+    -ms-transform: scale(0.6);
+    transform: scale(0.6);
+  }
+  #add-ability-button {
+    margin-top: -11%;
+    width: 30%;
+    /* margin: auto; */
+    align-self: center;
+    align-content: center;
+    justify-content: center;
+  }
+}
+
+/* @media (max-width: 900px) {
     .editor {
       position: relative;
       width: 50%; 
@@ -96,7 +137,7 @@
       }
   } */
 
-  /* @media (max-width: 1100px) {
+/* @media (max-width: 1100px) {
     .editor {
       position: relative;
       width: 50%; 
@@ -110,163 +151,247 @@
   } */
 
 
-  .template-img {
-    width: 100%;
-    height: 100%;
-    /* clip-path: inset(0 0 2% 0); */
-  }
+.template-img {
+  width: 100%;
+  height: 100%;
+  /* clip-path: inset(0 0 2% 0); */
+}
 
-  .card-field {
-    position: absolute;
-    font-family: 'Poppins', sans-serif;
-    color: white;
-    /* word-spacing: nowrap;
+.card-field {
+  position: absolute;
+  font-family: 'Poppins', sans-serif;
+  color: white;
+  /* word-spacing: nowrap;
     display: inline-block; */
-  }
+}
 
-  #card-name {
-    bottom: 19%;
-    /* Adjust these values based on your template */
-    /* left: 20%; */
-    width: 82%;
-    font-size: 3.3vw;
-    text-align: center;
-    /* Center text within the element */
-    position: absolute;
-    /* Ensure positioning relative to parent */
-    transform: translateX(-50%);
-    /* Center element horizontally by moving it left by half of its width */
-    left: 50%;
-    font-family: 'Open Sans', sans-serif;
-    font-weight: 700; /* Bold */
-    text-transform: uppercase; /* Forces text to be uppercase */
-  }
+#card-name {
+  bottom: 19%;
+  /* Adjust these values based on your template */
+  /* left: 20%; */
+  width: 82%;
+  font-size: 3.1vw;
+  text-align: center;
+  /* Center text within the element */
+  position: absolute;
+  /* Ensure positioning relative to parent */
+  transform: translateX(-50%);
+  /* Center element horizontally by moving it left by half of its width */
+  left: 50%;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  /* Bold */
+  text-transform: uppercase;
+  /* Forces text to be uppercase */
+}
 
-  #energy-cost {
-    top: 0.75%;
-    left: 0%;
-    width: 15%;
-    height: 10.5%;
-    align-content: center;
-    justify-content: center;
-    font-size: 5vw;
-    text-align: center;
-    font-family: 'Cabin', sans-serif;
-    font-weight: 700; /* Bold */
-    font-style: italic;
-    text-shadow: 
-        -1px -1px 0 #000,  
-        1px -1px 0 #000,
-        -1px 1px 0 #000,
-        1px 1px 0 #000; /* Create the outline effect */
-  }
+#energy-cost {
+  top: 0.75%;
+  left: 0%;
+  width: 15%;
+  height: 10.5%;
+  align-content: center;
+  justify-content: center;
+  font-size: 5vw;
+  text-align: center;
+  font-family: 'Cabin', sans-serif;
+  font-weight: 700;
+  /* Bold */
+  font-style: italic;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  /* Create the outline effect */
+}
 
-  #power {
-    top: 12.5%;
-    left: 0%;
-    width: 15%;
-    height: 10.5%;
-    align-content: center;
-    justify-content: center;
-    font-size: 5vw;
-    text-align: center;
-    font-family: 'Cabin', sans-serif;
-    font-weight: 700; /* Bold */
-    font-style: italic;
-    text-shadow: 
-        -1px -1px 0 #000,  
-        1px -1px 0 #000,
-        -1px 1px 0 #000,
-        1px 1px 0 #000; /* Create the outline effect */
-  }
+#power {
+  top: 12.5%;
+  left: 0%;
+  width: 15%;
+  height: 10.5%;
+  align-content: center;
+  justify-content: center;
+  font-size: 5vw;
+  text-align: center;
+  font-family: 'Cabin', sans-serif;
+  font-weight: 700;
+  /* Bold */
+  font-style: italic;
+  text-shadow:
+    -1px -1px 0 #000,
+    1px -1px 0 #000,
+    -1px 1px 0 #000,
+    1px 1px 0 #000;
+  /* Create the outline effect */
+}
 
-  #ability-name {
-    bottom: 13%;
-    left: 20%;
-    width: 60%;
-    font-size: 2.35vw;
-    text-align: center;
-    font-family: 'Cabin', sans-serif;
-    font-weight: 700; /* Bold */
-    color: #323232;
-  }
+#ability-name {
+  bottom: 13%;
+  left: 20%;
+  width: 60%;
+  font-size: 2.35vw;
+  text-align: center;
+  font-family: 'Cabin', sans-serif;
+  font-weight: 700;
+  /* Bold */
+  color: #323232;
+}
 
-  #ability-desc-holder {
-    top: 87.5%;
-    /* left: 2%; */
-    width: 100%;
-    height: 10.2%;
-    /* position: relative; */
-    /* clear: both; */
-    position: absolute;
-    display: flex;
-    align-items: center;
-  }
+#ability-desc-holder {
+  top: 87.5%;
+  /* left: 2%; */
+  width: 100%;
+  height: 10.2%;
+  /* position: relative; */
+  /* clear: both; */
+  position: absolute;
+  display: flex;
+  align-items: center;
+}
 
-  #ability-description {
-    /* top: 87.5%; */
-    left: 4.5%;
-    width: 91%;
-    font-size: 3vw;
-    /* text-align: center; */
-    vertical-align: middle;
-    font-family: 'Cabin', sans-serif;
-    font-weight: 400; /* Regular */
-    color: #323232;
-    /* position: absolute; */
-    /* position: relative; */
-    /* height: 10%; */
-    display: flex;
-    /* display: inline; */
-    /* align-items: center; */
-    /* white-space: pre-wrap; */
-    /* vertical-align: middle; */
-  }
-  
-  #ability-description table {
-    width: 80%; /* Adjust as necessary for desired table width */
-    border-collapse: collapse;
-    margin: 0 auto; /* Ensures table is centered within the span */
-  }
-  
-  /* #ability-description td {
+#ability-description {
+  /* top: 87.5%; */
+  left: 4.5%;
+  width: 91%;
+  font-size: 3vw;
+  /* text-align: center; */
+  vertical-align: middle;
+  font-family: 'Cabin', sans-serif;
+  font-weight: 400;
+  /* Regular */
+  color: #323232;
+  /* position: absolute; */
+  /* position: relative; */
+  /* height: 10%; */
+  display: flex;
+  /* display: inline; */
+  /* align-items: center; */
+  /* white-space: pre-wrap; */
+  /* vertical-align: middle; */
+}
+
+#ability-description table {
+  width: 80%;
+  /* Adjust as necessary for desired table width */
+  border-collapse: collapse;
+  margin: 0 auto;
+  /* Ensures table is centered within the span */
+}
+
+/* #ability-description td {
     padding: 5px;
   } */
-  
-  #ability-description td:first-child {
-    width: 10%; /* Adjust as needed for the image cell */
-  }
 
-  .cellImg {
-    vertical-align: top;
-  }
-  
-  #ability-description img {
-    vertical-align: top; /* Align images to the top of the cell */
-  }
+#ability-description td:first-child {
+  width: 10%;
+  /* Adjust as needed for the image cell */
+}
 
-  .inline-icon {
-    vertical-align: top;
-  }
-  
+.cellImg {
+  vertical-align: top;
+}
 
-  #card-code {
-    bottom: 26.75%;
-    left: 72.5%;
-    width: 20%;
-    font-size: 2vw;
-    text-align: center;
-    font-family: 'Tharlon', sans-serif;
-    color: rgba(255, 255, 255, 0.45);
-  }
+#ability-description img {
+  vertical-align: top;
+  /* Align images to the top of the cell */
+}
 
-  .scale-hidden {
-    /* display: none; */
-    /* z-index: -99; */
-    transform: scale(1) !important; /* Ensure it overrides existing styles */
-  }
+.inline-icon {
+  vertical-align: top;
+}
 
-  .page-specific {
-    touch-action: pan-x pan-y;
-    height: 100%;
-  }
+
+#card-code {
+  bottom: 26.75%;
+  left: 72.5%;
+  width: 20%;
+  font-size: 2vw;
+  text-align: center;
+  font-family: 'Tharlon', sans-serif;
+  color: rgba(255, 255, 255, 0.45);
+}
+
+.scale-hidden {
+  /* display: none; */
+  /* z-index: -99; */
+  transform: scale(1) !important;
+  /* Ensure it overrides existing styles */
+}
+
+.page-specific {
+  touch-action: pan-x pan-y;
+  height: 100%;
+}
+
+/* Modal Background */
+#abilityModal {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+}
+
+/* Modal Content */
+#abilityModal .modal-content {
+  background-color: #fff;
+  margin: 10% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  max-width: 100%;
+  text-align: center;
+  display: flex; /* Make the content a flex container */
+  flex-direction: column; /* Keep buttons in a vertical column */
+  align-items: center; /* Center the buttons horizontally */
+  position: relative; /* Add this line */
+}
+
+/* Close Button */
+.closeab {
+  position: absolute; /* Add this line */
+  top: 10px; /* Adjust top position as needed */
+  right: 10px; /* Adjust right position as needed */
+  font-size: 20px;
+  cursor: pointer;
+}
+
+/* Ability Buttons */
+.ability-option {
+  display: inline-block;
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+#add-ability-button {
+  background-color: #027bff;
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+/* #add-ability-button {
+  background: linear-gradient(to right, #007bff, #0062cc);
+  color: #fff;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+} */
+
+#add-ability-button:hover {
+  background-color: #0062cc;
+}
