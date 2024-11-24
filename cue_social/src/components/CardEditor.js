@@ -55,6 +55,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     [5, 40]
   ]);
   const charBps = Array.from(fsMap, ([k, v]) => k * v);
+  const [searchTerm, setSearchTerm] = useState(''); // Search term for filtering options
+  const [filteredIcons, setFilteredIcons] = useState(icons);
 
   const handleInputChange = (e) => {
     setContent(e.target.innerHTML.split('').reverse().join('')); // Update content state based on input
@@ -158,7 +160,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
       estLineNum = numberOfLines;
     }
 
-    let fontSize=previousFontSize;
+    let fontSize = previousFontSize;
     const bp1 = `${initial}vw`;
     const bp2 = `${(68 * initial) / 81}vw`;
     const bp3 = `${(63 * initial) / 81}vw`;
@@ -176,7 +178,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     } else {
       fontSize = bp5; // Fallback or default size
     }
-    
+
 
     // if (numberOfLines <= 1) {
     //   if ((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp1.substring(0), bp1.length - 2)) || (totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp1.substring(0, bp1.length - 2)))) {
@@ -378,6 +380,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   };
 
   const handleModalConfirm = () => {
+    console.log('hello2')
     const regexp = /^[a-z]+$/i;
     if (selectedURL) {
       if (regexp.test(selectedURL)) {
@@ -386,6 +389,14 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
       else {
         handleForegroundUpload({ target: { files: [{ url: icons[selectedURL] }] } })
       }
+    }
+    setIsModalOpen(false); // Close the modal
+  };
+
+  const handleURLModalConfirm = (url) => {
+    console.log('hello2')
+    if (url) {
+        handleForegroundUpload({ target: { files: [{ url: url }] } })
     }
     setIsModalOpen(false); // Close the modal
   };
@@ -480,6 +491,19 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     setSpans(updatedSpans);
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value); // Update search term
+  };
+
+  const handleOptionClick = (url, name) => {
+    setSelectedURL(url); // Set the selected URL when an option is clicked
+    setSearchTerm(name); // Optionally set search term to the selected icon's name
+    handleURLModalConfirm(url);
+  };
+
+  useEffect(() => {
+    setFilteredIcons(icons.filter(icon => icon.name.toLowerCase().includes(searchTerm.toLowerCase())))
+  }, [searchTerm, icons])
 
   return (
     <div id="editor" className="editor">
@@ -592,14 +616,17 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
       >
         <h2 style={{ marginBottom: '20px', fontWeight: 'bold', fontSize: '24px' }}>Select or Upload Foreground Image</h2>
 
-        {/* Dropdown for predefined URLs */}
         <div style={{ marginBottom: '20px', width: '100%' }}>
           <label style={{ display: 'block', marginBottom: '8px', fontWeight: '500' }}>
             Select from existing images:
           </label>
-          <select
-            value={selectedURL}
-            onChange={handleDropdownChange}
+
+          {/* Search input */}
+          <input
+            type="text"
+            value={searchTerm}
+            onChange={handleSearchChange}
+            placeholder="Search for an icon"
             style={{
               width: '100%',
               padding: '10px',
@@ -607,14 +634,42 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
               border: '1px solid #ccc',
               fontSize: '16px',
             }}
-          >
-            <option value="" disabled>Select an icon</option>
-            {icons.map((icon, index) => (
-              <option key={index} value={index}>
-                {icon.name}
-              </option>
-            ))}
-          </select>
+          />
+
+          {/* Display matched options below */}
+          {searchTerm && filteredIcons.length > 0 && (
+            <ul
+              style={{
+                // position: 'absolute',
+                top: '100%',
+                left: 0,
+                right: 0,
+                maxHeight: '200px',
+                overflowY: 'auto',
+                margin: 0,
+                padding: '0',
+                backgroundColor: '#fff',
+                borderRadius: '8px',
+                border: '1px solid #ccc',
+                boxShadow: '0px 4px 6px rgba(0, 0, 0, 0.1)',
+                zIndex: 1,
+              }}
+            >
+              {filteredIcons.map((icon, index) => (
+                <li
+                  key={index}
+                  onClick={() => handleOptionClick(icon.url, icon.name)}
+                  style={{
+                    padding: '10px',
+                    cursor: 'pointer',
+                    borderBottom: '1px solid #ccc',
+                  }}
+                >
+                  {icon.name}
+                </li>
+              ))}
+            </ul>
+          )}
         </div>
 
         {/* "OR" text */}

@@ -133,6 +133,9 @@ function CustomCards() {
       if (file.url && file.url.url) {
         setForegroundImage(file.url.url)
       }
+      else if (file.url) {
+        setForegroundImage(file.url)
+      }
       else {
         const imageUrl = URL.createObjectURL(file); // Create a URL for the uploaded image
         setForegroundImage(imageUrl); // Set the foreground image state
