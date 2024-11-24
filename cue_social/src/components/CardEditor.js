@@ -44,6 +44,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   const [nextId, setNextId] = useState(2);
   const [energy, setEnergy] = useState('?');
   const [power, setPower] = useState('?');
+  const [name, setName] = useState('CARD NAME');
   const initial = 2.3;
   // const [previousCharCount, setPreviousCharCount] = useState(0); // Track previous character count
   const [previousFontSize, setPreviousFontSize] = useState(initial); // Track previous character count
@@ -68,6 +69,10 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
 
   const handleEnergyChange = (e) => {
     setEnergy(e.target.innerHTML.split('').reverse().join('')); // Update content state based on input
+  };
+
+  const handleNameChange = (e) => {
+    setName(e.target.innerHTML.split('').reverse().join('')); // Update content state based on input
   };
 
   useEffect(() => {
@@ -254,6 +259,30 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     }
   }
 
+  const setNameFontSize = (elementID) => {
+    const element = document.getElementById(elementID)
+
+    const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
+    const containerHeight = element.offsetHeight;
+
+    const numberOfLines = Math.round(lineHeight/containerHeight);
+    const numChars = element.innerHTML.length;
+    const lineChars = 20;
+
+    let estLineNum = Math.ceil(numChars/lineChars)
+
+    if (numberOfLines > estLineNum) {
+      estLineNum = numberOfLines;
+    }
+
+    if (estLineNum <= 1) {
+      element.style.fontSize = '3.1vw';
+    }
+    else {
+      element.style.fontSize = `2vw`;
+    }
+  }
+
   useEffect(() => {
     // const desc = document.getElementById('ability-description');
     const desc = document.getElementById('abilitiesTable')
@@ -283,6 +312,13 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
       setPEFontSize('power');
     }
   }, [power])
+
+  useEffect(() => {
+    const nombre = document.getElementById('card-name');
+    if (nombre) {
+      setNameFontSize('card-name');
+    }
+  }, [name])
 
   const handleWheelZoom = (e) => {
     e.preventDefault();
@@ -587,8 +623,11 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             />}
           </div>
         </div>
-
-        <div className="card-field" id="card-name" contentEditable={true} suppressContentEditableWarning={true}>Card Name</div>
+        <div id='card-name-wrapper'>
+          <div className="card-field" id="card-name" contentEditable={true} suppressContentEditableWarning={true} onInput={handleNameChange} value={name}>
+            Card Name
+          </div>
+        </div>
         <div className="card-field" id="energy-cost" contentEditable={true} suppressContentEditableWarning={true} onInput={handleEnergyChange} value={energy}>?</div>
         <div className="card-field" id="power" contentEditable={true} suppressContentEditableWarning={true} onInput={handlePowerChange} value={power}>?</div>
         <div className="card-field" id="card-code" contentEditable={true} suppressContentEditableWarning={true}>CODE</div>
