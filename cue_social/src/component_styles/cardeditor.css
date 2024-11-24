@@ -395,3 +395,17 @@
 #add-ability-button:hover {
   background-color: #0062cc;
 }
+
+.boldButton {
+  font-weight: bold;
+  font-size: 16px;
+  padding: 5px 10px;
+  cursor: pointer;
+  background-color: #f0f0f0; /* Match your icon background if needed */
+  border: none;
+  border-radius: 4px;
+}
+
+.boldButton:hover {
+  background-color: #ddd; /* Hover effect */
+}

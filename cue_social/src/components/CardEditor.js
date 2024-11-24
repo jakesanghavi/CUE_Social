@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import '../component_styles/cardeditor.css'; // Custom CSS for positioning elements
 import Modal from 'react-modal'; // Use a modal package, e.g., react-modal
 
@@ -44,6 +44,17 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   const [nextId, setNextId] = useState(2);
   const [energy, setEnergy] = useState('?');
   const [power, setPower] = useState('?');
+  const initial = 2.3;
+  // const [previousCharCount, setPreviousCharCount] = useState(0); // Track previous character count
+  const [previousFontSize, setPreviousFontSize] = useState(initial); // Track previous character count
+  const fsMap = new Map([
+    [1, 60],
+    [2, 55],
+    [3, 50],
+    [4, 45],
+    [5, 40]
+  ]);
+  const charBps = Array.from(fsMap, ([k, v]) => k * v);
 
   const handleInputChange = (e) => {
     setContent(e.target.innerHTML.split('').reverse().join('')); // Update content state based on input
@@ -86,49 +97,121 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     };
   }, []);
 
-  const setFontSize = (element) => {
+  const setFontSize = useCallback((element) => {
     const lineHeight = parseFloat(getComputedStyle(element).lineHeight);
     const containerHeight = element.offsetHeight;
 
-    element.childNodes.forEach(node => {
-        node.childNodes.forEach(node2 => {
-          node2.childNodes.forEach(node3 => {
-            node3.childNodes.forEach(node4 => {
-              if (node4.nodeName === '#text') {
-                console.log(node4)
-                // node3.textContent = node.textContent.replace(/&nbsp;/, " ");
-                // node.textContent = node.textContent.replace(/(\u00A0)([^\s])/, "\u00A0 $2");
-                // node.textContent = node.textContent.replace(/([^\s])(\u00A0)/, "$1 \u00A0");
-              }
-              else {
-                console.log(node3.childNodes)
-              }
-            })
-          })
-        })
-    });
+    // element.childNodes.forEach(node => {
+    //     node.childNodes.forEach(node2 => {
+    //       node2.childNodes.forEach(node3 => {
+    //         node3.childNodes.forEach(node4 => {
+    //           if (node4.nodeName === '#text') {
+    //             console.log(node4)
+    //             // node3.textContent = node.textContent.replace(/&nbsp;/, " ");
+    //             // node.textContent = node.textContent.replace(/(\u00A0)([^\s])/, "\u00A0 $2");
+    //             // node.textContent = node.textContent.replace(/([^\s])(\u00A0)/, "$1 \u00A0");
+    //           }
+    //           else {
+    //             console.log(node3.childNodes)
+    //           }
+    //         })
+    //       })
+    //     })
+    // });
 
     // const currentContent = element.innerHTML;
     // const updatedContent = currentContent.replace(/^(&nbsp;|\s)+/, "").replace(/\s/g, "\u00A0");
     // element.innerHTML = updatedContent;
-    const initial = 2.3;
 
     // Calculate the number of lines
     const numberOfLines = Math.round(containerHeight / lineHeight);
 
-    let fontSize;
+    let totalChars = 0;
 
-    if (numberOfLines <= 1) {
-      fontSize = `${initial}vw`;
-    } else if (numberOfLines === 2) {
-      fontSize = `${(63 * initial) / 81}vw`;
-    } else if (numberOfLines === 3) {
-      fontSize = `${(68 * initial) / 81}vw`;
-    } else if (numberOfLines === 4) {
-      fontSize = `${(42 * initial) / 81}vw`;
-    } else {
-      fontSize = `${numberOfLines / 7}vw`; // Fallback or default size
+    // Loop through each row (tr) in the table
+    element.querySelectorAll('tr').forEach(tr => {
+      // Sum characters in each contentEditable td
+      tr.querySelectorAll('td[contentEditable="true"]').forEach(td => {
+        // Get the innerHTML to properly handle tags
+        const content = td.innerHTML;
+
+        // Replace all bold tags (e.g., <b></b>, <strong></strong>) with empty string
+        const contentWithoutBold = content.replace(/<b[^>]*>.*?<\/b>|<strong[^>]*>.*?<\/strong>/gi, '');
+
+        // Replace all image tags with a length of 2 (since they should be treated as having length 2)
+        const contentWithImages = contentWithoutBold.replace(/<img[^>]*>/gi, '  '); // Two spaces for each image
+
+        // Count characters in the resulting text
+        totalChars += contentWithImages.replace(/<[^>]+>/g, '').length; // Remove all tags and count only text
+      });
+    });
+
+    const primEst = charBps.findIndex(value => value > totalChars);
+    const resultIndex = primEst !== -1 ? primEst : charBps.length - 1;
+
+    const charPerLine = fsMap.get(resultIndex + 1)
+
+    // // Estimate number of lines based on character count
+    let estLineNum = Math.ceil(totalChars / charPerLine);
+
+    if (numberOfLines > estLineNum) {
+      estLineNum = numberOfLines;
     }
+
+    let fontSize=previousFontSize;
+    const bp1 = `${initial}vw`;
+    const bp2 = `${(68 * initial) / 81}vw`;
+    const bp3 = `${(63 * initial) / 81}vw`;
+    const bp4 = `${(45 * initial) / 81}vw`;
+    const bp5 = `${numberOfLines / 5}vw`;
+
+    if (estLineNum <= 1) {
+      fontSize = bp1;
+    } else if (estLineNum === 2) {
+      fontSize = bp2;
+    } else if (estLineNum === 3) {
+      fontSize = bp3;
+    } else if (estLineNum === 4) {
+      fontSize = bp4;
+    } else {
+      fontSize = bp5; // Fallback or default size
+    }
+    
+
+    // if (numberOfLines <= 1) {
+    //   if ((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp1.substring(0), bp1.length - 2)) || (totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp1.substring(0, bp1.length - 2)))) {
+    //     fontSize = bp1;
+    //   }
+    // } else if (numberOfLines === 2) {
+    //   if ((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp2.substring(0), bp2.length - 2)) || (totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp2.substring(0, bp2.length - 2)))) {
+    //     fontSize = bp2;
+    //   }
+    // } else if (numberOfLines === 3) {
+    //   console.log(previousFontSize)
+    //   console.log(bp3)
+    //   console.log((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp3.substring(0), bp3.length - 2)))
+    //   console.log((totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp3.substring(0, bp3.length - 2))))
+    //   if ((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp3.substring(0), bp3.length - 2)) || (totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp3.substring(0, bp3.length - 2)))) {
+    //     console.log('la')
+    //     fontSize = bp3;
+    //   }
+    // } else if (numberOfLines === 4) {
+    //   console.log(previousFontSize)
+    //   console.log(bp4)
+    //   console.log((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp4.substring(0), bp4.length - 2)))
+    //   console.log((totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp4.substring(0, bp4.length - 2))))
+    //   if ((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp4.substring(0), bp4.length - 2)) || (totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp4.substring(0, bp4.length - 2)))) {
+    //     console.log('la2')
+    //     fontSize = bp4;
+    //   }
+    // } else {
+    //   if ((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp5.substring(0), bp5.length - 2)) || (totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp5.substring(0, bp5.length - 2))))  {
+    //     fontSize = bp5;
+    //   }
+    // }
+
+    // setPreviousCharCount(totalChars);
+    setPreviousFontSize(fontSize);
 
     // Set font size
     element.style.fontSize = fontSize;
@@ -149,7 +232,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         img.style.whiteSpace = "pre-wrap;"
       }
     });
-  };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const setPEFontSize = (elementID) => {
     const element = document.getElementById(elementID)
@@ -169,11 +253,20 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   }
 
   useEffect(() => {
-    const desc = document.getElementById('ability-description');
+    // const desc = document.getElementById('ability-description');
+    const desc = document.getElementById('abilitiesTable')
     if (desc) {
-      setFontSize(desc);
+      // setFontSize(desc);
+      let debounceTimer = null;
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => {
+        setFontSize(desc);
+      }, 300); // Adjust delay as needed
+
+      // Clean up timer
+      return () => clearTimeout(debounceTimer);
     }
-  }, [content])
+  }, [content, setFontSize])
 
   useEffect(() => {
     const energia = document.getElementById('energy-cost');

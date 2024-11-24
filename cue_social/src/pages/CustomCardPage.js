@@ -1,8 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import CardEditor from '../components/CardEditor';
 import TemplateSelector from '../components/TemplateSelector';
-import { customCardBorders, customCardIcons, cardEditIcons } from '../UsefulFunctions';
+import { customCardBorders, customCardIcons, cardEditIcons, cardIconNames } from '../UsefulFunctions';
 import html2canvas from 'html2canvas';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faBold } from '@fortawesome/free-solid-svg-icons';
+
 
 // const templates = customCardBorders();
 const templates = customCardBorders().map(url => {
@@ -37,17 +40,14 @@ const templates = customCardBorders().map(url => {
 
 // const icons = customCardIcons()
 
-const icons = customCardIcons().map(url => {
-  const parts = url.split('/');
-  const fileName = parts[parts.length - 1].split('.')[0]; // Get the file name without the extension
-  const nameParts = fileName.split('_').slice(0, 2); // Take the first two parts of the name
-  const name = nameParts.join(' '); // Join the name parts with a space
+const iconURLs = customCardIcons();
+const iconNames = cardIconNames();
 
-  return {
-    url: url,
-    name: name
-  };
-});
+const icons = iconURLs.map((url, index) => ({
+  url: url,
+  name: iconNames[index]
+}));
+
 
 const saveAsImage = () => {
   let templateHolder = document.getElementById('toCapture');
@@ -205,25 +205,26 @@ function CustomCards() {
   const addAbility = () => {
     const parentDiv = document.getElementById('ability-description');
     const childRef = document.getElementById('editor');
-  
+
     const childWidth = childRef.offsetWidth;
     const percentage = (childWidth / window.innerWidth) * 100;
-  
+
     let table = parentDiv.querySelector('table');
     if (!table) {
       table = document.createElement('table');
+      table.id = 'abilitiesTable'
       table.style.width = `100%`;
       parentDiv.appendChild(table);
     }
-  
+
     const modal = document.getElementById('abilityModal');
     modal.style.display = 'block';
-  
+
     const abilityHandler = (event) => {
       const abilityType = event.target.getAttribute('data-ability');
       let imgUrl;
       let rightFlag = false;
-  
+
       switch (abilityType) {
         case 'draw':
           imgUrl = 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940001/draw_onlg1u.png';
@@ -245,14 +246,14 @@ function CustomCards() {
           alert("Invalid ability type.");
           return;
       }
-  
+
       modal.style.display = 'none';
-  
+
       const row = document.createElement('tr');
       const imgCell = document.createElement('td');
       imgCell.className = 'cellImg';
       imgCell.style.width = `${percentage * 0.1}%`;
-  
+
       const img = document.createElement('img');
       img.src = imgUrl;
       img.className = 'inline-icon';
@@ -260,37 +261,37 @@ function CustomCards() {
       img.style.height = '2vw';
       img.style.width = 'auto';
       if (rightFlag) img.style.float = 'right';
-  
+
       imgCell.appendChild(img);
-  
+
       const descCell = document.createElement('td');
       descCell.contentEditable = true;
       descCell.textContent = "Ability description";
-  
+
       row.appendChild(imgCell);
       row.appendChild(descCell);
       table.appendChild(row);
-  
+
       // Cleanup: Remove event listener after insertion to avoid duplicates
       document.querySelectorAll('.ability-option').forEach(button => {
         button.removeEventListener('click', abilityHandler);
       });
     };
-  
+
     document.querySelectorAll('.ability-option').forEach(button => {
       button.addEventListener('click', abilityHandler, { once: true });
     });
-  
+
     document.querySelector('.closeab').onclick = () => {
       modal.style.display = 'none';
     };
-  
+
     window.onclick = (event) => {
       if (event.target === modal) {
         modal.style.display = 'none';
       }
     };
-  };  
+  };
 
 
   useEffect(() => {
@@ -306,6 +307,21 @@ function CustomCards() {
     };
   }, []);
 
+  const applyBoldToSelection = () => {
+    const selection = window.getSelection();
+    if (selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+  
+      // Create a <b> tag and wrap the selected text
+      const boldNode = document.createElement('b');
+      range.surroundContents(boldNode);
+  
+      // Clear the selection to avoid accidental re-triggering
+      selection.removeAllRanges();
+    }
+  };
+  
+
 
   return (
     <div className="customCardPage">
@@ -317,9 +333,12 @@ function CustomCards() {
         <div className='iconGridContainer' style={{ gridTemplateColumns: `repeat(${cardEditIcons.length}, ${minSize})` }}>
           {cardEditIcons().map((url, index) => (
             <div key={index} className='iconImageWrapper'>
-              <img src={url} alt={`${index + 1}`} className='iconImage' onClick={() => insertImageAtCursor(url)} />
+              <img src={url} alt={`${index + 1}`} className='iconImage' onClick={() => insertImageAtCursor(url)} style={{cursor: 'pointer'}} />
             </div>
           ))}
+        </div>
+        <div className='iconImageWrapper'>
+          <button className='boldButton' onClick={applyBoldToSelection}><FontAwesomeIcon icon={faBold}/></button>
         </div>
       </div>
 
@@ -342,10 +361,10 @@ function CustomCards() {
         <div className="modal-content">
           <span className="closeab">&times;</span>
           <h2>Select an Ability</h2>
-          <button className="ability-option" data-ability="draw" style={{backgroundColor: '#90ff8d'}}>Draw</button>
-          <button className="ability-option" data-ability="play" style={{backgroundColor: '#ff9149'}}>Play</button>
-          <button className="ability-option" data-ability="start"style={{backgroundColor: '#f2de7f'}}>Start</button>
-          <button className="ability-option" data-ability="return" style={{backgroundColor: '#d4b4ff'}}>Return</button>
+          <button className="ability-option" data-ability="draw" style={{ backgroundColor: '#90ff8d' }}>Draw</button>
+          <button className="ability-option" data-ability="play" style={{ backgroundColor: '#ff9149' }}>Play</button>
+          <button className="ability-option" data-ability="start" style={{ backgroundColor: '#f2de7f' }}>Start</button>
+          <button className="ability-option" data-ability="return" style={{ backgroundColor: '#d4b4ff' }}>Return</button>
         </div>
       </div>
 

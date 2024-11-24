@@ -108,3 +108,36 @@ export const cardEditIcons = () => {
   // return ['https://res.cloudinary.com/defal1ruq/image/upload/v1728940001/draw_onlg1u.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940005/turnstart_njtwir.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940003/play_bqxcpx.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940004/return_bd2v6x.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940003/power_piybpa.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940001/energy_odcsrq.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940003/ppt_nxt2vj.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940002/ept_pbosqp.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940002/lock_zyhr1k.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940001/burn_hsnzz0.png']
   return ['https://res.cloudinary.com/defal1ruq/image/upload/v1728940003/power_piybpa.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940001/energy_odcsrq.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940003/ppt_nxt2vj.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940002/ept_pbosqp.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940002/lock_zyhr1k.png', 'https://res.cloudinary.com/defal1ruq/image/upload/v1728940001/burn_hsnzz0.png']
 }
+
+export const cardIconNames = () => {
+  return [
+    "Amazing Astronauts", "American Folklore", "Amphibians", "Ancient Creatures", "Ancient Egypt",
+    "Ancient Greece", "Angela Maxwell", "Around the Reef", "Arthurian Legends", "Arts & Culture Fusions",
+    "Arts & Culture Mythics", "Arts & Culture Specials", "Awesome Aviation", "Aztec Mythology", "Battle!",
+    "Beautiful Butterflies", "Birds", "Brilliant Human Body", "Bugs", "Carnivores", "Cephalopods", "Chinese Folklore",
+    "Climate Change", "Colors", "Constellations", "Cool Cats", "Crustaceans", "Curious Cuisine", "Cute Cats",
+    "Debunked", "Deep Ocean", "Dizzying Discoveries", "Documented", "Dogs", "Donald Prothero", "Egyptian Mythology",
+    "High Voltage!", "Espionage", "Excellent Elements", "Exciting Exploration", "Exploring the Stars", "Fabulous Fish",
+    "Fancy Fashions", "Fearsome Flyers", "Fears and Phobias", "Feisty Fish", "Festive Traditions", "Feudal Japan",
+    "Fiction and Fantasy", "Forces of Nature", "Forces of the Universe", "Fruit and Veg", "Funky Fungi", "Futurology",
+    "Going Underground", "Good Sports", "Gorgeous Graphic Design", "Grand Designs", "Greek Mythology",
+    "Groundbreakers", "Herbivores", "Hidden Gems", "History Fusions", "History Mythics", "History of Heartbreak",
+    "History of the Internet", "History Specials", "Hoaxes and Cons", "Horrible Halloween", "Human Evolution",
+    "Hybrid Animals", "Ice Age", "Ingenious Inventions", "Innovations of War", "Instrumental", "Japanese Folklore",
+    "Land Before Time", "Legends of the Old West", "Life on Land Fusions", "Life on Land Mythics", "Life on Land Specials",
+    "Little Critters", "Lost Treasures", "Machines of War", "Majestic Mountains", "Mammals", "Marsupials",
+    "Marvelous Medicine", "Mega Math", "Mollusks Worms and Water Bugs", "Money Money Money", "Monsters of the Deep",
+    "Moon in Motion", "Musically Minded", "Mythical Creatures", "Natural Monuments", "Norse Mythology", "Nebulae",
+    "Ocean Mammals", "Ocean Reptiles", "Oceans and Seas Fusions", "Oceans and Seas Mythics", "Oceans and Seas Specials",
+    "Omnivores", "On Track!", "Once Upon a Time", "Paleontology Fusions", "Paleontology Mythics", "Paleontology Specials",
+    "Philosophy", "Pioneers of Science", "Planetside", "Plant Life", "Playtime", "Plundering Pirates", "Primates",
+    "Prominent Painters", "Radical Rockets", "Raging Rivers", "Reptiles", "Riding the Waves", "Rites and Rituals",
+    "Science Fusions", "Science Mythics", "Science Specials", "Sea Birds", "Secret Societies", "Shake up the System",
+    "Sharks", "Signs of the Zodiac", "Space Fusions", "Space Mythics", "Space Oddities", "Space Specials",
+    "Space Technology", "Stage and Screen", "Sue Black", "Super Structures", "The American Revolution", "Tarot",
+    "The Four Horseman", "The Legend of Robin Hood", "The Occult", "The Original Odyssey", "The Roman Empire",
+    "The Solar System", "The Write Stuff", "Tremendous Trees", "Turbulent Tudors", "Under the Microscope",
+    "Unruly Rulers", "Venomous Creatures", "Vicious Vikings", "Volcanoes", "Watching the Skies", "Weird World",
+    "Weapons of Choice", "Wonders of Construction", "West African Folklore", "World of Words"
+]
+}
