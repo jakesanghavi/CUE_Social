@@ -566,7 +566,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
               left: `${imagePosition.x}px`,
               width: `${scale * 100}%`, // Scale the background image
               height: 'auto', // Maintain aspect ratio
-              objectFit: 'cover', // Cover the whole area
+              objectFit: 'contain', // Cover the whole area
+              objectPosition: 'center',
               zIndex: -1, // Ensure it stays behind other content
               // maxWidth: '100%'
             }}

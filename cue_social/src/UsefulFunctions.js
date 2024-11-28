@@ -122,7 +122,7 @@ export const cardIconNames = () => {
     "Fiction and Fantasy", "Forces of Nature", "Forces of the Universe", "Fruit and Veg", "Funky Fungi", "Futurology",
     "Going Underground", "Good Sports", "Gorgeous Graphic Design", "Grand Designs", "Greek Mythology",
     "Groundbreakers", "Herbivores", "Hidden Gems", "History Fusions", "History Mythics", "History of Heartbreak",
-    "History of the Internet", "History Specials", "Hoaxes and Cons", "Horrible Halloween", "Human Evolution",
+    "History Specials", "History of the Internet", "Hoaxes and Cons", "Horrible Halloween", "Human Evolution",
     "Hybrid Animals", "Ice Age", "Ingenious Inventions", "Innovations of War", "Instrumental", "Japanese Folklore",
     "Land Before Time", "Legends of the Old West", "Life on Land Fusions", "Life on Land Mythics", "Life on Land Specials",
     "Little Critters", "Lost Treasures", "Machines of War", "Majestic Mountains", "Mammals", "Marsupials",
