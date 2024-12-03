@@ -234,9 +234,11 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         // img.style.marginTop = '0%';
         img.style.display = 'block';
         // img.style.margin = 'auto';
+        img.style.marginTop = "1%";
       }
       else {
         img.style.whiteSpace = "pre-wrap;"
+        img.style.marginTop = "0.6%";
       }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps

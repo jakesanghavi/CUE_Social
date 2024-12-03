@@ -205,8 +205,8 @@
   transform: translateX(-50%);
   /* Center element horizontally by moving it left by half of its width */
   left: 50%;
-  /* font-family: 'Open Sans', sans-serif; */
-  /* font-weight: 700; */
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
   /* Bold */
   /* text-transform: uppercase; */
   /* Forces text to be uppercase */
