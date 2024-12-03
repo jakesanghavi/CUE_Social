@@ -108,7 +108,8 @@ function CustomCards() {
   const [backgroundImage, setBackgroundImage] = useState(null); // State to hold the background image
   const [foregroundImage, setForegroundImage] = useState(null); // State to hold the foreground image
   const isMobile = window.innerWidth <= 600; // Check if the screen width is less than or equal to 600px
-  const minSize = isMobile ? '10%' : '7%'; // Set the minimum size based on screen size
+  const minSize = isMobile ? '8%' : '13%'; // Set the minimum size based on screen size
+  const maxSize = isMobile ? '8%' : '13%'; // Set the minimum size based on screen size
   const [isBold, setIsBold] = useState(false);
 
 
@@ -329,18 +330,28 @@ function CustomCards() {
 
       {/* Centered Grid Container */}
       <div className='iconGridWrapper'>
-        <div className='iconGridContainer' style={{ gridTemplateColumns: `repeat(${cardEditIcons.length}, ${minSize})` }}>
+        <div className='iconGridContainer'
+          style={{
+              display: 'grid', // Override display from inline-flex to grid
+              gridTemplateColumns: `repeat(7, minmax(${minSize}, ${maxSize}))`, // Updated columns
+              gap: '5px', // Retain spacing
+              maxWidth: '100%', // Override max-width
+              alignItems: 'center',
+              alignContent: 'center',
+              justifyContent: 'center'
+          }}
+        >
           {cardEditIcons().map((url, index) => (
             <div key={index} className='iconImageWrapper'>
               <img src={url} alt={`${index + 1}`} className='iconImage' onClick={() => insertImageAtCursor(url)} style={{cursor: 'pointer'}} />
             </div>
           ))}
-        </div>
-        <div className='iconImageWrapper'>
+          <div className='iconImageWrapper'>
           <button className={`boldButton ${isBold ? 'active' : ''}`} onMouseDown={(e) => toggleBold(e)}>
           <FontAwesomeIcon icon={faBold} className={isBold ? 'boldActive' : ''} />
 
           </button>
+        </div>
         </div>
       </div>
 

@@ -71,7 +71,7 @@
 }
 
 .iconGridWrapper {
-    display: inline-flex; /* Make the wrapper take only the width of its content */
+    display: inline-flex;
     justify-content: center;
     align-items: center;
     /* width: 100%; */
@@ -80,12 +80,12 @@
     /* min-height: 100vh; */
 }
 
-.iconGridContainer {
+/* .iconGridContainer {
     display: inline-flex;
-    grid-template-columns: repeat(10, 6%); /* Default size for larger screens */
-    gap: 5px; /* Spacing between images */
-    max-width: 800px; /* Set a maximum width for the grid */
-}
+    grid-template-columns: repeat(10, 1%);
+    gap: 5px;
+    max-width: 800px;
+} */
 
 .iconImageWrapper {
     overflow: hidden;
@@ -108,6 +108,6 @@
 /* Media query for mobile screens */
 @media (max-width: 600px) {
     .iconGridContainer {
-        grid-template-columns: repeat(10, 50%); /* Size for mobile screens */
+        grid-template-columns: repeat(10, 1%); /* Size for mobile screens */
     }
 }
