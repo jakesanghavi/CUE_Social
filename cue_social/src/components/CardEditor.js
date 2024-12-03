@@ -231,9 +231,9 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     images.forEach((img) => {
       img.style.height = computedFontSize; // Set image height equal to font size
       if (img.src.includes('play') || img.src.includes('draw') | img.src.includes('return') | img.src.includes('start')) {
-        img.style.marginTop = '0%';
+        // img.style.marginTop = '0%';
         img.style.display = 'block';
-        img.style.margin = 'auto';
+        // img.style.margin = 'auto';
       }
       else {
         img.style.whiteSpace = "pre-wrap;"
