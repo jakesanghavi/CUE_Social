@@ -432,13 +432,27 @@
 .boldButton {
   font-weight: bold;
   font-size: 16px;
-  padding: 5px 10px;
+  padding: 16px 10px;
   cursor: pointer;
   background-color: #f0f0f0; /* Match your icon background if needed */
   border: none;
-  border-radius: 4px;
+  /* border-radius: 4px; */
 }
 
 .boldButton:hover {
-  background-color: #ddd; /* Hover effect */
+  background-color: #d3d3d3; /* Hover effect */
+}
+
+.boldButton.active {
+  background-color: #d3d3d3;
+}
+
+.boldButton .boldActive {
+  color: #000;
+  text-shadow: 
+    5px 0 currentColor,
+    -5px 0 currentColor,
+    0 5px currentColor,
+    0 -5px currentColor;
+  transform: scale(1.2);
 }

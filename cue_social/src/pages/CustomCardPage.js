@@ -109,6 +109,8 @@ function CustomCards() {
   const [foregroundImage, setForegroundImage] = useState(null); // State to hold the foreground image
   const isMobile = window.innerWidth <= 600; // Check if the screen width is less than or equal to 600px
   const minSize = isMobile ? '10%' : '7%'; // Set the minimum size based on screen size
+  const [isBold, setIsBold] = useState(false);
+
 
   const handleTemplateSelect = (template) => {
     setSelectedTemplate(template);
@@ -310,18 +312,12 @@ function CustomCards() {
     };
   }, []);
 
-  const applyBoldToSelection = () => {
-    const selection = window.getSelection();
-    if (selection.rangeCount > 0) {
-      const range = selection.getRangeAt(0);
-  
-      // Create a <b> tag and wrap the selected text
-      const boldNode = document.createElement('b');
-      range.surroundContents(boldNode);
-  
-      // Clear the selection to avoid accidental re-triggering
-      selection.removeAllRanges();
-    }
+  const toggleBold = (event) => {
+    event.preventDefault(); // Prevent losing focus
+    setIsBold((prev) => !prev);
+
+    // Toggle bold state
+    document.execCommand('bold');
   };
   
 
@@ -341,7 +337,10 @@ function CustomCards() {
           ))}
         </div>
         <div className='iconImageWrapper'>
-          <button className='boldButton' onClick={applyBoldToSelection}><FontAwesomeIcon icon={faBold}/></button>
+          <button className={`boldButton ${isBold ? 'active' : ''}`} onMouseDown={(e) => toggleBold(e)}>
+          <FontAwesomeIcon icon={faBold} className={isBold ? 'boldActive' : ''} />
+
+          </button>
         </div>
       </div>
 
