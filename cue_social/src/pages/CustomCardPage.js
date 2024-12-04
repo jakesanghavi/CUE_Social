@@ -151,6 +151,11 @@ function CustomCards() {
     // Find the table row
     rowToDelete = event.target.closest('tr');
 
+    const contentEditableElements = document.querySelectorAll('[contentEditable="true"]');
+    contentEditableElements.forEach((el) => {
+      el.blur(); // Removes focus
+    });
+
     // Open the confirmation modal
     const modal = document.getElementById('confirmModal');
     if (modal) {
@@ -428,8 +433,8 @@ function CustomCards() {
           <span className="closeabconfirm" onClick={closeModal}>&times;</span>
           <h2>Are you sure you want to remove this ability?</h2>
           <div>
-            <button className="ability-option" style={{backgroundColor: '#ff4d4d'}} onClick={confirmDelete}>Yes, Delete</button>
-            <button className="ability-option" style={{backgroundColor: '#4caf50'}} onClick={cancelDelete}>Cancel</button>
+            <button className="ability-option" style={{ backgroundColor: '#ff4d4d' }} onClick={confirmDelete}>Yes, Delete</button>
+            <button className="ability-option" style={{ backgroundColor: '#4caf50' }} onClick={cancelDelete}>Cancel</button>
           </div>
         </div>
       </div>
