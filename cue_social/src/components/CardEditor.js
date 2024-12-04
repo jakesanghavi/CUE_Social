@@ -418,7 +418,6 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   };
 
   const handleModalConfirm = () => {
-    console.log('hello2')
     const regexp = /^[a-z]+$/i;
     if (selectedURL) {
       if (regexp.test(selectedURL)) {
@@ -432,7 +431,6 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   };
 
   const handleURLModalConfirm = (url) => {
-    console.log('hello2')
     if (url) {
         handleForegroundUpload({ target: { files: [{ url: url }] } })
     }

@@ -111,6 +111,7 @@ function CustomCards() {
   const minSize = isMobile ? '8%' : '13%'; // Set the minimum size based on screen size
   const maxSize = isMobile ? '8%' : '13%'; // Set the minimum size based on screen size
   const [isBold, setIsBold] = useState(false);
+  let rowToDelete = null; // Keep track of the row to delete
 
 
   const handleTemplateSelect = (template) => {
@@ -147,12 +148,45 @@ function CustomCards() {
   };
 
   const handleAbilityDelete = (event) => {
-    const row = event.target.closest('tr'); // Assuming the image is in a table row
-    console.log(row)
-    if (row) {
-      row.remove(); // Remove the row
+    // Find the table row
+    rowToDelete = event.target.closest('tr');
+
+    // Open the confirmation modal
+    const modal = document.getElementById('confirmModal');
+    if (modal) {
+      modal.style.display = 'block';
     }
-  }
+  };
+
+
+  const confirmDelete = () => {
+    if (rowToDelete) {
+      rowToDelete.remove(); // Delete the row
+      rowToDelete = null; // Clear the reference
+    }
+
+    // Close the modal
+    const modal = document.getElementById('confirmModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  };
+
+  const cancelDelete = () => {
+    // Simply close the modal
+    const modal = document.getElementById('confirmModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  };
+
+  const closeModal = () => {
+    const modal = document.getElementById('confirmModal');
+    if (modal) {
+      modal.style.display = 'none'; // Hide the modal
+    }
+  };
+
 
   const insertImageAtCursor = (url) => {
     const selection = window.getSelection();
@@ -389,6 +423,18 @@ function CustomCards() {
           <button className="ability-option" data-ability="return" style={{ backgroundColor: '#d4b4ff' }}>Return</button>
         </div>
       </div>
+      <div id="confirmModal" className="modal">
+        <div className="modal-content">
+          <span className="closeabconfirm" onClick={closeModal}>&times;</span>
+          <h2>Are you sure you want to remove this ability?</h2>
+          <div>
+            <button className="ability-option" style={{backgroundColor: '#ff4d4d'}} onClick={confirmDelete}>Yes, Delete</button>
+            <button className="ability-option" style={{backgroundColor: '#4caf50'}} onClick={cancelDelete}>Cancel</button>
+          </div>
+        </div>
+      </div>
+
+
 
     </div>
   );
