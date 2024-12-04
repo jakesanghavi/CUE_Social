@@ -146,6 +146,14 @@ function CustomCards() {
     }
   };
 
+  const handleAbilityDelete = (event) => {
+    const row = event.target.closest('tr'); // Assuming the image is in a table row
+    console.log(row)
+    if (row) {
+      row.remove(); // Remove the row
+    }
+  }
+
   const insertImageAtCursor = (url) => {
     const selection = window.getSelection();
     if (selection.rangeCount > 0) {
@@ -257,12 +265,13 @@ function CustomCards() {
 
       const row = document.createElement('tr');
       const imgCell = document.createElement('td');
+      imgCell.onclick = handleAbilityDelete;
       imgCell.className = 'cellImg';
       imgCell.style.width = `${percentage * 0.1}%`;
 
       const img = document.createElement('img');
       img.src = imgUrl;
-      img.className = 'inline-icon';
+      img.className = 'inline-icon hoverable';
       img.alt = abilityType;
       img.style.height = '2vw';
       img.style.width = 'auto';
@@ -320,7 +329,7 @@ function CustomCards() {
     // Toggle bold state
     document.execCommand('bold');
   };
-  
+
 
 
   return (
@@ -332,26 +341,26 @@ function CustomCards() {
       <div className='iconGridWrapper'>
         <div className='iconGridContainer'
           style={{
-              display: 'grid', // Override display from inline-flex to grid
-              gridTemplateColumns: `repeat(7, minmax(${minSize}, ${maxSize}))`, // Updated columns
-              gap: '5px', // Retain spacing
-              maxWidth: '100%', // Override max-width
-              alignItems: 'center',
-              alignContent: 'center',
-              justifyContent: 'center'
+            display: 'grid', // Override display from inline-flex to grid
+            gridTemplateColumns: `repeat(7, minmax(${minSize}, ${maxSize}))`, // Updated columns
+            gap: '5px', // Retain spacing
+            maxWidth: '100%', // Override max-width
+            alignItems: 'center',
+            alignContent: 'center',
+            justifyContent: 'center'
           }}
         >
           {cardEditIcons().map((url, index) => (
             <div key={index} className='iconImageWrapper'>
-              <img src={url} alt={`${index + 1}`} className='iconImage' onClick={() => insertImageAtCursor(url)} style={{cursor: 'pointer'}} />
+              <img src={url} alt={`${index + 1}`} className='iconImage' onClick={() => insertImageAtCursor(url)} style={{ cursor: 'pointer' }} />
             </div>
           ))}
           <div className='iconImageWrapper'>
-          <button className={`boldButton ${isBold ? 'active' : ''}`} onMouseDown={(e) => toggleBold(e)}>
-          <FontAwesomeIcon icon={faBold} className={isBold ? 'boldActive' : ''} />
+            <button className={`boldButton ${isBold ? 'active' : ''}`} onMouseDown={(e) => toggleBold(e)}>
+              <FontAwesomeIcon icon={faBold} className={isBold ? 'boldActive' : ''} />
 
-          </button>
-        </div>
+            </button>
+          </div>
         </div>
       </div>
 

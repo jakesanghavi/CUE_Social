@@ -317,6 +317,7 @@
 
 .cellImg {
   vertical-align: top;
+  position: relative;
 }
 
 .cellImg img {
@@ -455,4 +456,31 @@
     0 5px currentColor,
     0 -5px currentColor;
   transform: scale(1.2);
+}
+
+.hoverable {
+  width: 100%;
+  height: auto;
+  transition: opacity 0.3s;
+}
+
+.cellImg:hover .hoverable {
+  filter: opacity(0.3) grayscale(100%) brightness(50%); /* Adjust opacity and grayscale */
+}
+
+/* .cellImg:hover {
+  background-color: rgba(255, 0, 71, 0.6);
+  position: relative;
+} */
+
+
+.cellImg:hover::before {
+  content: 'REMOVE'; /* Black minus sign */
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -70%);
+  font-size: 20px;
+  color: red;
+  z-index: 1;
 }
