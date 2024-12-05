@@ -89,7 +89,7 @@ const saveAsImage = () => {
   }
 
   // Capture the element as an image
-  html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: scale })
+  html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: 2 })
     .then((canvas) => {
       const link = document.createElement('a');
       link.href = canvas.toDataURL('image/png');
