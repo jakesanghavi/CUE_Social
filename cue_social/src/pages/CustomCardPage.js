@@ -77,8 +77,10 @@ const saveAsImage = () => {
   // Set scale to 1 for image capture
   // editor.style.transform = 'scale(1)';
 
+  const scale = window.devicePixelRatio || 1;
+
   // Capture the element as an image
-  html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: 2 })
+  html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: scale })
     .then((canvas) => {
       const link = document.createElement('a');
       link.href = canvas.toDataURL('image/png');
