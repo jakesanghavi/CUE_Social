@@ -77,7 +77,16 @@ const saveAsImage = () => {
   // Set scale to 1 for image capture
   // editor.style.transform = 'scale(1)';
 
-  const scale = window.devicePixelRatio || 1;
+  let scale;
+
+  // Determine scale based on screen size
+  if (window.innerWidth > 1024) { // Laptop/Desktop
+    scale = 2;
+  } else if (window.innerWidth > 768) { // Tablet
+    scale = 4;
+  } else { // Phone
+    scale = 7;
+  }
 
   // Capture the element as an image
   html2canvas(templateHolder, { allowTaint: true, useCORS: true, scale: scale })
