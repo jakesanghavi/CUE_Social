@@ -634,15 +634,15 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
         <div className="card-field" id="card-code" contentEditable={true} suppressContentEditableWarning={true}>CODE</div>
         <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true}>Ability Name</div>
         <div id='ability-desc-holder'>
-          <span
+          <div
             className="card-field"
             id="ability-description"
-            contentEditable={true}
+            contentEditable={false}
             suppressContentEditableWarning={true}
             onInput={handleInputChange} // Update the state when the content changes
             value={content}
           >
-          </span>
+          </div>
         </div>
       </div>
 
