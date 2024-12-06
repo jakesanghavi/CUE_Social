@@ -47,6 +47,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   const [name, setName] = useState('CARD NAME');
   const initial = 2.3;
   // const [previousCharCount, setPreviousCharCount] = useState(0); // Track previous character count
+  const previousCharCount = useRef(0);
   const [previousFontSize, setPreviousFontSize] = useState(initial); // Track previous character count
   const fsMap = new Map([
     [1, 60],
@@ -172,50 +173,48 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     const bp4 = `${(45 * initial) / 81}vw`;
     const bp5 = `${numberOfLines / 5}vw`;
 
-    if (estLineNum <= 1) {
-      fontSize = bp1;
-    } else if (estLineNum === 2) {
-      fontSize = bp2;
-    } else if (estLineNum === 3) {
-      fontSize = bp3;
-    } else if (estLineNum === 4) {
-      fontSize = bp4;
-    } else {
-      fontSize = bp5; // Fallback or default size
-    }
-
-
-    // if (numberOfLines <= 1) {
-    //   if ((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp1.substring(0), bp1.length - 2)) || (totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp1.substring(0, bp1.length - 2)))) {
-    //     fontSize = bp1;
-    //   }
-    // } else if (numberOfLines === 2) {
-    //   if ((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp2.substring(0), bp2.length - 2)) || (totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp2.substring(0, bp2.length - 2)))) {
-    //     fontSize = bp2;
-    //   }
-    // } else if (numberOfLines === 3) {
-    //   console.log(previousFontSize)
-    //   console.log(bp3)
-    //   console.log((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp3.substring(0), bp3.length - 2)))
-    //   console.log((totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp3.substring(0, bp3.length - 2))))
-    //   if ((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp3.substring(0), bp3.length - 2)) || (totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp3.substring(0, bp3.length - 2)))) {
-    //     console.log('la')
-    //     fontSize = bp3;
-    //   }
-    // } else if (numberOfLines === 4) {
-    //   console.log(previousFontSize)
-    //   console.log(bp4)
-    //   console.log((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp4.substring(0), bp4.length - 2)))
-    //   console.log((totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp4.substring(0, bp4.length - 2))))
-    //   if ((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp4.substring(0), bp4.length - 2)) || (totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp4.substring(0, bp4.length - 2)))) {
-    //     console.log('la2')
-    //     fontSize = bp4;
-    //   }
+    // if (estLineNum <= 1) {
+    //   fontSize = bp1;
+    // } else if (estLineNum === 2) {
+    //   fontSize = bp2;
+    // } else if (estLineNum === 3) {
+    //   fontSize = bp3;
+    // } else if (estLineNum === 4) {
+    //   fontSize = bp4;
     // } else {
-    //   if ((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp5.substring(0), bp5.length - 2)) || (totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp5.substring(0, bp5.length - 2))))  {
-    //     fontSize = bp5;
-    //   }
+    //   fontSize = bp5; // Fallback or default size
     // }
+
+
+    if (estLineNum <= 1) {
+      if ((totalChars <= previousCharCount.current && previousFontSize <= parseFloat(bp1.substring(0), bp1.length - 2)) || (totalChars >= previousCharCount.current && previousFontSize >= parseFloat(bp1.substring(0, bp1.length - 2)))) {
+        fontSize = bp1;
+      }
+    } else if (estLineNum === 2) {
+      if ((totalChars <= previousCharCount.current && previousFontSize <= parseFloat(bp2.substring(0), bp2.length - 2)) || (totalChars >= previousCharCount.current && previousFontSize >= parseFloat(bp2.substring(0, bp2.length - 2)))) {
+        fontSize = bp2;
+      }
+    } else if (estLineNum === 3) {
+      // console.log(previousFontSize)
+      // console.log(bp3)
+      // console.log((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp3.substring(0), bp3.length - 2)))
+      // console.log((totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp3.substring(0, bp3.length - 2))))
+      if ((totalChars <= previousCharCount.current && previousFontSize <= parseFloat(bp3.substring(0), bp3.length - 2)) || (totalChars >= previousCharCount.current && previousFontSize >= parseFloat(bp3.substring(0, bp3.length - 2)))) {
+        fontSize = bp3;
+      }
+    } else if (estLineNum === 4) {
+      // console.log(previousFontSize)
+      // console.log(bp4)
+      // console.log((totalChars <= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) <= parseFloat(bp4.substring(0), bp4.length - 2)))
+      // console.log((totalChars >= previousCharCount && parseFloat(previousFontSize.substring(0, previousFontSize.length - 2)) >= parseFloat(bp4.substring(0, bp4.length - 2))))
+      if ((totalChars <= previousCharCount.current && previousFontSize <= parseFloat(bp4.substring(0), bp4.length - 2)) || (totalChars >= previousCharCount.current && previousFontSize >= parseFloat(bp4.substring(0, bp4.length - 2)))) {
+        fontSize = bp4;
+      }
+    } else {
+      if ((totalChars <= previousCharCount.current && previousFontSize <= parseFloat(bp5.substring(0), bp5.length - 2)) || (totalChars >= previousCharCount.current && previousFontSize >= parseFloat(bp5.substring(0, bp5.length - 2))))  {
+        fontSize = bp5;
+      }
+    }
 
     // setPreviousCharCount(totalChars);
     setPreviousFontSize(fontSize);
@@ -225,6 +224,13 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
 
     // Update the height of any embedded images based on the new font size
     const computedFontSize = getComputedStyle(element).fontSize;
+
+    // setPreviousCharCount((prev) => {
+    //   console.log("Previous:", prev, "Current:", totalChars);
+    //   return totalChars;
+    // });
+
+    previousCharCount.current = totalChars;
 
     // Find all <img> tags within the element
     const images = element.querySelectorAll('img');
