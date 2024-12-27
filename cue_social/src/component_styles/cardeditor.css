@@ -225,11 +225,20 @@
   font-weight: 700;
   font-style: italic;
   text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
-  /* Create the outline effect */
+    -3px -3px 0 #000,
+    3px -3px 0 #000,
+    -3px 3px 0 #000,
+    3px 3px 0 #000;
+}
+
+@media (max-width: 768px) {
+  #energy-cost {
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
+  }
 }
 
 #power {
@@ -246,11 +255,21 @@
   /* Bold */
   font-style: italic;
   text-shadow:
-    -1px -1px 0 #000,
-    1px -1px 0 #000,
-    -1px 1px 0 #000,
-    1px 1px 0 #000;
+    -3px -3px 0 #000,
+    3px -3px 0 #000,
+    -3px 3px 0 #000,
+    3px 3px 0 #000;
   /* Create the outline effect */
+}
+
+@media (max-width: 768px) {
+  #power {
+    text-shadow:
+      -1px -1px 0 #000,
+      1px -1px 0 #000,
+      -1px 1px 0 #000,
+      1px 1px 0 #000;
+  }
 }
 
 #ability-name {
@@ -266,10 +285,10 @@
 }
 
 #ability-desc-holder {
-  top: 87.5%;
+  top: 86%;
   /* left: 2%; */
   width: 100%;
-  height: 10.2%;
+  height: 12.1%;
   /* position: relative; */
   /* clear: both; */
   position: absolute;
@@ -287,11 +306,15 @@
   font-family: 'Cabin', sans-serif;
   font-weight: 400;
   /* Regular */
+  justify-content: center;
+  align-items: center;
   color: #323232;
   /* position: absolute; */
   /* position: relative; */
   /* height: 10%; */
   display: flex;
+  margin: 0;
+  padding: 0;
   /* display: inline; */
   /* align-items: center; */
   /* white-space: pre-wrap; */
