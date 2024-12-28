@@ -172,7 +172,6 @@
     height: 6.5%;
     width: 82%;
     font-size: 3.1vw;
-    text-align: center;
     /* Center text within the element */
     position: absolute;
     /* Ensure positioning relative to parent */
@@ -184,11 +183,12 @@
     /* Bold */
     text-transform: uppercase;
     display: 'flex';
-    align-items: 'center';
-    justify-content: 'center';
-    vertical-align: middle;
-    text-align: 'center';
-    transform: translateX(-50%);
+    text-align: center;
+    align-items: center;
+    /* justify-content: 'center'; */
+    /* vertical-align: middle; */
+    /* text-align: 'center'; */
+    /* transform: translateX(-50%); */
     /* Forces text to be uppercase */
 }
 
@@ -198,18 +198,43 @@
   /* left: 20%; */
   width: 100%;
   /* font-size: 3.1vw; */
-  text-align: center;
   /* Center text within the element */
-  position: absolute;
+  /* position: absolute; */
   /* Ensure positioning relative to parent */
-  transform: translateX(-50%);
+  /* transform: translateX(-50%); */
   /* Center element horizontally by moving it left by half of its width */
-  left: 50%;
+  /* left: 50%; */
   font-family: 'Open Sans', sans-serif;
   font-weight: 700;
   /* Bold */
   /* text-transform: uppercase; */
   /* Forces text to be uppercase */
+  vertical-align: middle;
+  /* Regular */
+  justify-content: center;
+  align-items: center;
+  /* position: absolute; */
+  /* position: relative; */
+  /* height: 10%; */
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+#card-name-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center; /* Optional: if you want to center horizontally as well */
+}
+
+/* Child element */
+#card-name {
+  width: 100%;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 700;
+  vertical-align: middle; /* This can be removed as it's not needed with flexbox */
+  justify-content: center; /* This can be removed as it's not needed with flexbox */
+  align-items: center; /* This can be removed as it's not needed with flexbox */
 }
 
 #energy-cost {
@@ -313,7 +338,7 @@
   /* position: relative; */
   /* height: 10%; */
   display: flex;
-  margin: 0;
+  margin: 0 auto;
   padding: 0;
   /* display: inline; */
   /* align-items: center; */
