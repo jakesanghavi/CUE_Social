@@ -109,6 +109,22 @@ function App() {
     document.getElementById('signUpEmail').value = email;
   };
 
+  useEffect(() => {
+    // Function to adjust the viewport meta tag
+    const isiOS = () => {
+      return /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    };
+    const iOS = isiOS();
+    const viewportMeta = document.head.querySelector('meta[name="viewport"]');
+    if (viewportMeta) {
+      if (iOS) {
+        viewportMeta.content = "width=device-width, initial-scale=1, maximum-scale=1";
+      } else {
+        viewportMeta.content = "width=device-width, initial-scale=1";
+      }
+    }
+  }, []);
+
   // When they log in, remove the google oAuth component when site loads
   const handleLoginSuccess = async (email, username) => {
     const element = document.getElementById('signInDiv')?.firstChild?.firstChild;
