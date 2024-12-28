@@ -249,20 +249,28 @@
   font-family: 'Cabin', sans-serif;
   font-weight: 700;
   font-style: italic;
-  text-shadow:
-    -3px -3px 0 #000,
-    3px -3px 0 #000,
-    -3px 3px 0 #000,
-    3px 3px 0 #000;
+  text-shadow: 
+        -3px -3px 0px #000,
+         0px -3px 0px #000,
+         3px -3px 0px #000,
+        -3px  0px 0px #000,
+         3px  0px 0px #000,
+        -3px  3px 0px #000,
+         0px  3px 0px #000,
+         3px  3px 0px #000;
 }
 
 @media (max-width: 768px) {
   #energy-cost {
-    text-shadow:
-      -1px -1px 0 #000,
-      1px -1px 0 #000,
-      -1px 1px 0 #000,
-      1px 1px 0 #000;
+    text-shadow: 
+        -1px -1px 0px #000,
+         0px -1px 0px #000,
+         1px -1px 0px #000,
+        -1px  0px 0px #000,
+         1px  0px 0px #000,
+        -1px  1px 0px #000,
+         0px  1px 0px #000,
+         1px  1px 0px #000;
   }
 }
 
@@ -279,21 +287,29 @@
   font-weight: 700;
   /* Bold */
   font-style: italic;
-  text-shadow:
-    -3px -3px 0 #000,
-    3px -3px 0 #000,
-    -3px 3px 0 #000,
-    3px 3px 0 #000;
+  text-shadow: 
+        -3px -3px 0px #000,
+         0px -3px 0px #000,
+         3px -3px 0px #000,
+        -3px  0px 0px #000,
+         3px  0px 0px #000,
+        -3px  3px 0px #000,
+         0px  3px 0px #000,
+         3px  3px 0px #000;
   /* Create the outline effect */
 }
 
 @media (max-width: 768px) {
   #power {
-    text-shadow:
-      -1px -1px 0 #000,
-      1px -1px 0 #000,
-      -1px 1px 0 #000,
-      1px 1px 0 #000;
+    text-shadow: 
+        -1px -1px 0px #000,
+         0px -1px 0px #000,
+         1px -1px 0px #000,
+        -1px  0px 0px #000,
+         1px  0px 0px #000,
+        -1px  1px 0px #000,
+         0px  1px 0px #000,
+         1px  1px 0px #000;
   }
 }
 
