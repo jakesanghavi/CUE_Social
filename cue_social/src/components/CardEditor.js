@@ -46,8 +46,10 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   const [power, setPower] = useState('?');
   const [name, setName] = useState('CARD NAME');
   const initial = 2.3;
+  const defaultImageURL = 'https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg';
   // const [previousCharCount, setPreviousCharCount] = useState(0); // Track previous character count
   const previousCharCount = useRef(0);
+  const bgRef = useRef(null);
   // const [previousFontSize, setPreviousFontSize] = useState(initial); // Track previous character count
   const previousFontSize = useRef(initial)
   const fsMap = new Map([
@@ -337,13 +339,15 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   }, [name])
 
   const handleWheelZoom = (e) => {
-    e.preventDefault();
-    const scaleChange = e.deltaY > 0 ? 0.97 : 1.03; // Zoom out on scroll down, zoom in on scroll up
-    setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3))); // Limit zoom scale between 0.5 and 3
+    if (bgRef.current && bgRef.current.src && bgRef.current.src !== defaultImageURL) {
+      e.preventDefault();
+      const scaleChange = e.deltaY > 0 ? 0.97 : 1.03; // Zoom out on scroll down, zoom in on scroll up
+      setScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3))); // Limit zoom scale between 0.5 and 3
+    }
   };
 
   const handlePinchZoom = (e) => {
-    if (e.touches.length === 2) {
+    if (e.touches.length === 2 && bgRef.current && bgRef.current.src && bgRef.current.src !== defaultImageURL) {
       e.preventDefault(); // Prevent the page zoom
       const dist = Math.hypot(
         e.touches[0].clientX - e.touches[1].clientX,
@@ -356,18 +360,22 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   };
 
   const handleTouchEnd = () => {
-    imageRef.current.prevDist = null; // Reset previous distance on touch end
+    if (bgRef.current && bgRef.current.src && bgRef.current.src !== defaultImageURL) {
+      imageRef.current.prevDist = null; // Reset previous distance on touch end
+    }
   };
 
   const handleMouseDown = (e) => {
-    setDragging(true);
-    setIsDragging(false); // Reset dragging state on mouse down
-    imageRef.current = { startX: e.clientX, startY: e.clientY }; // Track the starting mouse position
+    if (bgRef.current && bgRef.current.src && bgRef.current.src !== defaultImageURL) {
+      setDragging(true);
+      setIsDragging(false); // Reset dragging state on mouse down
+      imageRef.current = { startX: e.clientX, startY: e.clientY }; // Track the starting mouse position
+    }
   };
 
   const handleMouseMove = (e) => {
     if (fgdragging) return; // Prevent background dragging if foreground is dragging
-    if (dragging) {
+    if (dragging && bgRef.current && bgRef.current.src && bgRef.current.src !== defaultImageURL) {
       const dx = e.clientX - imageRef.current.startX;
       const dy = e.clientY - imageRef.current.startY;
       setImagePosition(prevPos => ({
@@ -381,7 +389,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
   };
 
   const handleMouseUp = () => {
-    if (fgdragging) return; // Prevent background stop if foreground is dragging
+    if (fgdragging || !(dragging && bgRef.current && bgRef.current.src && bgRef.current.src !== defaultImageURL)) return; // Prevent background stop if foreground is dragging
     setDragging(false);
   };
 
@@ -390,6 +398,8 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
     e.stopPropagation();
     const scaleChange = e.deltaY > 0 ? 0.97 : 1.03; // Zoom out on scroll down, zoom in on scroll up
     fgsetScale((prevScale) => Math.max(0.5, Math.min(prevScale * scaleChange, 3))); // Limit zoom scale between 0.5 and 3
+    // Dummy line to be removed when custom album icons are supported
+    fgsetScale(() => 1)
   };
 
   /* eslint-disable no-unused-vars */
@@ -474,7 +484,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
 
   const handleTouchMove = (e) => {
     if (fgdragging) return; // Prevent background dragging if foreground is dragging
-    if (dragging) {
+    if (dragging && bgRef.current && bgRef.current.src && bgRef.current.src !== defaultImageURL) {
       const touch = e.touches[0];
       const dx = touch.clientX - imageRef.current.startX;
       const dy = touch.clientY - imageRef.current.startY;
@@ -586,6 +596,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
               // maxWidth: '100%'
             }}
             crossOrigin="anonymous"
+            ref={bgRef}
           />
           <input
             type="file"

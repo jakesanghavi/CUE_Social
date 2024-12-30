@@ -116,8 +116,8 @@ const saveAsImage = () => {
 
 function CustomCards() {
   const [selectedTemplate, setSelectedTemplate] = useState(templates[0]);
-  const [backgroundImage, setBackgroundImage] = useState(null); // State to hold the background image
-  const [foregroundImage, setForegroundImage] = useState(null); // State to hold the foreground image
+  const [backgroundImage, setBackgroundImage] = useState('https://t4.ftcdn.net/jpg/04/81/13/43/360_F_481134373_0W4kg2yKeBRHNEklk4F9UXtGHdub3tYk.jpg'); // State to hold the background image
+  const [foregroundImage, setForegroundImage] = useState('https://res.cloudinary.com/defal1ruq/image/upload/v1735594880/inverted_add_img_transparent_icon_zepq5o.png'); // State to hold the foreground image
   const isMobile = window.innerWidth <= 600; // Check if the screen width is less than or equal to 600px
   const minSize = isMobile ? '8%' : '13%'; // Set the minimum size based on screen size
   const maxSize = isMobile ? '8%' : '13%'; // Set the minimum size based on screen size
