@@ -253,6 +253,11 @@ export const optionsTags = [
         "color": "#f792e4"
     },
     {
+        "label": "Budget",
+        "value": "Budget",
+        "color": "#b3ee4c"
+    },
+    {
         "label": "Burn",
         "value": "Burn",
         "color": "#ff5a00"
@@ -446,6 +451,11 @@ export const optionsTags = [
         "label": "Mythics",
         "value": "Mythics",
         "color": "#FFBF00"
+    },
+    {
+        "label": "New Player Friendly",
+        "value": "New Player Friendly",
+        "color": "#b3ee4c"
     },
     {
         "label": "Non-Limited",
