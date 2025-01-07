@@ -4,7 +4,7 @@ import TemplateSelector from '../components/TemplateSelector';
 import { customCardBorders, customCardIcons, cardEditIcons, cardIconNames } from '../UsefulFunctions';
 import html2canvas from 'html2canvas';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBold } from '@fortawesome/free-solid-svg-icons';
+import { faBold, faQuestionCircle } from '@fortawesome/free-solid-svg-icons';
 
 
 // const templates = customCardBorders();
@@ -174,6 +174,27 @@ function CustomCards() {
     }
   };
 
+  const handleCardHelp = (event) => {
+
+    const contentEditableElements = document.querySelectorAll('[contentEditable="true"]');
+    contentEditableElements.forEach((el) => {
+      el.blur(); // Removes focus
+    });
+
+    // Open the confirmation modal
+    const modal = document.getElementById('helpModal');
+    if (modal) {
+      modal.style.display = 'block';
+    }
+  };
+
+  
+  const closeHelpModal = () => {
+    const modal = document.getElementById('helpModal');
+    if (modal) {
+      modal.style.display = 'none'; // Hide the modal
+    }
+  };
 
   const confirmDelete = () => {
     if (rowToDelete) {
@@ -383,7 +404,7 @@ function CustomCards() {
 
   const adjustButtonHeight = (buttonElement, targetSrc) => {
     if (!buttonElement) return;
-  
+
     // Find the target image by its src
     const targetImage = document.querySelector(`img[alt="${targetSrc}"]`);
     const parentElement = targetImage.parentElement;
@@ -397,7 +418,10 @@ function CustomCards() {
 
   return (
     <div className="customCardPage">
-      <h1>Custom Card Editor</h1>
+      <div style={{ display: "flex", alignItems: "center" }}>
+        <h1>Custom Card Editor</h1>
+        <FontAwesomeIcon icon={faQuestionCircle} style={{ marginLeft: "10px", fontSize: "1.5rem" }} onClick={handleCardHelp}/>
+      </div>
       <TemplateSelector templates={templates} onTemplateSelect={handleTemplateSelect} saveAsImage={saveAsImage} />
 
 
@@ -463,6 +487,21 @@ function CustomCards() {
             <button className="ability-option" style={{ backgroundColor: '#ff4d4d' }} onClick={confirmDelete}>Yes, Delete</button>
             <button className="ability-option" style={{ backgroundColor: '#4caf50' }} onClick={cancelDelete}>Cancel</button>
           </div>
+        </div>
+      </div>
+      <div id="helpModal" className="modal">
+        <div className="modal-content">
+          <span className="closeHelp" onClick={closeHelpModal}>&times;</span>
+          <h2>Images:</h2>
+          <h4>Click on the background to add a card image! Click where the collection icon should go to search for and add an existing collection icon.</h4>
+          <h2>Name, Code, and Energy/Power</h2>
+          <h4>Simply click to edit any text on the card!</h4>
+          <h2>Abilities</h2>
+          <h4>Use the "Add Ability" button to add abilities to your card! This lets you pick an ability type. You can click on the provided icons 
+            (ex. power/burn/etc.) to add them. The "B" button will toggle bold on and off.
+          </h4>
+          <h2>Save Your Card!</h2>
+          <h4>You can use the "Save Image" button to save your card, or just take a screenshot yourself!</h4>
         </div>
       </div>
 
