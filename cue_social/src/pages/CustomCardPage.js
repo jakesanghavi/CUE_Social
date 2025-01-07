@@ -250,6 +250,7 @@ function CustomCards() {
           img.className = 'inline-icon'; // Styling for inline icons
           img.style.height = '2vw';
           img.style.width = 'auto';
+          img.style.verticalAlign = '-10%'
 
           // Insert the inline icon into the current range
           range.insertNode(img);
@@ -380,6 +381,18 @@ function CustomCards() {
     document.execCommand('bold');
   };
 
+  const adjustButtonHeight = (buttonElement, targetSrc) => {
+    if (!buttonElement) return;
+  
+    // Find the target image by its src
+    const targetImage = document.querySelector(`img[alt="${targetSrc}"]`);
+    const parentElement = targetImage.parentElement;
+    if (targetImage) {
+      // Set the button height to match the target image height
+      const targetHeight = parentElement.offsetHeight; // Get height in pixels
+      buttonElement.style.height = `${targetHeight}px`;
+    };
+  }
 
 
   return (
@@ -387,32 +400,6 @@ function CustomCards() {
       <h1>Custom Card Editor</h1>
       <TemplateSelector templates={templates} onTemplateSelect={handleTemplateSelect} saveAsImage={saveAsImage} />
 
-      {/* Centered Grid Container */}
-      <div className='iconGridWrapper'>
-        <div className='iconGridContainer'
-          style={{
-            display: 'grid', // Override display from inline-flex to grid
-            gridTemplateColumns: `repeat(7, minmax(${minSize}, ${maxSize}))`, // Updated columns
-            gap: '5px', // Retain spacing
-            maxWidth: '100%', // Override max-width
-            alignItems: 'center',
-            alignContent: 'center',
-            justifyContent: 'center'
-          }}
-        >
-          {cardEditIcons().map((url, index) => (
-            <div key={index} className='iconImageWrapper'>
-              <img src={url} alt={`${index + 1}`} className='iconImage' onClick={() => insertImageAtCursor(url)} style={{ cursor: 'pointer' }} />
-            </div>
-          ))}
-          <div className='iconImageWrapper'>
-            <button className={`boldButton ${isBold ? 'active' : ''}`} onMouseDown={(e) => toggleBold(e)}>
-              <FontAwesomeIcon icon={faBold} className={isBold ? 'boldActive' : ''} />
-
-            </button>
-          </div>
-        </div>
-      </div>
 
       <div style={{ justifyContent: 'center', alignContent: 'center', display: 'flex', flexDirection: 'column' }}>
         <CardEditor
@@ -427,7 +414,36 @@ function CustomCards() {
           cardEditIcons={cardEditIcons}
           insertImageAtCursor={insertImageAtCursor}
         />
-        <button id="add-ability-button" onClick={addAbility}>Add ability</button>
+        {/* Centered Grid Container */}
+        <div className='belowCardContainer'>
+          <div className='iconGridWrapper'>
+            <div className='iconGridContainer'
+              style={{
+                display: 'grid', // Override display from inline-flex to grid
+                gridTemplateColumns: `repeat(7, minmax(${minSize}, ${maxSize}))`, // Updated columns
+                gap: '5px', // Retain spacing
+                maxWidth: '100%', // Override max-width
+                alignItems: 'center',
+                alignContent: 'center',
+                justifyContent: 'center'
+              }}
+            >
+              {cardEditIcons().map((url, index) => (
+                <div key={index} className='iconImageWrapper'>
+                  <img src={url} alt={`${index + 1}`} className='iconImage' onClick={() => insertImageAtCursor(url)} style={{ cursor: 'pointer' }} />
+                </div>
+              ))}
+              <div className='iconImageWrapper' ref={(el) => adjustButtonHeight(el, '1')}>
+                <button className={`boldButton ${isBold ? 'active' : ''}`} onMouseDown={(e) => toggleBold(e)}>
+                  <FontAwesomeIcon icon={faBold} className={isBold ? 'boldActive' : ''} />
+                </button>
+              </div>
+            </div>
+          </div>
+          <div>
+            <button id="add-ability-button" onClick={addAbility}>Add ability</button>
+          </div>
+        </div>
       </div>
       <div id="abilityModal" className="modal">
         <div className="modal-content">

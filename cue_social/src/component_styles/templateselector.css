@@ -4,7 +4,9 @@
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    padding: 30px;
+    /* padding: 30px; */
+    margin-top: 10px;
+    margin-bottom: 30px;
     max-width: 100%;
     box-sizing: border-box;
 }
@@ -71,20 +73,20 @@
 }
 
 .iconGridWrapper {
-    display: inline-flex;
+    display: flex;
     justify-content: center;
     align-items: center;
     /* width: 100%; */
-    margin: 20px 0;
+    margin: 5% 0;
     /* margin-left: 17%; */
     /* min-height: 100vh; */
 }
 
-@media (max-width: 768px) {
+/* @media (max-width: 768px) {
     .iconGridWrapper {
-        margin: -10px 0;
+        margin: 3% 0;
     }
-  }
+  } */
 
 /* .iconGridContainer {
     display: inline-flex;
@@ -101,7 +103,7 @@
     align-items: center;
     justify-content: center;
     height: auto; /* Set height to auto to allow flexibility */
-    min-height: 50px; /* Ensure a minimum height for consistency */
+    min-height: 20px; /* Ensure a minimum height for consistency */
 }
 
 .iconImage {
