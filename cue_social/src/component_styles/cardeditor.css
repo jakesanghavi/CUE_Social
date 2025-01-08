@@ -256,7 +256,6 @@
   font-family: 'Cabin', sans-serif;
   font-weight: 700;
   font-style: italic;
-  color: black;
   paint-order: stroke fill;
   -webkit-text-fill-color: white; /* Will override color (regardless of order) */
   -webkit-text-stroke: 8px black;
