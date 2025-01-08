@@ -256,28 +256,15 @@
   font-family: 'Cabin', sans-serif;
   font-weight: 700;
   font-style: italic;
-  text-shadow:
-    -3px -3px 0px #000,
-    0px -3px 0px #000,
-    3px -3px 0px #000,
-    -3px 0px 0px #000,
-    3px 0px 0px #000,
-    -3px 3px 0px #000,
-    0px 3px 0px #000,
-    3px 3px 0px #000;
+  color: black;
+  paint-order: stroke fill;
+  -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+  -webkit-text-stroke: 8px black;
 }
 
 @media (max-width: 768px) {
   #energy-cost {
-    text-shadow:
-      -1px -1px 0px #000,
-      0px -1px 0px #000,
-      1px -1px 0px #000,
-      -1px 0px 0px #000,
-      1px 0px 0px #000,
-      -1px 1px 0px #000,
-      0px 1px 0px #000,
-      1px 1px 0px #000;
+    -webkit-text-stroke: 4px black;
   }
 }
 
@@ -294,29 +281,15 @@
   font-weight: 700;
   /* Bold */
   font-style: italic;
-  text-shadow:
-    -3px -3px 0px #000,
-    0px -3px 0px #000,
-    3px -3px 0px #000,
-    -3px 0px 0px #000,
-    3px 0px 0px #000,
-    -3px 3px 0px #000,
-    0px 3px 0px #000,
-    3px 3px 0px #000;
+  paint-order: stroke fill;
+  -webkit-text-fill-color: white; /* Will override color (regardless of order) */
+  -webkit-text-stroke: 8px black;
   /* Create the outline effect */
 }
 
 @media (max-width: 768px) {
   #power {
-    text-shadow:
-      -1px -1px 0px #000,
-      0px -1px 0px #000,
-      1px -1px 0px #000,
-      -1px 0px 0px #000,
-      1px 0px 0px #000,
-      -1px 1px 0px #000,
-      0px 1px 0px #000,
-      1px 1px 0px #000;
+    -webkit-text-stroke: 4px black;
   }
 }
 
