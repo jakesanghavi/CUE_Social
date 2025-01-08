@@ -650,14 +650,14 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
           </div>
         </div>
         <div id='card-name-wrapper'>
-          <div className="card-field" id="card-name" contentEditable={true} suppressContentEditableWarning={true} onInput={handleNameChange} value={name}>
+          <div className="card-field" id="card-name" contentEditable={true} suppressContentEditableWarning={true} onInput={handleNameChange} value={name} spellcheck="false">
             Card Name
           </div>
         </div>
-        <div className="card-field" id="energy-cost" contentEditable={true} suppressContentEditableWarning={true} onInput={handleEnergyChange} value={energy}>?</div>
-        <div className="card-field" id="power" contentEditable={true} suppressContentEditableWarning={true} onInput={handlePowerChange} value={power}>?</div>
-        <div className="card-field" id="card-code" contentEditable={true} suppressContentEditableWarning={true}>CODE</div>
-        <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true}>Ability Name</div>
+        <div className="card-field" id="energy-cost" contentEditable={true} suppressContentEditableWarning={true} onInput={handleEnergyChange} value={energy} spellcheck="false">?</div>
+        <div className="card-field" id="power" contentEditable={true} suppressContentEditableWarning={true} onInput={handlePowerChange} value={power} spellcheck="false">?</div>
+        <div className="card-field" id="card-code" contentEditable={true} suppressContentEditableWarning={true} spellcheck="false">CODE</div>
+        <div className="card-field" id="ability-name" contentEditable={true} suppressContentEditableWarning={true} spellcheck="false">Ability Name</div>
         <div id='ability-desc-holder'>
           <div
             className="card-field"
@@ -666,6 +666,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
             suppressContentEditableWarning={true}
             onInput={handleInputChange} // Update the state when the content changes
             value={content}
+            spellcheck="false"
           >
           </div>
         </div>
