@@ -36,7 +36,19 @@ header .container {
 .logo-name-holder {
   display: flex;
   align-items: center;
-  text-decoration: none; /* Remove underline from the link */
+  text-decoration: none;
+  /* Remove underline from the link */
+  /* padding: 0 2rem; */
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.menuOption {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  /* Remove underline from the link */
   /* padding: 0 2rem; */
   text-align: center;
   margin-top: auto;
@@ -48,10 +60,47 @@ header .container {
   margin-right: 1rem;
 }
 
+@media (max-width: 999px) {
+
+  /* Adjust breakpoint as needed */
+  #logo {
+    margin-right: -0.2rem;
+  }
+}
+
+@media (max-width: 999px) {
+
+  /* Adjust breakpoint as needed */
+  .logoText {
+    display: none;
+  }
+}
+
 h1 {
   margin: 0;
   font-size: 2rem;
   color: inherit;
+}
+
+@media (max-width: 999px) {
+  /* Adjust breakpoint as needed */
+  h2 {
+    font-size: 1.4rem;
+  }
+}
+
+@media (max-width: 500px) {
+  /* Adjust breakpoint as needed */
+  h2 {
+    font-size: 1.2rem;
+  }
+}
+
+@media (max-width: 420px) {
+  /* Adjust breakpoint as needed */
+  h2 {
+    font-size: 1rem;
+  }
 }
 
 @media (max-width: 768px) {
@@ -89,7 +138,8 @@ header a {
   font-size: .9rem;
   color: white;
   text-align: center;
-  padding: 0 2rem;
+  /* padding: 0 2rem; */
+  padding-right: 25px;
   cursor: pointer;
   margin-top: auto;
   margin-bottom: auto;

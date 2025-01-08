@@ -103,34 +103,34 @@ const NavBar = ({ loggedInUser }) => {
         </div> */}
         <Link to="/" className='logo-name-holder'>
           <img id='logo' src='../favicon.png' alt='Cue Tavern Logo' />
-          <h1>Cue Tavern</h1>
+          <h1 className='logoText'>Cue Tavern</h1>
         </Link>
         {/* <div className="blank-space">
         </div> */}
 
 
-        {/* <Link to="/">
-          <h3>Decks</h3>
+        <Link to="/" className="menuOption">
+          <h2>Decks</h2>
         </Link>
 
-        <Link to="/customcards">
-          <h3>Custom Cards</h3>
-        </Link> */}
+        <Link to="/customcards" className="menuOption">
+          <h2>Custom Cards</h2>
+        </Link>
 
         <div id="signIn">
           {loggedInUser === null || loggedInUser.email === null ? (
             // Render Google Sign-In button when loggedInUser is null
             // Add any additional styling or classes as needed
-            <h1 onClick={handleShowLogin}>
+            <h2 onClick={handleShowLogin}>
               Sign In
-            </h1>
+            </h2>
           ) : (
             // Render "Profile" button when loggedInUser is not null
 
             <a href="/profile" >
-              <h1 onClick={() => console.log('Link clicked')} >
+              <h2 onClick={() => console.log('Link clicked')} >
                 My Profile
-              </h1>
+              </h2>
             </a>
 
           )}
