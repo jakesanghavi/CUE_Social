@@ -287,7 +287,6 @@ function CustomCards() {
     }
   };
 
-  // Modify your addAbility function
   const addAbility = () => {
     const parentDiv = document.getElementById('ability-description');
     const childRef = document.getElementById('editor');
@@ -494,9 +493,9 @@ function CustomCards() {
           <span className="closeHelp" onClick={closeHelpModal}>&times;</span>
           <h2>Images:</h2>
           <h4>Click on the background to add a card image! Click where the collection icon should go to search for and add an existing collection icon.</h4>
-          <h2>Name, Code, and Energy/Power</h2>
+          <h2>Name, Code, and Energy/Power:</h2>
           <h4>Simply click to edit any text on the card!</h4>
-          <h2>Abilities</h2>
+          <h2>Abilities:</h2>
           <h4>Use the "Add Ability" button to add abilities to your card! This lets you pick an ability type. You can click on the provided icons 
             (ex. power/burn/etc.) to add them. The "B" button will toggle bold on and off.
           </h4>
