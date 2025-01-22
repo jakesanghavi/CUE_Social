@@ -137,7 +137,7 @@ export const cardIconNames = () => {
     "Space Technology", "Stage and Screen", "Sue Black", "Super Structures", "The American Revolution", "Tarot",
     "The Four Horseman", "The Legend of Robin Hood", "The Occult", "The Original Odyssey", "The Roman Empire",
     "The Solar System", "The Write Stuff", "Tremendous Trees", "Turbulent Tudors", "Under the Microscope",
-    "Unruly Rulers", "Venomous Creatures", "Vicious Vikings", "Volcanoes", "Watching the Skies", "Weird World",
-    "Weapons of Choice", "Wonders of Construction", "West African Folklore", "World of Words"
+    "Unruly Rulers", "Venomous Creatures", "Vicious Vikings", "Volcanoes", "Watching the Skies", "Weapons of Choice", "Weird World",
+    "Wonders of Construction", "West African Folklore", "World of Words"
 ]
 }
