@@ -646,6 +646,7 @@ const CardEditor = ({ template, backgroundImage, foregroundImage, handleForegrou
               objectFit: 'contain', // Ensure the image scales properly within the div
             }}
               crossOrigin="anonymous"
+              id='collectionIcon'
             />}
           </div>
         </div>

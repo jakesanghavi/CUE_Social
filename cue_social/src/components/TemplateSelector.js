@@ -16,6 +16,10 @@ const TemplateSelector = ({ templates, onTemplateSelect, saveAsImage }) => {
     );
     if (selectedTemplate) {
       onTemplateSelect(selectedTemplate);
+      if (selectedTemplate.rarity.includes('Ultra')) {
+        const imgtag = document.getElementById('collectionIcon')
+        imgtag.src = "";
+      }
     }
   }, [option1, option2, option3, onTemplateSelect, templates]);
 
