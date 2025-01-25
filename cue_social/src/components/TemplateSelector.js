@@ -16,7 +16,7 @@ const TemplateSelector = ({ templates, onTemplateSelect, saveAsImage }) => {
     );
     if (selectedTemplate) {
       onTemplateSelect(selectedTemplate);
-      if (selectedTemplate.rarity.includes('Ultra')) {
+      if ((selectedTemplate.rarity.includes('Ultra')) || (selectedTemplate.rarity.includes('Mythic'))) {
         const imgtag = document.getElementById('collectionIcon')
         imgtag.src = "";
       }
