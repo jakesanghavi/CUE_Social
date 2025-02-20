@@ -71,6 +71,7 @@ export const optionsCollections = [
     { label: "Fruit and Veg", value: "LFV", album: "Life on Land" },
     { label: "Funky Fungi", value: "LFF", album: "Life on Land" },
     { label: "Futurology", value: "SFR", album: "Science" },
+    { label: "Game Dev!", value: "SGA", album: "Science" },
     { label: "Going Underground", value: "LUN", album: "Life on Land" },
     { label: "Good Sports", value: "ACSP", album: "Arts & Culture" },
     { label: "Gorgeous Graphic Design", value: "ACGD", album: "Arts & Culture" },
