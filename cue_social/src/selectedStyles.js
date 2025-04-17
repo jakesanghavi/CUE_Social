@@ -409,6 +409,11 @@ export const optionsTags = [
         "color": "#0090fe"
     },
     {
+        "label": "Medium Energy",
+        "value": "Medium Energy",
+        "color": "#0096FF"
+    },
+    {
         "label": "Mono Arts & Culture",
         "value": "Mono Arts & Culture",
         "color": "#f792e4"
