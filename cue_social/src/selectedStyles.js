@@ -499,6 +499,11 @@ export const optionsTags = [
         "color": "#8B4000"
     },
     {
+        "label": "Richard the Lionheart",
+        "value": "Richard the Lionheart",
+        "color": "#fbe22b"
+    },
+    {
         "label": "Scorched Earth",
         "value": "Scorched Earth",
         "color": "#FFEA00"

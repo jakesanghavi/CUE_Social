@@ -45,10 +45,10 @@ const DeckPage = ({ loggedInUser }) => {
           className="thumbs-up-icon" />
         {deck.score}
       </div>
-      <p className='deckDescription'>Description: {deck.description}</p>
+      <p className='deckDescription'>{deck.description}</p>
       {deck.image && (
         <img
-          src={deck.image} // Replace with your actual image URL
+          src={deck.image}
           alt="Decklist"
           className='deckImage'
         />
