@@ -279,6 +279,11 @@ export const optionsTags = [
         "color": "#B2BEB5"
     },
     {
+        "label": "Cow Tipping",
+        "value": "Cow Tipping",
+        "color": "#fbe22b"
+    },
+    {
         "label": "Dadaism",
         "value": "Dadaism",
         "color": "#f792e4"
