@@ -264,6 +264,11 @@ export const optionsTags = [
         "color": "#ff5a00"
     },
     {
+        "label": "Carl Linnaeus",
+        "value": "Carl Linnaeus",
+        "color": "#1dfdc5"
+    },
+    {
         "label": "Chaos",
         "value": "Chaos",
         "color": "#f792e4"
@@ -357,6 +362,11 @@ export const optionsTags = [
         "label": "Great Dying",
         "value": "Great Dying",
         "color": "#fc9512"
+    },
+    {
+        "label": "Heimdall",
+        "value": "Heimdall",
+        "color": "#f792e4"
     },
     {
         "label": "Hell",
