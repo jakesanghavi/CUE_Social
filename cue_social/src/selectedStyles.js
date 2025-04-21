@@ -24,7 +24,7 @@ export const optionsCollections = [
     { label: "Amphibians", value: "LAM", album: "Life on Land" },
     { label: "Ancient Creatures", value: "PAN", album: "Paleontology" },
     { label: "Ancient Egypt", value: "EEG", album: "History" },
-    { label: "Ancient Greece", value: "EAG", album: "Arts & Culture" },
+    { label: "Ancient Greece", value: "EAG", album: "History" },
     { label: "Around the Reef", value: "ORF", album: "Oceans & Seas" },
     { label: "Arthurian Legends", value: "ACAL", album: "Arts & Culture" },
     { label: "Arts & Culture Mythic Cards", value: "ACMY", album: "Arts & Culture" },
