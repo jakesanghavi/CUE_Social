@@ -524,6 +524,11 @@ export const optionsTags = [
         "color": "#1dfdc5"
     },
     {
+        "label": "Tennin",
+        "value": "Tennin",
+        "color": "#fbe22b"
+    },
+    {
         "label": "The World Turtle",
         "value": "The World Turtle",
         "color": "#b3ee4c"
