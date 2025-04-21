@@ -229,6 +229,11 @@ export const optionsTags = [
         "color": "#1dfdc5"
     },
     {
+        "label": "Beowulf",
+        "value": "Beowulf",
+        "color": "#f792e4"
+    },
+    {
         "label": "Bigshot",
         "value": "Bigshot",
         "color": "#ff5a00"
