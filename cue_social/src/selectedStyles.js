@@ -439,6 +439,11 @@ export const optionsTags = [
         "color": "#0090fe"
     },
     {
+        "label": "Mary Anning",
+        "value": "Mary Anning",
+        "color": "#fc9512"
+    },
+    {
         "label": "Medium Energy",
         "value": "Medium Energy",
         "color": "#0096FF"
