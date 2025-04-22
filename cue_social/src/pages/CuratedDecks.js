@@ -77,8 +77,11 @@ const CuratedDecks = ({ loggedInUser }) => {
         Object.keys(selectedOptions).forEach((column) => {
             if (selectedOptions[column].length > 0) {
                 result = result.filter((deck) =>
-                    deck[column]?.some((item) => selectedOptions[column].includes(item))
+                    selectedOptions[column].every((selected) =>
+                        deck[column]?.includes(selected)
+                    )
                 );
+                
             }
         });
 
@@ -136,11 +139,12 @@ const CuratedDecks = ({ loggedInUser }) => {
     useEffect(() => {
         let filtered = decks;
 
-        // Apply filters for albums, collections, and tags
         Object.keys(selectedOptions).forEach((column) => {
             if (selectedOptions[column].length > 0) {
                 filtered = filtered.filter((deck) =>
-                    deck[column]?.some((item) => selectedOptions[column].includes(item))
+                    selectedOptions[column].every((selected) =>
+                        deck[column]?.includes(selected)
+                    )
                 );
             }
         });
@@ -273,7 +277,7 @@ const CuratedDecks = ({ loggedInUser }) => {
                             </td>
                         </tr>
                     )}
-                    { finalDecks && finalDecks.length > 0 ? (
+                    {finalDecks && finalDecks.length > 0 ? (
                         finalDecks.map((deck) => (
                             <tr key={deck._id} style={{ borderBottom: '1px solid #ddd' }}>
                                 <td style={{ padding: '12px' }}>
