@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import Pill from '../components/Pill';
 import { ROUTE } from '../constants';
@@ -10,7 +10,6 @@ const CuratedDecks = ({ loggedInUser }) => {
     const location = useLocation();
 
     const [decks, setDecks] = useState(null);
-    const [filteredDecks, setFilteredDecks] = useState([]);
     const [sortConfig, setSortConfig] = useState({ key: 'createdAt', direction: 'desc' });
     const [searchTerm, setSearchTerm] = useState('');
     // const [activeFilters, setActiveFilters] = useState({
@@ -46,7 +45,6 @@ const CuratedDecks = ({ loggedInUser }) => {
             }
             const data = await response.json();
             setDecks(data.decks);
-            setFilteredDecks(data.decks); // Initialize with all decks
         } catch (error) {
             console.error('Error fetching decks:', error);
         }
@@ -60,9 +58,6 @@ const CuratedDecks = ({ loggedInUser }) => {
     const handleSearch = (e) => {
         const searchValue = e.target.value.toLowerCase();
         setSearchTerm(searchValue);
-
-        const filtered = decks.filter((deck) => deck.title.toLowerCase().includes(searchValue));
-        setFilteredDecks(filtered);
     };
 
     const handleSort = (key) => {
@@ -70,28 +65,46 @@ const CuratedDecks = ({ loggedInUser }) => {
         setSortConfig({ key, direction });
     };
 
-    useEffect(() => {
-        if (decks && decks.length > 0) {
-            let sortedDecks = [...decks];
-            sortedDecks = sortedDecks.sort((a, b) => {
-                const aValue = a[sortConfig.key];
-                const bValue = b[sortConfig.key];
+    const finalDecks = useMemo(() => {
+        if (!decks) return [];
 
-                if (typeof aValue === 'string') {
-                    return sortConfig.direction === 'asc'
-                        ? aValue.localeCompare(bValue)
-                        : bValue.localeCompare(aValue);
-                }
+        // Filter by title
+        let result = decks.filter((deck) =>
+            deck.title.toLowerCase().includes(searchTerm)
+        );
 
-                if (typeof aValue === 'number') {
-                    return sortConfig.direction === 'asc' ? aValue - bValue : bValue - aValue;
-                }
+        // Apply filters for albums, collections, and tags
+        Object.keys(selectedOptions).forEach((column) => {
+            if (selectedOptions[column].length > 0) {
+                result = result.filter((deck) =>
+                    deck[column]?.some((item) => selectedOptions[column].includes(item))
+                );
+            }
+        });
 
-                return 0;
-            });
-            setFilteredDecks(sortedDecks);
-        }
-    }, [decks, sortConfig]);
+        // Sort
+        result.sort((a, b) => {
+            const aValue = a[sortConfig.key];
+            const bValue = b[sortConfig.key];
+
+            if (typeof aValue === 'string') {
+                return sortConfig.direction === 'asc'
+                    ? aValue.localeCompare(bValue)
+                    : bValue.localeCompare(aValue);
+            }
+
+            if (typeof aValue === 'number' || aValue instanceof Date) {
+                return sortConfig.direction === 'asc'
+                    ? aValue - bValue
+                    : bValue - aValue;
+            }
+
+            return 0;
+        });
+
+        return result;
+    }, [decks, searchTerm, selectedOptions, sortConfig]);
+
 
     const handleFilterToggle = (column) => {
         setIsDropdownOpen((prevState) => {
@@ -132,7 +145,6 @@ const CuratedDecks = ({ loggedInUser }) => {
             }
         });
 
-        setFilteredDecks(filtered);
     }, [decks, selectedOptions]);
 
     // Filter options based on search term
@@ -261,8 +273,8 @@ const CuratedDecks = ({ loggedInUser }) => {
                             </td>
                         </tr>
                     )}
-                    {filteredDecks && filteredDecks.length > 0 ? (
-                        filteredDecks.map((deck) => (
+                    { finalDecks && finalDecks.length > 0 ? (
+                        finalDecks.map((deck) => (
                             <tr key={deck._id} style={{ borderBottom: '1px solid #ddd' }}>
                                 <td style={{ padding: '12px' }}>
                                     <a
