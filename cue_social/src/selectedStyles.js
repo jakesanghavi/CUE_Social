@@ -254,6 +254,11 @@ export const optionsTags = [
         "color": "#0090fe"
     },
     {
+        "label": "Bobblehead",
+        "value": "Bobblehead",
+        "color": "#f792e4"
+    },
+    {
         "label": "Boxing",
         "value": "Boxing",
         "color": "#f792e4"
