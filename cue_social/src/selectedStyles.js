@@ -284,6 +284,11 @@ export const optionsTags = [
         "color": "#f792e4"
     },
     {
+        "label": "Christ of the Abyss",
+        "value": "Christ of the Abyss",
+        "color": "#fbe22b"
+    },
+    {
         "label": "Commons",
         "value": "Commons",
         "color": "#B2BEB5"
