@@ -274,4 +274,26 @@ const editDeck = async (request, response) => {
     }
 };
 
-module.exports = { getDecksForUser, getDecksBySearch, postDeck, getOneDeck, patchUpvotes, deleteOneDeck, editDeck };
+// GET decks from homepage query
+const getCuratedDecks = async (request, response) => {
+
+    const { user } = request.body;
+  
+    try {
+      const query = {};
+      
+      if (user) {
+        query.user = { $all: user };
+      }
+  
+      const decks = await Deck.find(query);
+      const totalDecks = decks.length;
+  
+      response.status(200).json({ decks, totalDecks });
+    } catch (error) {
+      console.error('Error fetching decks:', error);
+      response.status(500).json({ message: 'Server error' });
+    }
+  };
+
+module.exports = { getDecksForUser, getDecksBySearch, postDeck, getOneDeck, patchUpvotes, deleteOneDeck, editDeck, getCuratedDecks };

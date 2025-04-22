@@ -38,7 +38,8 @@ const {
     getDecksBySearch,
     patchUpvotes,
     deleteOneDeck,
-    editDeck
+    editDeck,
+    getCuratedDecks
 } = require('../controllers/deckController')
 
 const {
@@ -108,6 +109,9 @@ router.get('/api/decks/:id', getDecksForUser)
 
 // GET decks for search
 router.post('/api/decks/search-decks', getDecksBySearch);
+
+// GET curated decks
+router.post('/api/decks/get-curated', getCuratedDecks);
 
 // GET decks by ID
 router.get('/api/decks/onedeck/:id', getOneDeck)
