@@ -3,7 +3,7 @@ import UploadForm from '../components/UploadForm';
 import Login from '../components/Login';
 import SearchBar from '../components/SearchBar';
 import DeckDisplay from '../components/DeckDisplay';
-import '../component_styles/home.css';
+import '../component_styles/decklist.css';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../constants';
 import { upvoteCheck } from '../UsefulFunctions'
@@ -86,8 +86,8 @@ const DeckList = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
   return (
     <div className="Home" id="home">
       <Login onLoginSuccess={onLoginSuccess} uid={uid} openLoginModal={openLoginModal} />
-      <SearchBar />
-      {loggedInUser && loggedInUser.email ? (
+      <SearchBar loggedInUser={loggedInUser} openModal={openModal}/>
+      {/* {loggedInUser && loggedInUser.email ? (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '50px 50px' }}>
           <button onClick={openModal} className='modern-button'>
             Upload a deck
@@ -97,7 +97,7 @@ const DeckList = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '50px 50px' }}>
           <p>Please log in to start uploading decks!</p>
         </div>
-      )}
+      )} */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">

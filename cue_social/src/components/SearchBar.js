@@ -43,7 +43,7 @@ const customStyles = {
     }),
 };
 
-const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cardsPass = [], userPass = [], allCardsPass = [], usersPass = [] }) => {
+const SearchBar = ({ loggedInUser, openModal, albumsPass = [], collectionsPass = [], tagsPass = [], cardsPass = [], userPass = [], allCardsPass = [], usersPass = [] }) => {
     const navigate = useNavigate();
     const [selectedAlbums, setSelectedAlbums] = useState(albumsPass);
     const [selectedCollections, setSelectedCollections] = useState(collectionsPass);
@@ -127,8 +127,13 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
     }, [fetchUsers]);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: fontSize }}>
+        <div className="search-bar-div" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: fontSize }}>
             <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                {loggedInUser && loggedInUser.email && (
+                    <button onClick={openModal} className='modern-button'>
+                        Upload a deck
+                    </button>
+                )}
                 <button onClick={() => setSearchType('decks')} className="modern-button">
                     Search for Decks
                 </button>
@@ -211,7 +216,7 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
                         )}
                         {!selectedUser && (
                             <button style={{ marginLeft: '5px', padding: '12px' }} disabled={true}>
-                                <FontAwesomeIcon icon={faSearch} className='modern-button'/>
+                                <FontAwesomeIcon icon={faSearch} className='modern-button' />
                             </button>
                         )}
                     </>
