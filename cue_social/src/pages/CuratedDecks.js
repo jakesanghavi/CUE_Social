@@ -290,7 +290,7 @@ const CuratedDecks = ({ loggedInUser }) => {
                                         {deck.title}
                                     </a>
                                 </td>
-                                <td style={{ padding: '12px', fontFamily: 'monospace' }}>{deck.deckcode}</td>
+                                <td style={{ padding: '12px', fontWeight: 'bold'}}>{deck.deckcode}</td>
                                 <td style={{ padding: '12px' }}>
                                     {deck.albums?.length > 0 && deck.albums.map((item, idx) => (
                                         <Pill key={idx} text={item} type={'Album'} />
