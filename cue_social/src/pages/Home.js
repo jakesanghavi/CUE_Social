@@ -1,122 +1,89 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import UploadForm from '../components/UploadForm';
-import Login from '../components/Login';
-import SearchBar from '../components/SearchBar';
-import DeckDisplay from '../components/DeckDisplay';
+import React, { useRef, useState, useEffect, useMemo } from 'react';
 import '../component_styles/home.css';
-import { useNavigate } from 'react-router-dom';
-import { ROUTE } from '../constants';
-import { upvoteCheck } from '../UsefulFunctions'
+import { deckBuilderNames, cardArtNames } from '../UsefulFunctions'
+import { Link } from 'react-router-dom'
 
-const Home = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
-  const navigate = useNavigate();
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newDecks, setNewDecks] = useState(null);
-  const [topDecks, setTopDecks] = useState(null);
-  const [topDecksWeek, setTopDecksWeek] = useState(null);
 
-  const limit = 5
-  const setOne = false
+const Home = () => {
 
-  const handleDeckSearch = (sortBy, restricted) => {
-    console.log(sortBy)
-    console.log(restricted)
-    const searchParams = {
-      selectedAlbums: [],
-      selectedCollections: [],
-      selectedTags: [],
-      selectedCards: [],
-      // selectedUser: [],
-      // cards: [],
-      // users: [],
-      sortBy,
-      restricted: restricted
-    };
-    navigate('/deck-search-results', { state: { searchParams } });
-  };
+  const [currentDeckImageIndex, setCurrentDeckImageIndex] = useState(0);
+  const [currentArtImageIndex, setCurrentArtImageIndex] = useState(0);
+  const shuffledDeckListRef = useRef([]);
+  const deckIndexRef = useRef(0);
+  const shuffledArtListRef = useRef([]);
+  const artIndexRef = useRef(0);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
-  const fetchDecks = useCallback(async (method, restricted) => {
-    try {
-      const albums = []
-      const collections = []
-      const tags = []
-      const cards = []
-      const sortBy = method
-
-      const response = await fetch(`${ROUTE}/api/decks/search-decks?page=${1}&limit=${limit}`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ albums, collections, tags, cards, sortBy, restricted })
-      });
-      if (!response.ok) {
-        throw new Error('Failed to fetch decks');
-      }
-      const data = await response.json();
-      if (restricted) {
-        setTopDecksWeek(data.decks)
-      }
-      else if (method === 'score') {
-        setTopDecks(data.decks)
-      }
-      else {
-        setNewDecks(data.decks)
-      }
-    } catch (error) {
-      console.error('Error fetching decks:', error);
+  const shuffledDeckList = useMemo(() => {
+    const originalDeckList = deckBuilderNames();
+    const shuffled = [...originalDeckList];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
+    shuffledDeckListRef.current = shuffled;
+    return shuffled;
+  }, []);
+
+  const shuffledArtList = useMemo(() => {
+    const originalArtList = cardArtNames();
+    const shuffled = [...originalArtList];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    shuffledArtListRef.current = shuffled;
+    return shuffled;
   }, []);
 
   useEffect(() => {
-    fetchDecks('score');
-    fetchDecks('score', 'yes')
-    fetchDecks()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    const intervalId = setInterval(() => {
+      // Cycle through the shuffled deck list
+      setCurrentDeckImageIndex(deckIndexRef.current % shuffledDeckListRef.current.length);
+      deckIndexRef.current++;
+
+      // Cycle through the shuffled art list
+      setCurrentArtImageIndex(artIndexRef.current % shuffledArtListRef.current.length);
+      artIndexRef.current++;
+    }, 3000);
+
+    return () => clearInterval(intervalId);
+  }, []); // Empty dependency array as shuffled lists are created once
+
 
   return (
-    <div className="Home" id="home">
-      <Login onLoginSuccess={onLoginSuccess} uid={uid} openLoginModal={openLoginModal} />
-      <SearchBar />
-      {loggedInUser && loggedInUser.email ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '50px 50px' }}>
-          <button onClick={openModal} className='modern-button'>
-            Upload a deck
-          </button>
+    <div className="gallery">
+      <Link to="/decks" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <div className="card">
+          <img
+            id="shuffleDeckImage"
+            src={shuffledDeckList[currentDeckImageIndex]}
+            alt="Community Decks"
+            style={{ transition: 'opacity 1s ease-in-out', opacity: 1 }}
+          />
+          <div className="label">Community Decks</div>
         </div>
-      ) : (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '50px 50px' }}>
-          <p>Please log in to start uploading decks!</p>
+      </Link>
+      <Link to="/customcards" style={{ textDecoration: 'none', color: 'inherit' }}>
+        <div className="card">
+          <img
+            id="shuffleArtImage"
+            src={shuffledArtList[currentArtImageIndex]}
+            alt="Custom Card Tool"
+            style={{ transition: 'opacity 1s ease-in-out', opacity: 1 }}
+          />
+          <div className="label">Custom Card Tool</div>
         </div>
-      )}
-      {isModalOpen && (
-        <div className="modal-overlay">
-          <div className="modal-content">
-            <button className="modal-close" onClick={closeModal}>Close</button>
-            <UploadForm loggedInUser={loggedInUser} closeModal={closeModal} />
-          </div>
+      </Link>
+      <a href="https://cards-the-universe-and-everything.fandom.com/wiki/Cards,_the_Universe_and_Everything_Wiki" target="_blank" style={{ textDecoration: 'none', color: 'inherit' }} rel="noopener noreferrer">
+        <div className="card">
+          <img
+            src="https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/a0/c3/82efe3c1e8ad4f8a455028057e1733a07066"
+            alt="Wiki Fandom"
+          />
+          <div className="label">Wiki Fandom</div>
         </div>
-      )}
-      <div className="custom-grid-wrapper">
-        <DeckDisplay decks={topDecksWeek} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'score'} restricted={'yes'}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks This Week"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
-        <div className="vertical-line"></div>
-        <DeckDisplay decks={newDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'new'}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Newest Decks"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
-        <div className="vertical-line second-line"></div>
-        <DeckDisplay decks={topDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'score'}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks All Time"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
-      </div>
-    </div >
+      </a>
+    </div>
   );
 }
 

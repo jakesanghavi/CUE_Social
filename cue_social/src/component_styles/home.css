@@ -1,7 +1,3 @@
-#app {
-    height: 100vh;
-}
-
 .main {
     border-radius: 30px;
     background-color: #E0DBE7;
@@ -103,5 +99,71 @@
     /* Adjust the max-width as per your mobile breakpoint */
     .vertical-line.second-line {
         display: none;
+    }
+}
+
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --card-bg: #f0f0f0;
+    --highlight: #007BFF;
+}
+
+body.dark {
+    --bg-color: #121212;
+    --text-color: #ffffff;
+    --card-bg: #1e1e1e;
+    --highlight: #66b2ff;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.gallery {
+    margin-top: -15%;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    padding: 2rem;
+}
+
+.card {
+    background-color: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+}
+
+.card img {
+    width: 100%;
+    display: block;
+}
+
+.label {
+    padding: 1rem;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+@media (max-width: 768px) {
+    .gallery {
+        grid-template-columns: 1fr 1fr;
+    }
+
+    .gallery> :first-child {
+        grid-column: 1 / -1;
+        justify-self: center;
     }
 }
