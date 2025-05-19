@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import React, { useState, useCallback, useEffect, useMemo } from 'react';
 import UploadForm from '../components/UploadForm';
 import Login from '../components/Login';
 import SearchBar from '../components/SearchBar';
-import DeckDisplay from '../components/DeckDisplay';
+import HomeDeckDisplay from '../components/HomeDeckDisplay.js';
 import '../component_styles/decklist.css';
 import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../constants';
@@ -14,6 +14,12 @@ const DeckList = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
   const [newDecks, setNewDecks] = useState(null);
   const [topDecks, setTopDecks] = useState(null);
   const [topDecksWeek, setTopDecksWeek] = useState(null);
+
+  const combinedDecks = useMemo(() => [
+    ...(topDecksWeek ? topDecksWeek.map(deck => ({ ...deck, category: 'Top Decks This Week' })) : []),
+    ...(newDecks ? newDecks.map(deck => ({ ...deck, category: 'Newest Decks' })) : []),
+    ...(topDecks ? topDecks.map(deck => ({ ...deck, category: 'Top Decks All Time' })) : []),
+  ], [topDecksWeek, newDecks, topDecks]);
 
   const limit = 5
   const setOne = false
@@ -86,7 +92,7 @@ const DeckList = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
   return (
     <div className="Home" id="home">
       <Login onLoginSuccess={onLoginSuccess} uid={uid} openLoginModal={openLoginModal} />
-      <SearchBar loggedInUser={loggedInUser} openModal={openModal}/>
+      <SearchBar loggedInUser={loggedInUser} openModal={openModal} />
       {/* {loggedInUser && loggedInUser.email ? (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '50px 50px' }}>
           <button onClick={openModal} className='modern-button'>
@@ -106,7 +112,7 @@ const DeckList = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
           </div>
         </div>
       )}
-      <div className="custom-grid-wrapper">
+      {/* <div className="custom-grid-wrapper">
         <DeckDisplay decks={topDecksWeek} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'score'} restricted={'yes'}
           upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks This Week"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
         <div className="vertical-line"></div>
@@ -115,7 +121,16 @@ const DeckList = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
         <div className="vertical-line second-line"></div>
         <DeckDisplay decks={topDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'score'}
           upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks All Time"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
-      </div>
+      </div> */}
+
+      <HomeDeckDisplay
+        decks={combinedDecks}
+        styleClass="custom"
+        handleDeckSearch={handleDeckSearch}
+        upvoteCheck={upvoteCheck}
+        loggedInUser={loggedInUser}
+        setOne={setOne}
+      />
     </div >
   );
 }
