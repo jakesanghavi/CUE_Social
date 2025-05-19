@@ -77,7 +77,7 @@ const Home = () => {
       <a href="https://cards-the-universe-and-everything.fandom.com/wiki/Cards,_the_Universe_and_Everything_Wiki" target="_blank" style={{ textDecoration: 'none', color: 'inherit' }} rel="noopener noreferrer">
         <div className="card">
           <img
-            src="https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/a0/c3/82efe3c1e8ad4f8a455028057e1733a07066"
+            src="https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/28/9c/34e7b200d5d1b2ca0f939b63cf2c662b04a6"
             alt="Wiki Fandom"
           />
           <div className="label">Wiki Fandom</div>
