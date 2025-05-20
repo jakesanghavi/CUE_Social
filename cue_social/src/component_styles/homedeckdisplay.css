@@ -9,6 +9,7 @@
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   text-align: center;
+  font-size: clamp(12px, 1.5vw, 16px);
 }
 
 .custom-grid-column {
