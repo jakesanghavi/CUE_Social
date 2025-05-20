@@ -7,9 +7,9 @@ import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons';
 // Navbar is available on every page. Contains Google OAuth, game info, and menu icon
 const NavBar = ({ loggedInUser }) => {
   const handleShowLogin = () => setShowLogin(true);
-  const [isDarkMode, setIsDarkMode] = useState(false);
+const [isDarkMode, setIsDarkMode] = useState(true);
 
-  const [sliderPosition, setSliderPosition] = useState(0);
+  const [sliderPosition, setSliderPosition] = useState(1);
   const sliderTrackRef = useRef(null);
   const sliderHandleRef = useRef(null);
   const toggleMode = () => {
