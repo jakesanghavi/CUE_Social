@@ -11,15 +11,16 @@ import { upvoteCheck } from '../UsefulFunctions'
 const DeckList = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [newDecks, setNewDecks] = useState(null);
-  const [topDecks, setTopDecks] = useState(null);
-  const [topDecksWeek, setTopDecksWeek] = useState(null);
+  const [newDecks, setNewDecks] = useState([]);
+  const [topDecks, setTopDecks] = useState([]);
+  const [topDecksWeek, setTopDecksWeek] = useState([]);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const combinedDecks = useMemo(() => [
-    ...(topDecksWeek ? topDecksWeek.map(deck => ({ ...deck, category: 'Top Decks This Week' })) : []),
-    ...(newDecks ? newDecks.map(deck => ({ ...deck, category: 'Newest Decks' })) : []),
-    ...(topDecks ? topDecks.map(deck => ({ ...deck, category: 'Top Decks All Time' })) : []),
-  ], [topDecksWeek, newDecks, topDecks]);
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const limit = 5
   const setOne = false
@@ -88,6 +89,37 @@ const DeckList = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
     fetchDecks()
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const combinedDecks = useMemo(() => {
+    let decksThisWeek = [];
+
+    if (windowWidth >= 850) {
+      if (topDecksWeek?.length > 0) {
+        decksThisWeek = topDecksWeek.map(deck => ({
+          ...deck,
+          category: 'Top Decks This Week',
+        }));
+      } else {
+        // Include a dummy deck only to preserve the category
+        decksThisWeek = [{
+          id: '__placeholder__',
+          category: 'Top Decks This Week',
+          hidden: true
+        }];
+      }
+    }
+    // If windowWidth < 850, decksThisWeek stays empty → no first column
+
+    const newDecksLabeled = newDecks
+      ? newDecks.map(deck => ({ ...deck, category: 'Newest Decks' }))
+      : [];
+
+    const topDecksLabeled = topDecks
+      ? topDecks.map(deck => ({ ...deck, category: 'Top Decks All Time' }))
+      : [];
+
+    return [...decksThisWeek, ...newDecksLabeled, ...topDecksLabeled];
+  }, [windowWidth, topDecksWeek, newDecks, topDecks]);
 
   return (
     <div className="Home" id="home">

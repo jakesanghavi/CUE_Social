@@ -16,32 +16,45 @@ const HomeDeckDisplay = ({
   deleteDeckFunction,
   editDeckFunction,
 }) => {
-  const categories = ['Top Decks This Week', 'Newest Decks', 'Top Decks All Time'];
   const a = styleClass.startsWith('custom') ? 'custom-' : '';
 
-  // Group decks by category
+  // Define categories and remove 'Top Decks This Week' if toosmall
+  const categories = [];
+
+  if (decks.some(d => d.category === 'Top Decks This Week')) {
+    categories.push('Top Decks This Week');
+  }
+
+  categories.push('Newest Decks', 'Top Decks All Time');
+
+  // Group decks by category, but skip 'toosmall' category decks completely
   const decksByCategory = categories.reduce((acc, category) => {
-    acc[category] = decks.filter(deck => deck.category === category);
+    acc[category] = decks.filter(
+      deck => deck.category === category && !deck.hidden
+    );
     return acc;
   }, {});
+
+  // Calculate gridTemplateColumns dynamically based on number of categories
+  const gridTemplateColumns = `repeat(${categories.length}, 1fr)`;
 
   return (
     <div
       className={`${a}grid-container new-decks`}
       style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(3, 1fr)',
+        gridTemplateColumns,
         gap: '1rem',
         textAlign: 'center',
       }}
     >
-      {categories.map(category => (
+      {categories.map((category, index) => (
         <div
           key={category}
           className={`${a}grid-column`}
           style={{
-            borderLeft: category !== categories[0] ? '1px solid #ccc' : 'none',
-            paddingLeft: category !== categories[0] ? '1rem' : '0',
+            borderLeft: index !== 0 ? '1px solid #ccc' : 'none', // no border on first visible col
+            paddingLeft: index !== 0 ? '1rem' : '0',
           }}
         >
           <h2
