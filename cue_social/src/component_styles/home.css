@@ -38,6 +38,9 @@ body {
   aspect-ratio: 3 / 4; /* Maintains shape on all screen sizes */
   display: flex;
   flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.4s ease;
+  transform-style: preserve-3d;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .card img {
@@ -60,13 +63,16 @@ body {
 
 
 .card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 8px 20px rgba(0, 123, 255, 0.3);
+  box-shadow: 
+    0 -8px 20px rgba(0, 123, 255, 0.3),
+    0 12px 30px rgba(0, 123, 255, 0.4);
 }
 
 @media (max-width: 768px) {
   .gallery {
     grid-template-columns: 1fr 1fr;
+    max-width: 400px; /* or whatever fits nicely */
+    margin-left: -30px;
   }
 
   .gallery> :nth-child(1) {
@@ -91,7 +97,7 @@ body {
     /* Target all img tags within direct children of .gallery */
     height: auto;
     /* Maintain aspect ratio */
-    max-width: 30vw;
+    max-width: 35vw;
     /* Optional: Limit vertical height relative to viewport */
     display: block;
     /* Prevent extra space below inline images */
@@ -100,7 +106,7 @@ body {
   }
 }
 
-@media (min-width: 769px) and (max-width: 1024px) {
+@media (min-width: 650px) and (max-width: 850px) {
 
   /* Adjust max-width as needed for laptop size */
   .gallery {
@@ -130,7 +136,44 @@ body {
   /* Apply max-width to images in this breakpoint */
   .gallery>* img {
     height: auto;
-    max-width: 30vw;
+    max-width: 25vw;
+    /* Adjust as needed for iPad size */
+    display: block;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 850px) and (max-width: 1024px) {
+
+  /* Adjust max-width as needed for laptop size */
+  .gallery {
+    grid-template-columns: 1fr 1fr;
+    /* Two columns */
+  }
+
+  /* Place the first two items in the first row */
+  .gallery> :nth-child(1) {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+  }
+
+  .gallery> :nth-child(2) {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+  }
+
+  /* Place the third item in the second row, spanning both columns */
+  .gallery> :nth-child(3) {
+    grid-column: 1 / -1;
+    grid-row: 2 / 3;
+    justify-self: center;
+    /* Center the single item */
+  }
+
+  /* Apply max-width to images in this breakpoint */
+  .gallery>* img {
+    height: auto;
+    max-width: 20vw;
     /* Adjust as needed for iPad size */
     display: block;
     margin: 0 auto;
