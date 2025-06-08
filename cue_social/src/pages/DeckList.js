@@ -125,17 +125,6 @@ const DeckList = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
     <div className="Home" id="home">
       <Login onLoginSuccess={onLoginSuccess} uid={uid} openLoginModal={openLoginModal} />
       <SearchBar loggedInUser={loggedInUser} openModal={openModal} />
-      {/* {loggedInUser && loggedInUser.email ? (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '50px 50px' }}>
-          <button onClick={openModal} className='modern-button'>
-            Upload a deck
-          </button>
-        </div>
-      ) : (
-        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '50px 50px' }}>
-          <p>Please log in to start uploading decks!</p>
-        </div>
-      )} */}
       {isModalOpen && (
         <div className="modal-overlay">
           <div className="modal-content">
@@ -144,16 +133,6 @@ const DeckList = ({ loggedInUser, onLoginSuccess, uid, openLoginModal }) => {
           </div>
         </div>
       )}
-      {/* <div className="custom-grid-wrapper">
-        <DeckDisplay decks={topDecksWeek} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'score'} restricted={'yes'}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks This Week"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
-        <div className="vertical-line"></div>
-        <DeckDisplay decks={newDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'new'}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Newest Decks"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
-        <div className="vertical-line second-line"></div>
-        <DeckDisplay decks={topDecks} styleClass={"custom"} handleDeckSearch={handleDeckSearch} sortBy={'score'}
-          upvoteCheck={upvoteCheck} loggedInUser={loggedInUser} deckType={"Top Decks All Time"} setOne={setOne} setDecks={[setTopDecks, setTopDecksWeek, setNewDecks]} />
-      </div> */}
 
       <HomeDeckDisplay
         decks={combinedDecks}

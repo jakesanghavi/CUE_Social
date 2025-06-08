@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp, faEdit, faTrash } from '@fortawesome/free-solid-svg-icons';
@@ -35,8 +35,29 @@ const HomeDeckDisplay = ({
     return acc;
   }, {});
 
-  // Calculate gridTemplateColumns dynamically based on number of categories
-  const gridTemplateColumns = `repeat(${categories.length}, 1fr)`;
+  const useWindowWidth = () => {
+    const [width, setWidth] = useState(window.innerWidth);
+
+    useEffect(() => {
+      const handleResize = () => setWidth(window.innerWidth);
+      window.addEventListener('resize', handleResize);
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+    return width;
+  }
+
+  const width = useWindowWidth();
+
+  let gridTemplateColumns;
+
+  if (width <= 600) {
+    gridTemplateColumns = '1fr';
+  } else if (width <= 850) {
+    gridTemplateColumns = 'repeat(2, 1fr)';
+  } else {
+    gridTemplateColumns = `repeat(${categories.length}, 1fr)`;
+  }
 
   return (
     <div
