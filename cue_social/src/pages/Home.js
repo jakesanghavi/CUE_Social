@@ -27,12 +27,10 @@ const Home = () => {
     const deltaX = x - centerX;
     const deltaY = y - centerY;
 
-    // Left-right tilt (rotateY) stays proportional and same sign
     const rotateY = 1.3 * (deltaX / centerX) * maxDeg;
 
     const rotateX = 1.3 * (Math.abs(deltaY) / centerY) * maxDeg;
 
-    // We're using 'transform' for animations, which doesn't cause layout shifts
     card.style.transform = `scale(1.1) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
   };
 
@@ -90,7 +88,7 @@ const Home = () => {
           onMouseMove={(e) => handleMouseMove(e, deckCardRef)}
           onMouseLeave={() => handleMouseLeave(deckCardRef)}
         >
-          {/* Added explicit width and height to prevent layout shifts */}
+          {/* Explicitly setting width and height to reserve space */}
           <img
             id="shuffleDeckImage"
             src={shuffledDeckList[currentDeckImageIndex]}
@@ -109,7 +107,7 @@ const Home = () => {
           onMouseMove={(e) => handleMouseMove(e, artCardRef)}
           onMouseLeave={() => handleMouseLeave(artCardRef)}
         >
-          {/* Added explicit width and height to prevent layout shifts */}
+          {/* Explicitly setting width and height to reserve space */}
           <img
             id="shuffleArtImage"
             src={shuffledArtList[currentArtImageIndex]}
@@ -117,6 +115,7 @@ const Home = () => {
             width="300"
             height="400"
             style={{ transition: 'opacity 1s ease-in-out', opacity: 1 }}
+            fetchPriority='high'
           />
           <div className="label">Custom Card Tool</div>
         </div>
@@ -133,7 +132,7 @@ const Home = () => {
           onMouseMove={(e) => handleMouseMove(e, wikiCardRef)}
           onMouseLeave={() => handleMouseLeave(wikiCardRef)}
         >
-          {/* Added explicit width and height to prevent layout shifts */}
+          {/* Explicitly setting width and height to reserve space */}
           <img
             src={einsteinName()}
             alt="Wiki Fandom"
