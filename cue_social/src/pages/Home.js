@@ -130,6 +130,7 @@ const Home = () => {
         >
           <img
             src="https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/28/9c/34e7b200d5d1b2ca0f939b63cf2c662b04a6"
+            // src={'/images/einstein.jpg'}
             alt="Wiki Fandom"
           />
           <div className="label">Wiki Fandom</div>

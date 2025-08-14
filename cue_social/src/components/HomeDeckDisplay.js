@@ -49,6 +49,14 @@ const HomeDeckDisplay = ({
 
   const width = useWindowWidth();
 
+  const getCloudinaryImageUrl = (url, width) => {
+    if (!url) return '';
+    const parts = url.split('/upload/');
+    if (parts.length < 2) return url;
+    const publicId = parts[1];
+    return `${parts[0]}/upload/w_${width}/${publicId}`;
+  };
+
   let gridTemplateColumns;
 
   if (width <= 600) {
@@ -126,7 +134,7 @@ const HomeDeckDisplay = ({
                 <Link to={`/decks/${deck._id}`}>
                   {deck.image && (
                     <img
-                      src={deck.image}
+                      src={getCloudinaryImageUrl(deck.image, 400)}
                       alt="Decklist"
                       className={`${a}deck-image`}
                       style={{ maxWidth: '100%', marginTop: '0.5rem' }}

@@ -142,10 +142,18 @@ export const cardIconNames = () => {
 ]
 }
 
+// export const deckBuilderNames = () => {
+//   return ["https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/85/7c/eb8d8461a383a8a0360997b07ebbae17e751", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/20/7d/0f08ba0ce62155a12f87b2aff6e8ac3eed34", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/c3/f1/8ef21ffb5bafce78c2831122c77966ee141a", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/1b/11/c97b4c456e60f5cf5aa003e46eb1cb71b253", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/ee/23/ff884455fbb08ca9625a7e33ccb6329b5bb2"]
+// }
+
+// export const cardArtNames = () => {
+// return ["https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/5c/49/6b53cd76a8af3ba5134777f40798d864cdae", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/43/02/1adf299c56306ba07ef7d93af5fdab99ecfb", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/30/f4/3b800566cc811e75492ca8a1672bcb9882c7", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/65/2f/63afb0406b8b46228354e56d6e345beff78d", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/5e/9a/e82ee4a0fbc4a291a36edb2dc9e64e54f79a", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/da/10/ec97c375abe77c4e200069ab9b556f26049f"]
+// }
+
 export const deckBuilderNames = () => {
-  return ["https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/85/7c/eb8d8461a383a8a0360997b07ebbae17e751", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/20/7d/0f08ba0ce62155a12f87b2aff6e8ac3eed34", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/c3/f1/8ef21ffb5bafce78c2831122c77966ee141a", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/1b/11/c97b4c456e60f5cf5aa003e46eb1cb71b253", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/ee/23/ff884455fbb08ca9625a7e33ccb6329b5bb2"]
+  return ['/images/grail.jpeg', '/images/shini.jpeg', '/images/simulation.jpeg', '/images/smbh.jpeg', '/images/tamarin.jpeg']
 }
 
 export const cardArtNames = () => {
-return ["https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/5c/49/6b53cd76a8af3ba5134777f40798d864cdae", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/43/02/1adf299c56306ba07ef7d93af5fdab99ecfb", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/30/f4/3b800566cc811e75492ca8a1672bcb9882c7", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/65/2f/63afb0406b8b46228354e56d6e345beff78d", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/5e/9a/e82ee4a0fbc4a291a36edb2dc9e64e54f79a", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/da/10/ec97c375abe77c4e200069ab9b556f26049f"]
+  return ['/images/doge.jpeg', '/images/leo.jpg', '/images/miche.jpeg', '/images/mona.jpeg', '/images/ptol.jpeg', '/images/vitr.jpg']
 }

@@ -13,6 +13,14 @@ const DeckPage = ({ loggedInUser }) => {
   const [deck, setDeck] = useState(null);
   const setOne = true;
 
+  const getCloudinaryImageUrl = (url, width) => {
+    if (!url) return '';
+    const parts = url.split('/upload/');
+    if (parts.length < 2) return url;
+    const publicId = parts[1];
+    return `${parts[0]}/upload/w_${width}/${publicId}`;
+  };
+
   useEffect(() => {
     const fetchDeck = async () => {
       try {
@@ -48,7 +56,7 @@ const DeckPage = ({ loggedInUser }) => {
       <p className='deckDescription'>{deck.description}</p>
       {deck.image && (
         <img
-          src={deck.image}
+          src={getCloudinaryImageUrl(deck.image, 400)}
           alt="Decklist"
           className='deckImage'
         />
@@ -56,7 +64,7 @@ const DeckPage = ({ loggedInUser }) => {
       <div>
         <strong>Tags:</strong> {deck.tags}
       </div>
-      <CommentDisplay loggedInUser={ loggedInUser } />
+      <CommentDisplay loggedInUser={loggedInUser} />
     </div>
   );
 };

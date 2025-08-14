@@ -88,6 +88,14 @@ const Profile = ({ onLogout, loggedInUser }) => {
     setDeckToDelete(null); // Close the delete confirmation modal
   };
 
+  const getCloudinaryImageUrl = (url, width) => {
+    if (!url) return '';
+    const parts = url.split('/upload/');
+    if (parts.length < 2) return url;
+    const publicId = parts[1];
+    return `${parts[0]}/upload/w_${width}/${publicId}`;
+  };
+
   return (
     <div>
       <div>
@@ -97,7 +105,7 @@ const Profile = ({ onLogout, loggedInUser }) => {
         <div className="modal-overlay">
           <div className="modal-content">
             <button className="modal-close" onClick={closeModal}>Close</button>
-            <EditUploadForm deckId={editDeck._id} loggedInUser={loggedInUser} file={editDeck.image} cardData={editDeck.cards} oldDescription={editDeck.description} oldTitle={editDeck.title} oldSelectedAlbums={editDeck.albums} oldSelectedCollections={editDeck.collections} oldSelectedTags={editDeck.tags} closeModal={closeModal} />
+            <EditUploadForm deckId={editDeck._id} loggedInUser={loggedInUser} file={getCloudinaryImageUrl(editDeck.image, 400)} cardData={editDeck.cards} oldDescription={editDeck.description} oldTitle={editDeck.title} oldSelectedAlbums={editDeck.albums} oldSelectedCollections={editDeck.collections} oldSelectedTags={editDeck.tags} closeModal={closeModal} />
           </div>
         </div>
       }

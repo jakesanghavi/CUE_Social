@@ -6,6 +6,14 @@ import '../component_styles/deckdisplay.css';
 const DeckDisplay = ({ decks, styleClass, handleDeckSearch, sortBy, restricted, upvoteCheck, loggedInUser, deckType, setOne, setDecks, deleteDeck, deleteDeckFunction, editDeckFunction }) => {
     const a = styleClass.startsWith("custom") ? "custom-" : "";
 
+    const getCloudinaryImageUrl = (url, width) => {
+        if (!url) return '';
+        const parts = url.split('/upload/');
+        if (parts.length < 2) return url;
+        const publicId = parts[1];
+        return `${parts[0]}/upload/w_${width}/${publicId}`;
+    };
+
     return (
         <>
             {decks && (
@@ -29,7 +37,7 @@ const DeckDisplay = ({ decks, styleClass, handleDeckSearch, sortBy, restricted, 
                             <Link to={`/decks/${deck._id}`}>
                                 {deck.image && (
                                     <img
-                                        src={deck.image}
+                                        src={getCloudinaryImageUrl(deck.image, 400)}
                                         alt="Decklist"
                                         className={`${a}deck-image`}
                                     />
