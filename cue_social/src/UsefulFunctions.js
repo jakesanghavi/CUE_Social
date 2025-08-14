@@ -157,3 +157,5 @@ export const deckBuilderNames = () => {
 export const cardArtNames = () => {
   return ['/images/doge.webp', '/images/leo.webp', '/images/miche.webp', '/images/mona.webp', '/images/ptol.webp', '/images/vitr.webp']
 }
+
+export const einsteinName = () => { return '/images/einstein.webp' }
