@@ -96,6 +96,7 @@ const Home = () => {
             width="300"
             height="400"
             style={{ transition: 'opacity 1s ease-in-out', opacity: 1 }}
+            fetchPriority='high'
           />
           <div className="label">Community Decks</div>
         </div>
