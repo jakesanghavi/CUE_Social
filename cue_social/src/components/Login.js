@@ -95,7 +95,7 @@ const Login = ({ onLoginSuccess, uid, openLoginModal }) => {
       }
     }
     catch (error) {
-      alert(error);
+      return;
     }
   }
 

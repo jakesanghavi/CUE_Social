@@ -96,7 +96,7 @@ const Home = () => {
             width="300"
             height="400"
             style={{ transition: 'opacity 1s ease-in-out', opacity: 1 }}
-            fetchPriority='high'
+            fetchpriority='high'
           />
           <div className="label">Community Decks</div>
         </div>
@@ -116,7 +116,7 @@ const Home = () => {
             width="300"
             height="400"
             style={{ transition: 'opacity 1s ease-in-out', opacity: 1 }}
-            fetchPriority='high'
+            fetchpriority='high'
           />
           <div className="label">Custom Card Tool</div>
         </div>
