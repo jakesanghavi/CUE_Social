@@ -144,3 +144,67 @@ header a {
   margin-top: auto;
   margin-bottom: auto;
 }
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    background-color: var(--card-bg);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.nav-title {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.nav-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.toggle-slider-container {
+  display: flex; /* Arrange labels and track horizontally */
+  align-items: center; /* Vertically align items in the container */
+  gap: 10px; /* Space between the labels and the track */
+}
+
+.slider-label {
+  color: #555; /* Adjust label color as needed */
+}
+
+.slider-track {
+  background-color: #ddd; /* Background color of the slider track */
+  width: 60px; /* Adjust the width of the slider track */
+  height: 30px; /* Adjust the height of the slider track */
+  border-radius: 15px; /* Make it pill-shaped */
+  position: relative; /* For positioning the handle */
+  cursor: pointer; /* Indicate it's interactive */
+  transition: background-color 0.3s ease; /* Smooth transition for background changes */
+}
+
+.slider-handle {
+  width: 26px; /* Slightly smaller than the track height */
+  height: 26px;
+  background-color: white; /* Color of the slider handle */
+  border-radius: 50%; /* Make it circular */
+  position: absolute; /* Position it within the track */
+  top: 2px; /* Adjust to vertically center within the track */
+  left: 2px; /* Initial position */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Add a subtle shadow */
+  transition: transform 0.3s ease; /* Smooth transition for handle movement */
+}
+
+/* Example of how you might style the track when "on" (e.g., dark mode) */
+.slider-track.on {
+  background-color: black;
+}
+
+.sun-icon.light-mode {
+  color: yellow;
+}
+
+.moon-icon.dark-mode {
+  color: white;
+}

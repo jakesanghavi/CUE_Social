@@ -10,6 +10,7 @@ import DeckSearchResults from './pages/DeckSearchResults';
 import ResetPassword from './pages/ResetPassword';
 import CustomCards from './pages/CustomCardPage';
 import CuratedDecks from './pages/CuratedDecks';
+import DeckList from './pages/DeckList';
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -201,7 +202,7 @@ function App() {
   };
 
   return (
-    <div className="App" id="app" style={{ backgroundColor: '#ECE5F0', height: '100vh' }}>
+    <div className="App" id="app" style={{ height: '100vh' }}>
       <BrowserRouter>
         <NavBar openLoginModal={openLoginModal} loggedInUser={loggedInUser} onLoginSuccess={handleLoginSuccess} uid={getUserID} />
         <div className='pages'>
@@ -213,6 +214,10 @@ function App() {
             <Route
               path='/profile'
               element={<Profile onLogout={handleLogout} loggedInUser={loggedInUser} />}
+            />
+            <Route
+              path="/decks" // Add a new route for the DeckPage
+              element={<DeckList loggedInUser={loggedInUser} onLoginSuccess={handleLoginSuccess} uid={getUserID} openLoginModal={openLoginModal}/>}
             />
             <Route
               path="/decks/:deckId" // Add a new route for the DeckPage

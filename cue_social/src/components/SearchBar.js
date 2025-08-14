@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 import { ROUTE } from '../constants';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSearch } from '@fortawesome/free-solid-svg-icons';
-import { Link } from 'react-router-dom';
 import '../component_styles/searchbar.css'
 import { optionsAlbums, optionsCollections, optionsTags, customStylesAlbums, customStylesCards, customStylesCollections, customStylesTags } from '../selectedStyles';
 
@@ -43,7 +42,7 @@ const customStyles = {
     }),
 };
 
-const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cardsPass = [], userPass = [], allCardsPass = [], usersPass = [] }) => {
+const SearchBar = ({ loggedInUser, openModal, albumsPass = [], collectionsPass = [], tagsPass = [], cardsPass = [], userPass = [], allCardsPass = [], usersPass = [] }) => {
     const navigate = useNavigate();
     const [selectedAlbums, setSelectedAlbums] = useState(albumsPass);
     const [selectedCollections, setSelectedCollections] = useState(collectionsPass);
@@ -51,9 +50,9 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
     const [cards, setCards] = useState(allCardsPass);
     const [users, setUsers] = useState(usersPass);
     const [selectedCards, setSelectedCards] = useState(cardsPass);
-    const [selectedUser, setSelectedUser] = useState(userPass);
+    const selectedUser = userPass;
     const [searchType, setSearchType] = useState('decks'); // Default to 'decks'
-    const [sortBy, setSortBy] = useState('score');
+    const sortBy = "score";
     const [viewportWidth, setViewportWidth] = useState(window.innerWidth);
 
     useEffect(() => {
@@ -63,8 +62,6 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
     }, []);
 
     const fontSize = viewportWidth > 768 ? '16px' : '12px';
-
-    const optionsSort = [{ value: 'score', label: 'Most Popular' }, { value: 'new', label: 'Newest' }]
 
     const handleDeckSearch = () => {
         const searchParams = {
@@ -127,13 +124,15 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
     }, [fetchUsers]);
 
     return (
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: fontSize }}>
+        <div className="search-bar-div" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', fontSize: fontSize }}>
             <div style={{ marginBottom: '10px', display: 'flex', justifyContent: 'center', gap: '10px' }}>
+                {loggedInUser && loggedInUser.email && (
+                    <button onClick={openModal} className='modern-button'>
+                        Upload a deck
+                    </button>
+                )}
                 <button onClick={() => setSearchType('decks')} className="modern-button">
                     Search for Decks
-                </button>
-                <button onClick={() => setSearchType('users')} className="modern-button">
-                    Search for Users
                 </button>
             </div>
 
@@ -146,7 +145,7 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
                             options={optionsAlbums}
                             value={selectedAlbums}
                             onChange={setSelectedAlbums}
-                            placeholder="Add Albums"
+                            placeholder="Albums"
                             styles={{ ...customStyles, ...customStylesAlbums }}
                         />
                         <Select
@@ -154,7 +153,7 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
                             options={optionsCollections}
                             value={selectedCollections}
                             onChange={setSelectedCollections}
-                            placeholder="Add Collections"
+                            placeholder="Collections"
                             styles={{ ...customStyles, ...customStylesCollections }}
                         />
                         <Select
@@ -162,7 +161,7 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
                             options={optionsTags}
                             value={selectedTags}
                             onChange={setSelectedTags}
-                            placeholder="Add Tags"
+                            placeholder="Tags"
                             styles={{ ...customStyles, ...customStylesTags }}
                         />
                         <Select
@@ -170,50 +169,17 @@ const SearchBar = ({ albumsPass = [], collectionsPass = [], tagsPass = [], cards
                             options={cards}
                             value={selectedCards}
                             onChange={setSelectedCards}
-                            placeholder="Add Cards"
+                            placeholder="Cards"
                             styles={{ ...customStyles, ...customStylesCards }}
-                        />
-                        <Select
-                            options={optionsSort}
-                            value={sortBy}
-                            onChange={setSortBy}
-                            placeholder="Sort Decks"
-                            styles={customStyles}
                         />
                     </>
                 )}
 
-                {searchType === 'users' && (
-                    <>
-                        <Select
-                            options={users} // Replace with user search options
-                            onChange={setSelectedUser}
-                            placeholder="Search for a User"
-                        />
-                    </>
-                )}
                 {searchType === 'decks' && (
                     <>
                         <button onClick={handleDeckSearch} style={{ marginLeft: '5px', padding: '12px' }} className='modern-button'>
                             <FontAwesomeIcon icon={faSearch} />
                         </button>
-                    </>
-                )}
-                {searchType === 'users' && (
-                    <>
-                        {selectedUser && (
-                            <Link to={{ pathname: `/users/${selectedUser.label}`, state: { selectedAlbums, selectedCollections, selectedTags, selectedCards, selectedUser, cards, users } }}
-                            >
-                                <button style={{ marginLeft: '5px', padding: '12px' }} className='modern-button'>
-                                    <FontAwesomeIcon icon={faSearch} />
-                                </button>
-                            </Link>
-                        )}
-                        {!selectedUser && (
-                            <button style={{ marginLeft: '5px', padding: '12px' }} disabled={true}>
-                                <FontAwesomeIcon icon={faSearch} className='modern-button'/>
-                            </button>
-                        )}
                     </>
                 )}
             </div>

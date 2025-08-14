@@ -1,27 +1,27 @@
-.grid-wrapper {
+.custom-grid-wrapper {
     display: flex;
     justify-content: space-between;
     flex-wrap: wrap;
 }
 
-.grid-container {
+.custom-grid-container {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
   text-align: center;
   font-size: clamp(12px, 1.5vw, 16px);
 }
 
-.grid-column {
+.custom-grid-column {
   border-left: 1px solid #ccc;
   padding-left: 1rem;
 }
 
-.grid-column:first-child {
+.custom-grid-column:first-child {
   border-left: none;
 }
 
-.grid-item {
+.custom-grid-item {
     /* Example background color */
     border: 1px solid #fff;
     /* Example border */
@@ -31,7 +31,7 @@
     /* Center text */
 }
 
-.deck-image {
+.custom-deck-image {
     max-width: 100%;
     /* Make sure the image fits within its container */
     height: auto;
@@ -40,14 +40,14 @@
     /* Maximum height for the image */
 }
 
-.grid-item a {
+.custom-grid-item a {
     color: inherit;
     /* Inherit text color */
     text-decoration: none;
     /* Remove underline */
 }
 
-.grid-item a:hover {
+.custom-grid-item a:hover {
     color: inherit;
     /* Maintain text color on hover */
     text-decoration: none;
@@ -65,7 +65,7 @@
     margin: 10px 0; /* Add some margin for spacing */
 }
 
-.delete-button {
+.custom-delete-button {
     background-color: red;
     color: white;
     border: none;
@@ -73,7 +73,7 @@
     cursor: pointer;
 }
 
-.delete-button:hover {
+.custom-delete-button:hover {
     background-color: darkred;
 }
 
@@ -87,16 +87,4 @@
 
 .delete-button:hover {
     background-color: darkred;
-}
-
-@media (max-width: 850px) {
-    .grid-container {
-        grid-template-columns: repeat(3, 1fr);
-    }
-}
-
-@media (max-width: 600px) {
-    .grid-container {
-        grid-template-columns: repeat(2, 1fr);
-    }
 }

@@ -7,7 +7,6 @@
   --error: #e7195a;
 }
 body {
-  background: #ECE5F0;
   margin: 0;
   font-family: "Poppins";
   height: 100vh;
@@ -19,4 +18,12 @@ html, body {
   overflow-x: hidden; /* Prevent horizontal scrolling */
   margin: 0; /* Remove default margin */
   padding: 0; /* Remove default padding */
+}
+
+.pages {
+  display: flex;
+  justify-content: center; /* Center horizontally (if needed) */
+  align-items: center; /* Center vertically */
+  min-height: 100vh; /* Ensure it takes the full viewport height */
+  width: 100%; /* Take the full width */
 }

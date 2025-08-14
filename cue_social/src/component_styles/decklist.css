@@ -1,0 +1,123 @@
+.main {
+    border-radius: 30px;
+    padding: 8rem 0;
+    height: 60vh
+}
+
+/* modal.css */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.modal-content {
+    background: white;
+    padding: 20px;
+    border-radius: 5px;
+    width: 80%;
+    max-width: 600px;
+    position: relative;
+}
+
+.modal-close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.custom-grid-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.custom-grid-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    margin: 0 10px;
+    /* Adjust as needed */
+    width: 100%;
+}
+
+.custom-grid-wrapper {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.custom-grid-wrapper > div:not(.vertical-line) { /* Target DeckDisplay containers */
+    width: calc(33.33% - 20px); /* Roughly one-third width minus line spacing */
+    margin: 0 10px;
+}
+
+.vertical-line {
+    width: 1px;
+    background-color: #ccc;
+    margin: 0 10px;
+}
+
+.custom-grid-item {
+    /* Example background color */
+    border: 1px solid #fff;
+    /* Example border */
+    padding: 0.5vw;
+    /* Reduced padding */
+    text-align: center;
+    /* Center text */
+}
+
+.custom-deck-image {
+    max-width: 100%;
+    /* Make sure the image fits within its container */
+    height: auto;
+    /* Maintain the aspect ratio */
+    max-height: 40vh;
+    /* Maximum height for the image */
+}
+
+.custom-grid-item a {
+    color: inherit;
+    /* Inherit text color */
+    text-decoration: none;
+    /* Remove underline */
+}
+
+.custom-grid-item a:hover {
+    color: inherit;
+    /* Maintain text color on hover */
+    text-decoration: none;
+    /* Maintain no underline on hover */
+}
+
+.vertical-line {
+    width: 1px;
+    background-color: #000;
+    /* Change color as needed */
+    margin: 0 10px;
+    /* Adjust the margin to add space between the DeckDisplay components and the line */
+}
+
+@media (max-width: 850px) {
+
+    .custom-grid-wrapper > *:first-child {
+        display: none;
+    }
+
+    .vertical-line {
+        display: none;
+    }
+}
