@@ -49,7 +49,7 @@ const [isDarkMode, setIsDarkMode] = useState(true);
     <header>
       <div className='container'>
         <Link to="/" className='logo-name-holder'>
-          <img id='logo' src='../favicon.png' alt='Cue Tavern Logo' />
+          <img id='logo' src='../favicon.png' alt='Cue Tavern Logo' width="100" height="100" />
           <h1 className='logoText'>Cue Tavern</h1>
         </Link>
 
