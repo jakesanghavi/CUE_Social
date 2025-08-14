@@ -34,20 +34,20 @@ const getUserByEmail = async (request, response) => {
 
 // GET a specific user
 const getUserByUsername = async (request, response) => {
-  const { id } = request.params
+  const { id } = request.params;
 
   try {
-    const userData = await User.findOne({ username: { $regex: new RegExp(`^${id}$`, 'i') } }).select('-password');;
+    const userData = await User.findOne({ username: id }).select('-password');
+
     if (!userData) {
-      // Returning 201 instead of the proper 404 prevents errors from coming up in the console.
-      return response.status(201).json({ "error": "User does not exist" })
+      return response.status(404).json({ error: 'User does not exist' });
     }
-    return response.status(200).json(userData)
+
+    return response.status(200).json(userData);
+  } catch (error) {
+    return response.status(500).json({ error: error.message });
   }
-  catch (error) {
-    return response.status(400).json({ error: error.message })
-  }
-}
+};
 
 // POST a user
 const postUser = async (request, response) => {
