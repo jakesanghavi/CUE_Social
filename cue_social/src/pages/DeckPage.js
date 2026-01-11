@@ -45,7 +45,7 @@ const DeckPage = ({ loggedInUser }) => {
       <h2 className='deckTitle'>
         {deck.title} {deck.deckcode !== 'null' && deck.deckcode !== "" ? `- Deck Code: ${deck.deckcode}` : ''}
       </h2>
-      <h3 className='deckAuthor'>Author: <Link to={`/users/${deck.user}`} style={{ color: 'black' }}>{deck.user}</Link></h3>
+      <h3 className='deckAuthor'>Author: <Link to={`/users/${deck.user}`} style={{ color: 'var(--text-color)' }}>{deck.user}</Link></h3>
       <div className="deck-upvotes">
         <span>Upvotes: </span>
         <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck, loggedInUser, setOne, ...[setDeck])}

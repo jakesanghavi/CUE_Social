@@ -1,70 +1,186 @@
+/* =====================================================
+   Deck Details Page – Full Modernized CSS
+   ===================================================== */
+
+/* ---------------------------
+   Container
+--------------------------- */
 .deck-details {
-  padding: 20px;
-  border-radius: 10px;
+  padding: var(--space-6);
+  border-radius: var(--radius-md);
   max-width: 800px;
   margin: 0 auto;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  box-shadow: var(--shadow-low);
+  font-family: var(--font-sans);
+  transition: box-shadow 120ms ease, transform 120ms ease;
 }
 
-.deck-details h2,
-.deck-details h3,
-.deck-details p {
-  margin: 10px 0;
+/* ---------------------------
+   Typography
+--------------------------- */
+.deckTitle {
+  font-size: var(--fs-xxl);
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: var(--space-4);
+  letter-spacing: 0.5px;
 }
 
+.deckAuthor {
+  font-size: var(--fs-md);
+  font-weight: 500;
+  text-align: center;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-4);
+}
+
+.deckDescription {
+  font-size: var(--fs-md);
+  font-weight: 400;
+  line-height: 1.8;
+  text-align: center;
+  margin-top: var(--space-4);
+  margin-bottom: var(--space-6);
+}
+
+/* ---------------------------
+   Author Link
+--------------------------- */
 .author-link {
-  color: black;
+  color: var(--color-primary);
   text-decoration: none;
+  transition: color 120ms ease;
 }
 
+.author-link:hover {
+  color: var(--color-primary-variant);
+}
+
+/* ---------------------------
+   Deck Image
+--------------------------- */
+.deckImage {
+  width: 100%;
+  height: auto;
+  max-height: calc(100vh - var(--space-10));
+  border-radius: var(--radius-md);
+  object-fit: contain;
+  margin-top: var(--space-4);
+  box-shadow: var(--shadow-low);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.deckImage:hover {
+  transform: scale(1.01);
+  box-shadow: var(--shadow-medium);
+}
+
+/* ---------------------------
+   Upvotes / Interaction
+--------------------------- */
 .deck-upvotes {
   display: flex;
   align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  margin-top: var(--space-3);
 }
 
 .thumbs-up-icon {
   cursor: pointer;
-  margin-left: 5px;
+  transition: color 120ms ease, transform 120ms ease;
+}
+
+.thumbs-up-icon:hover {
+  transform: scale(1.2);
 }
 
 .thumbs-up-icon.voted {
-  color: yellow;
+  color: var(--color-primary);
 }
 
-.deckImage {
+/* ---------------------------
+   Comment Section
+--------------------------- */
+.comment-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+  margin-top: var(--space-6);
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Modern Comment Box */
+.comment-box {
   width: 100%;
-  height: auto;
-  max-height: calc(100vh - 40px); /* Ensure the image does not exceed the viewport height minus margin */
-  /* Ensure the image does not exceed the viewport width */
-  /* margin-top: 20px; */
-  border-radius: 10px;
-  object-fit: contain;
+  padding: var(--space-4);
+  border-radius: var(--radius-lg);
+  border: none;
+  background-color: var(--color-bg);
+  box-shadow: var(--shadow-low);
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  line-height: 1.5;
+  color: var(--color-text-primary);
+  transition: box-shadow 180ms ease, transform 120ms ease;
+  resize: vertical;
+  min-height: 100px;
 }
 
-/* Responsive styles */
+.comment-box:focus {
+  outline: var(--focus-outline);
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-1px);
+}
+
+.comment-box::placeholder {
+  color: var(--color-text-secondary);
+  font-style: italic;
+}
+
+/* Submit Button */
+.comment-submit {
+  align-self: flex-end;
+  padding: var(--space-2) var(--space-5);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 140ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+
+.comment-submit:hover {
+  background-color: var(--color-primary-variant);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-low);
+}
+
+/* ---------------------------
+   Responsive
+--------------------------- */
 @media (max-width: 768px) {
   .deck-details {
-    padding: 10px;
+    padding: var(--space-4);
   }
 
   .deckImage {
-    max-height: calc(100vh - 40px);
+    max-height: calc(100vh - var(--space-8));
     margin-left: 0;
     margin-right: 0;
   }
-}
 
-.deckDescription {
-  text-align: center;
-  /* Center the text inside the paragraph */
-}
+  .comment-box {
+    min-height: 80px;
+    padding: var(--space-3);
+  }
 
-.deckTitle {
-  text-align: center;
-  /* Center the text inside the paragraph */
-}
-
-.deckAuthor {
-  text-align: center;
-  /* Center the text inside the paragraph */
+  .comment-submit {
+    padding: var(--space-2) var(--space-4);
+  }
 }
