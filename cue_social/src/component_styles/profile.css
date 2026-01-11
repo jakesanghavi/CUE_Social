@@ -1,104 +1,269 @@
+/* =====================================================
+   Profile Page – Modernized CSS
+   ===================================================== */
+
+/* ---------------------------
+   Grid Container
+--------------------------- */
 .grid-container {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 1vw;
-  /* Adjust the gap between items as needed */
+  gap: var(--space-4);
   margin: 0 auto;
-  /* Center the grid container */
   width: 90vw;
-  /* Set the grid container width to 90% of the viewport width */
+  padding: var(--space-4) 0;
 }
 
-/* Media query for mobile screens */
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
   .grid-container {
     grid-template-columns: repeat(3, 1fr);
-    /* Change to 3 columns for mobile screens */
   }
 }
 
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------
+   Grid Item
+--------------------------- */
 .grid-item {
-  /* Example background color */
-  border: 1px solid #ccc;
-  /* Example border */
-  padding: 0.5vw;
-  /* Reduced padding */
+  background-color: var(--color-surface);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  padding: var(--space-3);
   text-align: center;
-  /* Center text */
+  box-shadow: var(--shadow-low);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.grid-item:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
 }
 
 .grid-item img {
   max-width: 100%;
-  /* Make sure the image fits within its container */
   height: auto;
-  /* Maintain the aspect ratio */
   max-height: 40vh;
-  /* Maximum height for the image */
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  margin-bottom: var(--space-2);
 }
 
 .grid-item a {
-  color: inherit;
-  /* Inherit text color */
+  color: var(--color-text-primary);
   text-decoration: none;
-  /* Remove underline */
+  font-family: var(--font-sans);
+  transition: color 120ms ease;
 }
 
 .grid-item a:hover {
-  color: inherit;
-  /* Maintain text color on hover */
-  text-decoration: none;
-  /* Maintain no underline on hover */
+  color: var(--color-primary);
 }
 
-
+/* ---------------------------
+   Delete Popup Overlay
+--------------------------- */
 .delete-popup-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.6);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1001; /* Ensure it appears above everything else */
+  z-index: 1001;
 }
 
+/* Popup Box */
 .delete-popup {
-  background-color: white;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  padding: var(--space-6);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-medium);
   text-align: center;
-  max-width: 300px;
-  width: 100%;
+  max-width: 320px;
+  width: 90%;
+  font-family: var(--font-sans);
 }
 
+/* Buttons */
 .popup-buttons {
   display: flex;
   justify-content: space-around;
-  margin-top: 15px;
+  margin-top: var(--space-4);
+  gap: var(--space-3);
 }
 
 .popup-button {
-  padding: 8px 16px;
-  border-radius: 4px;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-size: 1rem;
+  font-size: var(--fs-md);
+  font-family: var(--font-sans);
+  border: none;
+  transition: transform 120ms ease, box-shadow 120ms ease, opacity 120ms ease;
 }
 
 .popup-button.confirm {
-  background-color: #dc3545;
-  color: white;
-  border: none;
+  background-color: #dc3545; /* or use a token if added */
+  color: var(--color-text-primary);
 }
 
 .popup-button.cancel {
-  background-color: #6c757d;
-  color: white;
-  border: none;
+  background-color: #6c757d; /* or token */
+  color: var(--color-text-primary);
 }
 
 .popup-button:hover {
-  opacity: 0.8;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-low);
+  opacity: 0.85;
+}
+
+/* ---------------------------
+   Responsive Padding Adjustments
+--------------------------- */
+@media (max-width: 768px) {
+  .grid-item {
+    padding: var(--space-2);
+  }
+
+  .delete-popup {
+    padding: var(--space-4);
+  }
+
+  .popup-button {
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--fs-sm);
+  }
+}
+
+/* =====================================================
+   Pagination Controls – Modernized
+   ===================================================== */
+.pagination-controls {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-3);
+  margin: var(--space-6) 0;
+  flex-wrap: wrap; /* wrap numbers on small screens */
+}
+
+.pagination-controls button {
+  min-width: 36px;
+  min-height: 36px;
+  padding: 0 var(--space-2);
+  border: none;
+  border-radius: var(--radius-md);
+  background-color: var(--color-surface);
+  color: var(--color-text-primary);
+  font-family: var(--font-sans);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 140ms ease, color 140ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+
+.pagination-controls button:hover {
+  background-color: var(--color-bg);
+  box-shadow: var(--shadow-low);
+  transform: translateY(-1px);
+}
+
+.pagination-controls button.active {
+  background-color: var(--color-primary);
+  color: var(--color-text-primary);
+  font-weight: 600;
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-1px);
+}
+
+/* Small screens: reduce size */
+@media (max-width: 480px) {
+  .pagination-controls button {
+    min-width: 28px;
+    min-height: 28px;
+    font-size: var(--fs-xs);
+    padding: 0 var(--space-1);
+  }
+}
+
+/* ---------------------------
+   User Badge Container
+--------------------------- */
+.user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-low);
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  color: var(--color-text-primary);
+  transition: box-shadow 120ms ease, transform 120ms ease;
+}
+
+.user-badge:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-1px);
+}
+
+/* Username text */
+.user-badge .username {
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+/* Sign Out Button */
+.user-badge button {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  border: none;
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: background-color 140ms ease, color 140ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+
+/* Hover = red to indicate destructive action */
+.user-badge button:hover {
+  background-color: #FF6B6B; /* destructive red */
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-low);
+}
+
+.user-badge button:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-low);
+}
+
+/* Responsive adjustment for small screens */
+@media (max-width: 480px) {
+  .user-badge {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .user-badge button {
+    width: 100%;
+    text-align: center;
+  }
 }

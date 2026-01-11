@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { upvoteCheck } from '../UsefulFunctions';
 import CommentDisplay from '../components/CommentDisplay'
+import Pill from '../components/Pill';
 import '../component_styles/deckpage.css';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
@@ -45,7 +46,7 @@ const DeckPage = ({ loggedInUser }) => {
       <h2 className='deckTitle'>
         {deck.title} {deck.deckcode !== 'null' && deck.deckcode !== "" ? `- Deck Code: ${deck.deckcode}` : ''}
       </h2>
-      <h3 className='deckAuthor'>Author: <Link to={`/users/${deck.user}`} style={{ color: 'black' }}>{deck.user}</Link></h3>
+      <h3 className='deckAuthor'>Author: <Link to={`/users/${deck.user}`} style={{ color: 'var(--text-color)' }}>{deck.user}</Link></h3>
       <div className="deck-upvotes">
         <span>Upvotes: </span>
         <FontAwesomeIcon icon={faThumbsUp} onClick={() => upvoteCheck(deck, loggedInUser, setOne, ...[setDeck])}
@@ -61,9 +62,14 @@ const DeckPage = ({ loggedInUser }) => {
           className='deckImage'
         />
       )}
-      <div>
-        <strong>Tags:</strong> {deck.tags}
-      </div>
+      {deck.tags?.length > 0 && (
+        <div>
+          <strong>Tags:</strong>{' '}
+          {deck.tags.map((tag, idx) => (
+            <Pill key={idx} text={tag} type="Tag" />
+          ))}
+        </div>
+      )}
       <CommentDisplay loggedInUser={loggedInUser} />
     </div>
   );

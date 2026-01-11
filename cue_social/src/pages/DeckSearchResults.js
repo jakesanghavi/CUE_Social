@@ -23,7 +23,7 @@ const DeckSearchResults = ({ loggedInUser }) => {
   const [totalDecks, setTotalDecks] = useState(0);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
-  const limit = 12;
+  const limit = 15;
   const setOne=false
 
   const fetchDecks = useCallback(async (page) => {

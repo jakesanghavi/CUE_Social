@@ -13,7 +13,7 @@ const Profile = ({ onLogout, loggedInUser }) => {
   const [totalDecks, setTotalDecks] = useState(0);
   const [editDeck, setEditDeck] = useState(null); // State to manage the deck being edited
   const [deckToDelete, setDeckToDelete] = useState(null); // State to manage the deck being deleted
-  const limit = 12;
+  const limit = 15;
   const setOne = false;
 
   useEffect(() => {
@@ -98,8 +98,9 @@ const Profile = ({ onLogout, loggedInUser }) => {
 
   return (
     <div>
-      <div>
-        {user ? <div>Username: {user.username}</div> : null}
+      <div className="user-badge">
+        {user ? <div className="username">Username: {user.username}</div> : null}
+        <button onClick={handleLogoutAndRedirect}>Sign out</button>
       </div>
       {editDeck &&
         <div className="modal-overlay">
@@ -138,9 +139,6 @@ const Profile = ({ onLogout, loggedInUser }) => {
           </button>
         ))}
       </div>
-      <button onClick={handleLogoutAndRedirect}>
-        Sign out
-      </button>
     </div>
   );
 };

@@ -196,7 +196,14 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                             Click to upload
                         </div>
                     )}
-                    <input type="file" id="imageFile" name="image" onChange={handleFileChange} accept="image/*" style={{ display: 'none' }} />
+                    <input
+                        type="file"
+                        id="imageFile"
+                        name="image"
+                        onChange={handleFileChange}
+                        accept=".png,.jpg,.jpeg,.gif,.webp" // exclude .heic
+                        style={{ display: 'none' }}
+                    />
                 </label>
             )}
             {file && !submitted && (
@@ -245,7 +252,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                                     value={selectedCollections}
                                     onChange={setSelectedCollections}
                                     placeholder="Search for Collections"
-                                    styles={{ ...customStylesCollections, container: (provided) => ({ ...provided, marginBottom: '10px' })}}
+                                    styles={{ ...customStylesCollections, container: (provided) => ({ ...provided, marginBottom: '10px' }) }}
                                 />
                                 <Select
                                     isMulti
@@ -253,7 +260,7 @@ const UploadForm = ({ loggedInUser, closeModal }) => {
                                     value={selectedTags}
                                     onChange={setSelectedTags}
                                     placeholder="Search for Tags"
-                                    styles={{ ...customStylesTags, container: (provided) => ({ ...provided, marginBottom: '10px' })}}
+                                    styles={{ ...customStylesTags, container: (provided) => ({ ...provided, marginBottom: '10px' }) }}
                                 />
                                 {errors.selection && <div style={{ color: 'red', marginBottom: '10px' }}>{errors.selection}</div>}
                             </div>

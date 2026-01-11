@@ -8,7 +8,7 @@ const path = require('path');
 const getDecksForUser = async (request, response) => {
     const { id } = request.params // Assuming you have user information in req.user
     const page = parseInt(request.query.page) || 1; // Page number from query parameter
-    const limit = parseInt(request.query.limit) || 12; // Number of decks per page
+    const limit = parseInt(request.query.limit) || 15; // Number of decks per page
 
     try {
         const skips = (page - 1) * limit;
@@ -25,7 +25,7 @@ const getDecksForUser = async (request, response) => {
 const getDecksBySearch = async (request, response) => {
     const { albums, collections, tags, cards, sortBy, restricted } = request.body; // Use body to receive search params
     const page = parseInt(request.query.page) || 1; // Page number from query parameter
-    const limit = parseInt(request.query.limit) || 12; // Number of decks per page
+    const limit = parseInt(request.query.limit) || 15; // Number of decks per page
 
     // cloudinary.config({
     //     cloud_name: 'defal1ruq',

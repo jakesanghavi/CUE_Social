@@ -489,7 +489,7 @@ function CustomCards() {
         </div>
       </div>
       <div id="helpModal" className="modal">
-        <div className="modal-content">
+        <div className="modal-content" style={{ color: "black" }}>
           <span className="closeHelp" onClick={closeHelpModal}>&times;</span>
           <h2>Images:</h2>
           <h4>Click on the background to add a card image! Click where the collection icon should go to search for and add an existing collection icon.</h4>
