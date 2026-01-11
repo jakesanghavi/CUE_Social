@@ -197,3 +197,73 @@
     padding: 0 var(--space-1);
   }
 }
+
+/* ---------------------------
+   User Badge Container
+--------------------------- */
+.user-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-lg);
+  background-color: var(--color-surface);
+  box-shadow: var(--shadow-low);
+  font-family: var(--font-sans);
+  font-size: var(--fs-md);
+  color: var(--color-text-primary);
+  transition: box-shadow 120ms ease, transform 120ms ease;
+}
+
+.user-badge:hover {
+  box-shadow: var(--shadow-medium);
+  transform: translateY(-1px);
+}
+
+/* Username text */
+.user-badge .username {
+  font-weight: 500;
+  color: var(--color-text-primary);
+  white-space: nowrap;
+}
+
+/* Sign Out Button */
+.user-badge button {
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-md);
+  border: none;
+  background-color: var(--color-accent);
+  color: var(--color-text-primary);
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  transition: background-color 140ms ease, color 140ms ease, transform 120ms ease, box-shadow 120ms ease;
+}
+
+/* Hover = red to indicate destructive action */
+.user-badge button:hover {
+  background-color: #FF6B6B; /* destructive red */
+  color: var(--color-text-primary);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-low);
+}
+
+.user-badge button:active {
+  transform: translateY(0);
+  box-shadow: var(--shadow-low);
+}
+
+/* Responsive adjustment for small screens */
+@media (max-width: 480px) {
+  .user-badge {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-1);
+    padding: var(--space-1) var(--space-2);
+  }
+
+  .user-badge button {
+    width: 100%;
+    text-align: center;
+  }
+}
