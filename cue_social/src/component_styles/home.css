@@ -1,8 +1,8 @@
 :root {
-  --bg-color: #ffffff;
+  --bg-color: var(--color-bg);
   --text-color: #000000;
-  --card-bg: #f0f0f0;
-  --highlight: #007BFF;
+  --card-bg: var(--color-surface);
+  --highlight: var(--color-primary);
 }
 
 body.dark {

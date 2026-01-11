@@ -1,0 +1,65 @@
+/* =========================================================
+   Design Tokens
+   Single source of truth for colors, spacing, typography
+   ========================================================= */
+
+/* ---------- Light mode (default) ---------- */
+:root {
+  /* Colors */
+  --color-bg: #ffffff;
+  --color-surface: #f0f0f0;
+  --color-text-primary: #000000;
+  --color-text-secondary: #555555;
+  --color-primary: #007bff;
+  --color-primary-variant: #0056cc;
+  --color-border: rgba(0, 0, 0, 0.08);
+  --color-error: #ff4d4f;
+
+  /* Typography */
+  --font-sans: Inter, ui-sans-serif, system-ui, -apple-system,
+    "Segoe UI", Roboto, sans-serif;
+
+  --fs-xxl: 32px;
+  --fs-xl: 24px;
+  --fs-lg: 20px;
+  --fs-md: 16px;
+  --fs-sm: 14px;
+  --fs-xs: 12px;
+
+  /* Spacing (4px scale) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+
+  /* Radius */
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+
+  /* Shadows */
+  --shadow-low: 0 4px 8px rgba(0, 0, 0, 0.1);
+  --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.15);
+
+  /* Focus */
+  --focus-outline: 2px solid rgba(0, 123, 255, 0.35);
+}
+
+/* ---------- Dark mode ---------- */
+body.dark {
+  --color-bg: #121212;
+  --color-surface: #1e1e1e;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #b3b3b3;
+  --color-primary: #66b2ff;
+  --color-primary-variant: #4d9cff;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-error: #ff6b6b;
+
+  --shadow-low: 0 4px 8px rgba(0, 0, 0, 0.6);
+  --shadow-medium: 0 8px 24px rgba(0, 0, 0, 0.7);
+}

@@ -363,29 +363,6 @@ form .btn input[type="submit"]{
     border-color: #73c771;
     /* box-shadow: inset 0 0 3px #fb6aae; */
   }
-  /* .form-inner div .field input::placeholder{
-    color: #999;
-    transition: all 0.3s ease;
-  }
-  .field input:focus::placeholder{
-    color: #b3b3b3;
-  }
-  .form-inner div .pass-link{
-    margin-top: 5px;
-  }
-  .form-inner div .signup-link{
-    text-align: center;
-    margin-top: 30px;
-  }
-  .form-inner div .pass-link a,
-  .form-inner div .signup-link a{
-    color: #73c771;
-    text-decoration: none;
-  }
-  .form-inner div .pass-link a:hover,
-  .form-inner div .signup-link a:hover{
-    text-decoration: underline;
-  } */
   .btn{
     height: 50px;
     width: 100%;

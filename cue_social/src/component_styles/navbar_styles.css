@@ -2,31 +2,6 @@ header {
   background: #333;
 }
 
-/*
-header .container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-}
-
-.logo-holder {
-  padding: 0 2rem;
-
-}
-
-#logo {
-  width: 100px;
-  margin-top: auto;
-  margin-bottom: auto;
-}
-
-.home-name-holder {
-  padding: 0 2rem;
-  text-align: center;
-  margin-top: auto;
-  margin-bottom: auto;
-} */
-
 header .container {
   display: flex;
   flex-direction: row;
