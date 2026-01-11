@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { useLocation } from 'react-router-dom';
 import Pill from '../components/Pill';
 import { ROUTE } from '../constants';
-import { optionsAlbums, optionsCollections, optionsTags } from '../selectedStyles'; // Assuming these are predefined filter options
+import { optionsAlbums, optionsCollections, optionsTags } from '../selectedStyles';
 
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
@@ -184,22 +184,22 @@ const CuratedDecks = ({ loggedInUser }) => {
             <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'sans-serif' }}>
                 <thead>
                     <tr style={{ backgroundColor: '#f0f0f0', textAlign: 'left' }}>
-                        <th style={{ padding: '12px' }} onClick={() => handleSort('title')}>
+                        <th style={{ padding: '12px', color: "black" }} onClick={() => handleSort('title')}>
                             Title {sortConfig.key === 'title' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                         </th>
-                        <th style={{ padding: '12px' }} onClick={() => handleSort('deckcode')}>
+                        <th style={{ padding: '12px', color: "black" }} onClick={() => handleSort('deckcode')}>
                             Deck Code {sortConfig.key === 'deckcode' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                         </th>
-                        <th style={{ padding: '12px' }} onClick={() => handleFilterToggle('albums')}>
+                        <th style={{ padding: '12px', color: "black" }} onClick={() => handleFilterToggle('albums')}>
                             Albums {isDropdownOpen.albums ? '↑' : '↓'}
                         </th>
-                        <th style={{ padding: '12px' }} onClick={() => handleFilterToggle('collections')}>
+                        <th style={{ padding: '12px', color: "black" }} onClick={() => handleFilterToggle('collections')}>
                             Collections {isDropdownOpen.collections ? '↑' : '↓'}
                         </th>
-                        <th style={{ padding: '12px' }} onClick={() => handleFilterToggle('tags')}>
+                        <th style={{ padding: '12px', color: "black" }} onClick={() => handleFilterToggle('tags')}>
                             Tags {isDropdownOpen.tags ? '↑' : '↓'}
                         </th>
-                        <th style={{ padding: '12px' }} onClick={() => handleSort('createdAt')}>
+                        <th style={{ padding: '12px', color: "black" }} onClick={() => handleSort('createdAt')}>
                             Last Updated {sortConfig.key === 'createdAt' && (sortConfig.direction === 'asc' ? '↑' : '↓')}
                         </th>
                     </tr>

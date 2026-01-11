@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faThumbsUp } from '@fortawesome/free-solid-svg-icons';
 import { upvoteCheck } from '../UsefulFunctions';
 import CommentDisplay from '../components/CommentDisplay'
+import Pill from '../components/Pill';
 import '../component_styles/deckpage.css';
 window.Buffer = window.Buffer || require("buffer").Buffer;
 
@@ -61,9 +62,14 @@ const DeckPage = ({ loggedInUser }) => {
           className='deckImage'
         />
       )}
-      <div>
-        <strong>Tags:</strong> {deck.tags}
-      </div>
+      {deck.tags?.length > 0 && (
+        <div>
+          <strong>Tags:</strong>{' '}
+          {deck.tags.map((tag, idx) => (
+            <Pill key={idx} text={tag} type="Tag" />
+          ))}
+        </div>
+      )}
       <CommentDisplay loggedInUser={loggedInUser} />
     </div>
   );

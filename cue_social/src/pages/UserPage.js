@@ -11,7 +11,7 @@ const UserPage = ({ loggedInUser }) => {
   const setOne = false
   const [page, setPage] = useState(1);
   const [totalDecks, setTotalDecks] = useState(0);
-  const limit = 12;
+  const limit = 15;
 
   const fetchDecksForUser = async (user, page) => {
     if (user) {

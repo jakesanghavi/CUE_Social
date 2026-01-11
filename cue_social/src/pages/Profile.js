@@ -13,7 +13,7 @@ const Profile = ({ onLogout, loggedInUser }) => {
   const [totalDecks, setTotalDecks] = useState(0);
   const [editDeck, setEditDeck] = useState(null); // State to manage the deck being edited
   const [deckToDelete, setDeckToDelete] = useState(null); // State to manage the deck being deleted
-  const limit = 12;
+  const limit = 15;
   const setOne = false;
 
   useEffect(() => {
