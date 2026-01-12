@@ -11,6 +11,7 @@ import ResetPassword from './pages/ResetPassword';
 import CustomCards from './pages/CustomCardPage';
 import CuratedDecks from './pages/CuratedDecks';
 import DeckList from './pages/DeckList';
+import PackOdds from './pages/PackOdds';
 
 function App() {
   const [loggedInUser, setLoggedInUser] = useState(null);
@@ -222,6 +223,10 @@ function App() {
             <Route
               path="/decks/:deckId" // Add a new route for the DeckPage
               element={<DeckPage loggedInUser={loggedInUser}/>}
+            />
+            <Route
+            path="/packodds"
+            element={<PackOdds />}
             />
             <Route path="/deck-search-results" element={<DeckSearchResults loggedInUser={loggedInUser}/>} />
             <Route path="/users/:userId" element={<UserPage loggedInUser={loggedInUser}/>} />

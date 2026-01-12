@@ -1,0 +1,117 @@
+.modal-large {
+  width: min(95vw, 900px);
+}
+
+.modal-subtitle {
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+  margin-top: var(--space-1);
+}
+
+.charts-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  margin-top: var(--space-5);
+}
+
+.chart-block {
+  background: var(--color-muted-surface);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+}
+
+.chart-label {
+  font-weight: 600;
+  margin-bottom: var(--space-2);
+}
+
+.odds-chart {
+  width: 100%;
+  height: auto;
+}
+
+.grid-line {
+  stroke: var(--color-border);
+  stroke-dasharray: 4 4;
+}
+
+.hover-line {
+  stroke: var(--color-text-secondary);
+  stroke-width: 1;
+}
+
+.chart-value {
+  margin-top: var(--space-2);
+  font-size: var(--fs-sm);
+  color: var(--color-text-secondary);
+}
+
+.shared-tooltip {
+  margin-top: var(--space-4);
+  font-weight: 500;
+}
+
+.modal-footer {
+  margin-top: var(--space-5);
+  font-size: var(--fs-xs);
+  color: var(--color-text-secondary);
+}
+
+.modal-odds {
+  width: min(92vw, 820px);
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: var(--space-5);
+}
+
+.chart-block {
+  background: var(--color-muted-surface);
+  padding: var(--space-4);
+  border-radius: var(--radius-md);
+}
+
+.axis-line {
+  stroke: var(--color-border);
+  stroke-width: 1;
+}
+
+.axis-tick {
+  stroke: var(--color-border);
+}
+
+.axis-label {
+  font-size: 11px;
+  fill: var(--color-text-secondary);
+}
+
+.grid-line {
+  stroke: var(--color-border);
+  stroke-dasharray: 4 4;
+}
+
+.hover-line {
+  stroke: var(--color-text-secondary);
+  stroke-width: 1;
+}
+
+.hover-tooltip {
+  pointer-events: none;
+}
+
+.tooltip-bg {
+  fill: var(--color-surface);
+  stroke: var(--color-border);
+  filter: drop-shadow(0 6px 16px rgba(0,0,0,0.45));
+}
+
+.tooltip-text {
+  font-size: 12px;
+  font-weight: 600;
+  fill: var(--color-text);
+}
+
+.tooltip-subtext {
+  font-size: 11px;
+  fill: var(--color-text-secondary);
+}

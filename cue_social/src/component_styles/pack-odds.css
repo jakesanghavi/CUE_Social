@@ -1,0 +1,113 @@
+/* =====================================================
+   Sortable Odds Table
+   ===================================================== */
+
+.table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  padding: var(--space-6);
+}
+
+/* Table */
+.odds-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0 var(--space-3);
+  font-family: var(--font-sans);
+  color: var(--color-text-primary);
+}
+
+/* Header */
+.odds-table thead th {
+  text-align: left;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  padding: var(--space-3);
+  cursor: pointer;
+  user-select: none;
+  color: var(--color-text-secondary);
+}
+
+.odds-table thead th:hover {
+  color: var(--color-primary);
+}
+
+/* Rows */
+.odds-table tbody tr {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-low);
+  transition: transform 120ms ease, box-shadow 120ms ease;
+}
+
+.odds-table tbody tr:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-medium);
+}
+
+/* Cells */
+.odds-table td {
+  padding: var(--space-4);
+  font-size: var(--fs-md);
+  vertical-align: middle;
+}
+
+.odds-table tbody tr td:first-child {
+  border-top-left-radius: var(--radius-lg);
+  border-bottom-left-radius: var(--radius-lg);
+}
+
+.odds-table tbody tr td:last-child {
+  border-top-right-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+}
+
+/* Image column */
+.image-cell {
+  width: 120px;
+}
+
+.image-cell img {
+  width: 100px;
+  height: auto;
+  border-radius: var(--radius-md);
+  object-fit: cover;
+  box-shadow: var(--shadow-low);
+}
+
+/* Responsive tweaks */
+@media (max-width: 768px) {
+  .table-wrapper {
+    padding: var(--space-4);
+  }
+
+  .image-cell {
+    width: 90px;
+  }
+
+  .image-cell img {
+    width: 80px;
+  }
+
+  .odds-table td {
+    padding: var(--space-3);
+    font-size: var(--fs-sm);
+  }
+}
+
+/* Image + title stack */
+.image-stack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.image-title {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  text-align: center;
+  color: var(--color-text-secondary);
+  max-width: 100px;
+  line-height: 1.3;
+}

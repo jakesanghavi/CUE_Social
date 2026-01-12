@@ -121,12 +121,7 @@ const Home = () => {
           <div className="label">Custom Card Tool</div>
         </div>
       </Link>
-      <a
-        href="https://cards-the-universe-and-everything.fandom.com/wiki/Cards,_the_Universe_and_Everything_Wiki"
-        target="_blank"
-        style={{ textDecoration: 'none', color: 'inherit' }}
-        rel="noopener noreferrer"
-      >
+      <Link to="/packodds" style={{ textDecoration: 'none', color: 'inherit' }}>
         <div
           className="card"
           ref={wikiCardRef}
@@ -136,13 +131,13 @@ const Home = () => {
           {/* Explicitly setting width and height to reserve space */}
           <img
             src={einsteinName()}
-            alt="Wiki Fandom"
+            alt="Pack Odds"
             width="300"
             height="400"
           />
-          <div className="label">Wiki Fandom</div>
+          <div className="label">Pack Odds Tool</div>
         </div>
-      </a>
+      </Link>
     </div>
   );
 };
