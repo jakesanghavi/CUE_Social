@@ -159,3 +159,30 @@ export const cardArtNames = () => {
 }
 
 export const einsteinName = () => { return '/images/einstein.webp' }
+
+export const packIconNames = () => { return [
+  // Finder
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768325182/IMG_1501_s38fyo.png',
+  // Spotlight
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768325181/IMG_1505_lee33f.png',
+  // Grab Bag
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768325182/IMG_1516_yqhif6.png',
+  // 20% Epic
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768325182/IMG_1503_l4zl4v.png',
+  // Stratospheric
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768325181/IMG_1517_arivhy.png',
+  // Triple Spotlight
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768325181/IMG_1507_cuzixp.png',
+  // 3 New
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768325181/IMG_1514_uryhjw.png',
+  // 30% Epic
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768325181/IMG_1525_b7ssro.png',
+  // Album Legendary
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768325180/IMG_1527_wths5j.png',
+  // 4k coins
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768325180/IMG_1528_llcl0k.png',
+  // 3.5k coins
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768325180/IMG_1529_l0voei.png',
+  // 20 Gem collection
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768325592/IMG_1530_gkuy9k.png',
+]}

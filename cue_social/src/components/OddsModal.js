@@ -93,7 +93,7 @@ export default function OddsModal({ open, onClose, title, deck }) {
                     <div>
                         <h2>{title}</h2>
                         <p className="modal-subtitle">
-                            Hover or tap the charts to see odds change as you spend more gems.
+                            { !deck.message || deck.message === null ? "Hover or tap the charts to see odds change as you spend more gems." : deck.message }
                         </p>
                     </div>
                     <button className="modal-close" onClick={onClose}>×</button>
