@@ -6,34 +6,57 @@ export default function OddsChart({
   values,
   hoverSpend,
   setHoverSpend,
-  maxSpend
+  maxSpend,
+  type
 }) {
   const svgRef = useRef(null);
+  const xMax = type === 'coin' ? 250000 : 1000;
+  const xTicks =
+    type === 'coin'
+      ? [50000, 100000, 150000, 200000, 250000]
+      : [250, 500, 750, 1000];
 
   const width = 700;
   const height = 200;
   const padding = 40;
 
+  const minXval = 20;
+
   const scaleX = (v) =>
-    padding + (v / maxSpend) * (width - padding * 2);
+    padding +
+    ((v - minXval) / (xMax - minXval)) * (width - padding * 2);
 
   const scaleY = (v) =>
     height - padding - (v / 100) * (height - padding * 2);
 
-  const path = values
-    .map((d, i) =>
-      `${i === 0 ? 'M' : 'L'} ${scaleX(d.spend)} ${scaleY(d.odds)}`
-    )
-    .join(' ');
+  const filteredValues = values.filter(v => v.spend >= minXval);
+
+  // Assumes limleg coin pity at 250k
+  const chartValues =
+    type === 'coin' && label === "Limited Legendary"
+      ? [
+        ...filteredValues,
+        {
+          spend: 250000,
+          odds: 100
+        }
+      ]
+      : filteredValues;
 
   const hoveredValue =
     hoverSpend !== null
-      ? values.reduce((a, b) =>
-        Math.abs(b.spend - hoverSpend) <
-          Math.abs(a.spend - hoverSpend)
-          ? b
-          : a
-      )
+      ? (() => {
+        if (type === 'coin' && hoverSpend >= 250000 && label === "Limited Legendary") {
+          return { spend: 250000, odds: 100 };
+        }
+
+        return filteredValues.reduce((a, b) =>
+          Math.abs(b.spend - hoverSpend) <
+            Math.abs(a.spend - hoverSpend)
+            ? b
+            : a
+        );
+      })()
       : null;
 
   const handlePointer = (clientX) => {
@@ -53,8 +76,20 @@ export default function OddsChart({
     const percent =
       (clampedX - padding) / (width - padding * 2);
 
-    setHoverSpend(percent * maxSpend);
+    setHoverSpend(
+      minXval + percent * (xMax - minXval)
+    );
   };
+
+  const path = chartValues
+    .map((d, i) =>
+      `${i === 0 ? 'M' : 'L'} ${scaleX(d.spend)} ${scaleY(d.odds)}`
+    )
+    .join(' ');
+
+  const isRightHalf =
+    hoveredValue &&
+    scaleX(hoveredValue.spend) > width / 2;
 
   return (
     <div className="chart-block">
@@ -118,7 +153,7 @@ export default function OddsChart({
           className="axis-line"
         />
 
-        {[0, 250, 500, 750, 1000].map(v => (
+        {xTicks.map(v => (
           <g key={v}>
             <line
               x1={scaleX(v)}
@@ -133,10 +168,11 @@ export default function OddsChart({
               textAnchor="middle"
               className="axis-label"
             >
-              {v} Gems
+              {v.toLocaleString()} {type === 'coin' ? 'Coins' : 'Gems'}
             </text>
           </g>
         ))}
+
 
         {/* Curve */}
         <path d={path} stroke={color} strokeWidth="3" fill="none" />
@@ -163,7 +199,10 @@ export default function OddsChart({
         )}
         {hoveredValue && hoveredValue.spend !== null && (
           <g
-            transform={`translate(${scaleX(hoveredValue.spend) + 12}, ${scaleY(hoveredValue.odds) - 12})`}
+            transform={`translate(
+              ${scaleX(hoveredValue.spend) + (isRightHalf ? -122 : 12)},
+              ${scaleY(hoveredValue.odds) - 12}
+            )`}
             className="hover-tooltip"
           >
             <rect
@@ -182,12 +221,6 @@ export default function OddsChart({
           </g>
         )}
       </svg>
-
-      {hoveredValue && (
-        <div className="chart-value">
-          {hoveredValue.odds.toFixed(1)}%
-        </div>
-      )}
     </div>
   );
 };

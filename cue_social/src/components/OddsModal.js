@@ -12,12 +12,12 @@ export default function OddsModal({ open, onClose, title, deck }) {
         return 1 - Math.pow(1 - probability, n);
     }
 
-    const maxSpend = 1000; // adjust as needed
+    const maxSpend = deck?.type === 'coin' ? 250000 : 1000; // adjust as needed
 
     const charts = [
         { key: 'new', label: 'New Card', color: '#6C8CFF', probability: deck.new_card_odds },
-        { key: 'limleg', label: 'Limited Legendary', color: '#A78BFF', probability: deck.limleg_odds },
-        { key: 'limepic', label: 'Limited Epic', color: '#8AF6C1', probability: deck.limepic_odds }
+        { key: 'limleg', label: 'Limited Legendary', color: '#c9a728', probability: deck.limleg_odds },
+        { key: 'limepic', label: 'Limited Epic', color: '#aaaaaa', probability: deck.limepic_odds }
     ];
 
     const data = charts.map(c => ({
@@ -55,6 +55,7 @@ export default function OddsModal({ open, onClose, title, deck }) {
                             hoverSpend={hoverSpend}
                             setHoverSpend={setHoverSpend}
                             maxSpend={maxSpend}
+                            type={deck?.type}
                         />
                     ))}
                 </div>
