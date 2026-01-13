@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useMemo } from 'react';
 import '../component_styles/home.css';
-import { deckBuilderNames, cardArtNames, einsteinName, calculusName, godParticleName } from '../UsefulFunctions';
+import { deckBuilderNames, cardArtNames, calculusName, godParticleName } from '../UsefulFunctions';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
