@@ -62,11 +62,11 @@ export default function OddsModal({ open, onClose, title, deck }) {
             }]
             : []),
         ...(deck.num_new >= 1
-            ? [{ 
-                key: 'new', 
-                label: '1+ New Card', 
-                color: '#6C8CFF', 
-                probability: deck.new_card_odds 
+            ? [{
+                key: 'new',
+                label: '1+ New Card',
+                color: '#6C8CFF',
+                probability: deck.new_card_odds
             }]
             : []),
         { key: 'limleg', label: '1+ Limited Legendary', color: '#c9a728', probability: deck.limleg_odds },
@@ -81,7 +81,7 @@ export default function OddsModal({ open, onClose, title, deck }) {
             const numDraws = spend / deck.cost;
 
             const odds = c.key !== "all_new" ? 100 * atLeastOneSuccess(spend, deck.cost, c.probability)
-                : 100 * probabilityAllCollected({X: c.probability, Z: deck.num_new, N: numDraws});
+                : 100 * probabilityAllCollected({ X: c.probability, Z: deck.num_new, N: numDraws });
             return { spend, odds };
         })
     }));
@@ -93,7 +93,20 @@ export default function OddsModal({ open, onClose, title, deck }) {
                     <div>
                         <h2>{title}</h2>
                         <p className="modal-subtitle">
-                            { !deck.message || deck.message === null ? "Hover or tap the charts to see odds change as you spend more gems." : deck.message }
+                            {!deck.message || deck.message === null ? "Hover or tap the charts to see odds change as you spend more gems." : deck.message}
+                            {deck.limleg_per_1k != null && (
+                                <>
+                                    <br />
+                                    {"Limlegs per 1k: " + deck.limleg_per_1k.toFixed(1)}
+
+                                    {deck.limepic_per_1k != null && (
+                                        <>
+                                            <br />
+                                            {"Limepics per 1k: " + deck.limepic_per_1k.toFixed(1)}
+                                        </>
+                                    )}
+                                </>
+                            )}
                         </p>
                     </div>
                     <button className="modal-close" onClick={onClose}>×</button>

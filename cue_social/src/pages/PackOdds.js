@@ -71,7 +71,13 @@ const initialData = [
         limleg_per_1k: 1000 / 20 * 0.055,
         limepic_per_1k: 1000 / 20 * 0.135,
         num_new: 3,
-        message: "Hover or tap the charts to see odds change as you spend more gems. \n Assumes equal rate of all 3 new cards."
+        message: (
+            <>
+                Hover or tap the charts to see odds change as you spend more gems.
+                <br />
+                Assumes equal rate of all 3 new cards.
+            </>
+        )
     },
     {
         id: 6,
@@ -111,7 +117,13 @@ const initialData = [
         limepic_odds: 0.015,
         type: 'coin',
         num_new: 0,
-        message: "Hover or tap the charts to see odds change as you spend more gems. \n Assumes 250k pity timer as the only method of acquisition."
+        message: (
+            <>
+                Hover or tap the charts to see odds change as you spend more gems.
+                <br />
+                Assumes 250k pity timer as the only method of acquisition.
+            </>
+        )
     },
     {
         id: 9,
@@ -123,7 +135,13 @@ const initialData = [
         limepic_odds: 0.045,
         type: 'coin',
         num_new: 0,
-        message: "Hover or tap the charts to see odds change as you spend more gems. \n Assumes 250k pity timer as the only method of acquisition."
+        message: (
+            <>
+                Hover or tap the charts to see odds change as you spend more gems.
+                <br />
+                Assumes 250k pity timer as the only method of acquisition.
+            </>
+        )
     },
     // Need to indicate that this has 6 limlegs + 12 limepics
     {
