@@ -20,12 +20,24 @@ body {
   transition: background-color 0.3s, color 0.3s;
 }
 
-.gallery {
-  margin-top: -15%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 1.5rem;
+.pages {
+  display: flex;
+  justify-content: center; /* horizontal centering */
+  align-items: center;     /* vertical centering (optional) */
+  min-height: 100vh;       /* make it take full viewport height */
   padding: 2rem;
+  box-sizing: border-box;
+}
+
+.gallery {
+  margin-top: -5%;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr)); /* ALWAYS 2 columns */
+  gap: clamp(0.75rem, 3vw, 1.5rem);
+  padding: clamp(0.75rem, 3vw, 2rem);
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .card {
@@ -35,6 +47,7 @@ body {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
   width: 100%;
+  max-width: 220px;
   aspect-ratio: 3 / 4; /* Maintains shape on all screen sizes */
   display: flex;
   flex-direction: column;
@@ -47,7 +60,7 @@ body {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  flex-grow: 1;
+  max-width: 100%;
 }
 
 .label {
@@ -61,121 +74,14 @@ body {
   font-size: clamp(0.9rem, 2vw, 1.1rem); /* scales text based on screen */
 }
 
+/* .label {
+  font-size: clamp(0.75rem, 2.5vw, 1.1rem);
+  padding: clamp(0.4rem, 2vw, 0.6rem);
+} */
+
 
 .card:hover {
   box-shadow: 
     0 -8px 20px rgba(0, 123, 255, 0.3),
     0 12px 30px rgba(0, 123, 255, 0.4);
-}
-
-@media (max-width: 768px) {
-  .gallery {
-    grid-template-columns: 1fr 1fr;
-    max-width: 400px; /* or whatever fits nicely */
-    margin-left: -30px;
-  }
-
-  .gallery> :nth-child(1) {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-  }
-
-  .gallery> :nth-child(2) {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-  }
-
-  /* Place the third item in the second row, spanning both columns */
-  .gallery> :nth-child(3) {
-    grid-column: 1 / -1;
-    grid-row: 2 / 3;
-    justify-self: center;
-    /* Center the single item */
-  }
-
-  .gallery>* img {
-    /* Target all img tags within direct children of .gallery */
-    height: auto;
-    /* Maintain aspect ratio */
-    max-width: 35vw;
-    /* Optional: Limit vertical height relative to viewport */
-    display: block;
-    /* Prevent extra space below inline images */
-    margin: 0 auto;
-    /* Center the images horizontally within their containers */
-  }
-}
-
-@media (min-width: 650px) and (max-width: 850px) {
-
-  /* Adjust max-width as needed for laptop size */
-  .gallery {
-    grid-template-columns: 1fr 1fr;
-    /* Two columns */
-  }
-
-  /* Place the first two items in the first row */
-  .gallery> :nth-child(1) {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-  }
-
-  .gallery> :nth-child(2) {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-  }
-
-  /* Place the third item in the second row, spanning both columns */
-  .gallery> :nth-child(3) {
-    grid-column: 1 / -1;
-    grid-row: 2 / 3;
-    justify-self: center;
-    /* Center the single item */
-  }
-
-  /* Apply max-width to images in this breakpoint */
-  .gallery>* img {
-    height: auto;
-    max-width: 25vw;
-    /* Adjust as needed for iPad size */
-    display: block;
-    margin: 0 auto;
-  }
-}
-
-@media (min-width: 850px) and (max-width: 1024px) {
-
-  /* Adjust max-width as needed for laptop size */
-  .gallery {
-    grid-template-columns: 1fr 1fr;
-    /* Two columns */
-  }
-
-  /* Place the first two items in the first row */
-  .gallery> :nth-child(1) {
-    grid-column: 1 / 2;
-    grid-row: 1 / 2;
-  }
-
-  .gallery> :nth-child(2) {
-    grid-column: 2 / 3;
-    grid-row: 1 / 2;
-  }
-
-  /* Place the third item in the second row, spanning both columns */
-  .gallery> :nth-child(3) {
-    grid-column: 1 / -1;
-    grid-row: 2 / 3;
-    justify-self: center;
-    /* Center the single item */
-  }
-
-  /* Apply max-width to images in this breakpoint */
-  .gallery>* img {
-    height: auto;
-    max-width: 20vw;
-    /* Adjust as needed for iPad size */
-    display: block;
-    margin: 0 auto;
-  }
 }

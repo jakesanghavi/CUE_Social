@@ -1,6 +1,6 @@
 import { useRef, useState, useEffect, useMemo } from 'react';
 import '../component_styles/home.css';
-import { deckBuilderNames, cardArtNames, einsteinName } from '../UsefulFunctions';
+import { deckBuilderNames, cardArtNames, einsteinName, calculusName, godParticleName } from '../UsefulFunctions';
 import { Link } from 'react-router-dom';
 
 const Home = () => {
@@ -93,8 +93,6 @@ const Home = () => {
             id="shuffleDeckImage"
             src={shuffledDeckList[currentDeckImageIndex]}
             alt="Community Decks"
-            width="300"
-            height="400"
             style={{ transition: 'opacity 1s ease-in-out', opacity: 1 }}
             fetchpriority='high'
           />
@@ -113,8 +111,6 @@ const Home = () => {
             id="shuffleArtImage"
             src={shuffledArtList[currentArtImageIndex]}
             alt="Custom Card Tool"
-            width="300"
-            height="400"
             style={{ transition: 'opacity 1s ease-in-out', opacity: 1 }}
             fetchpriority='high'
           />
@@ -130,14 +126,32 @@ const Home = () => {
         >
           {/* Explicitly setting width and height to reserve space */}
           <img
-            src={einsteinName()}
+            src={calculusName()}
             alt="Pack Odds"
-            width="300"
-            height="400"
           />
           <div className="label">Pack Odds Tool</div>
         </div>
       </Link>
+      <a
+        href="https://cards-the-universe-and-everything.fandom.com/wiki/Cards,_the_Universe_and_Everything_Wiki"
+        target="_blank"
+        style={{ textDecoration: 'none', color: 'inherit' }}
+        rel="noopener noreferrer"
+      >
+        <div
+          className="card"
+          ref={wikiCardRef}
+          onMouseMove={(e) => handleMouseMove(e, wikiCardRef)}
+          onMouseLeave={() => handleMouseLeave(wikiCardRef)}
+        >
+          {/* Explicitly setting width and height to reserve space */}
+          <img
+            src={godParticleName()}
+            alt="Wiki Fandom"
+          />
+          <div className="label">Wiki Fandom</div>
+        </div>
+      </a>
     </div>
   );
 };

@@ -160,6 +160,10 @@ export const cardArtNames = () => {
 
 export const einsteinName = () => { return '/images/einstein.webp' }
 
+export const godParticleName = () => { return '/images/godparticle.webp' }
+
+export const calculusName = () => { return '/images/calculus.webp' }
+
 export const packIconNames = () => { return [
   // Finder
   'https://res.cloudinary.com/defal1ruq/image/upload/v1768325182/IMG_1501_s38fyo.png',
