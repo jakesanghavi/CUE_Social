@@ -33,7 +33,7 @@ export default function OddsChart({
 
   // Assumes limleg coin pity at 250k
   const chartValues =
-    type === 'coin' && label === "Limited Legendary"
+    type === 'coin' && label === "1+ Limited Legendary"
       ? [
         ...filteredValues,
         {
@@ -46,7 +46,7 @@ export default function OddsChart({
   const hoveredValue =
     hoverSpend !== null
       ? (() => {
-        if (type === 'coin' && hoverSpend >= 250000 && label === "Limited Legendary") {
+        if (type === 'coin' && hoverSpend >= 250000 && label === "1+ Limited Legendary") {
           return { spend: 250000, odds: 100 };
         }
 

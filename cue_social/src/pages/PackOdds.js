@@ -12,7 +12,9 @@ const initialData = [
         new_card_odds: 0.25,
         limleg_odds: 1,
         limepic_odds: 0.27,
-        type: 'gem'
+        type: 'gem',
+        limleg_per_1k: 1000/140 * 1 + 0.25*1,
+        num_new: 1
     },
     {
         id: 2,
@@ -22,7 +24,9 @@ const initialData = [
         new_card_odds: 0.2,
         limleg_odds: 0.015,
         limepic_odds: 0.325,
-        type: 'gem'
+        type: 'gem',
+        limleg_per_1k: 1000/40 * 0.015,
+        num_new: 1
     },
     {
         id: 3,
@@ -32,7 +36,9 @@ const initialData = [
         new_card_odds: 0,
         limleg_odds: 0.155,
         limepic_odds: 0.095,
-        type: 'gem'
+        type: 'gem',
+        limleg_per_1k: 1000/25 * 0.155,
+        num_new: 0
     },
     {
         id: 4,
@@ -42,7 +48,9 @@ const initialData = [
         new_card_odds: 0,
         limleg_odds: 0.397,
         limepic_odds: 0.259,
-        type: 'gem'
+        type: 'gem',
+        limleg_per_1k: 1000/50 * 0.397,
+        num_new: 0
     },
     {
         id: 5,
@@ -52,7 +60,9 @@ const initialData = [
         new_card_odds: 0.1,
         limleg_odds: 0.055,
         limepic_odds: 0.135,
-        type: 'gem'
+        type: 'gem',
+        limleg_per_1k: 1000/20 * 0.055,
+        num_new: 3
     },
     {
         id: 6,
@@ -62,7 +72,9 @@ const initialData = [
         new_card_odds: 0,
         limleg_odds: 1,
         limepic_odds: 0,
-        type: 'gem'
+        type: 'gem',
+        limleg_per_1k: 1000/150 * 1,
+        num_new: 0
     },
     {
         id: 7,
@@ -72,7 +84,9 @@ const initialData = [
         new_card_odds: 0,
         limleg_odds: 0.025,
         limepic_odds: 0.17,
-        type: 'gem'
+        type: 'gem',
+        limleg_per_1k: 1000/20 * 0.025,
+        num_new: 0
     },
     // Coin packs will require larger X-axis range and sharp
     // limleg increase to 100% after 250k coins
@@ -84,7 +98,8 @@ const initialData = [
         new_card_odds: 0,
         limleg_odds: 0,
         limepic_odds: 0.015,
-        type: 'coin'
+        type: 'coin',
+        num_new: 0
     },
     {
         id: 9,
@@ -94,7 +109,8 @@ const initialData = [
         new_card_odds: 0,
         limleg_odds: 0,
         limepic_odds: 0.045,
-        type: 'coin'
+        type: 'coin',
+        num_new: 0
     },
     // Need to indicate that this has 6 limlegs + 12 limepics
     {
@@ -105,7 +121,9 @@ const initialData = [
         new_card_odds: 0,
         limleg_odds: 1,
         limepic_odds: 1,
-        type: 'fixed'
+        type: 'fixed',
+        limleg_per_1k: 6,
+        num_new: 0
     },
     // Need to indicate that this has 1 limleg + 2 limepics
     {
@@ -116,7 +134,9 @@ const initialData = [
         new_card_odds: 0,
         limleg_odds: 1,
         limepic_odds: 1,
-        type: 'fixed'
+        type: 'fixed',
+        limleg_per_1k: 1 * (1000/230),
+        num_new: 0
     },
 ];
 
@@ -146,7 +166,7 @@ export default function PackOdds() {
             <table className="odds-table">
                 <thead>
                     <tr>
-                        <th>Deck</th>
+                        <th>Pack</th>
                         <th onClick={() => handleSort('cost')}>
                             Cost
                             {sortKey === 'cost' && (direction === 'asc' ? ' ↑' : ' ↓')}
@@ -162,6 +182,10 @@ export default function PackOdds() {
                         <th onClick={() => handleSort('limepic_odds')}>
                             1+ Limepic %
                             {sortKey === 'limepic_odds' && (direction === 'asc' ? ' ↑' : ' ↓')}
+                        </th>
+                        <th onClick={() => handleSort('limleg_per_1k')}>
+                            Limlegs per 1K Gems
+                            {sortKey === 'limleg_per_1k' && (direction === 'asc' ? ' ↑' : ' ↓')}
                         </th>
                     </tr>
                 </thead>
@@ -181,9 +205,10 @@ export default function PackOdds() {
                                 </div>
                             </td>
                             <td>{row.cost}</td>
-                            <td>{row.new_card_odds}%</td>
-                            <td>{row.limleg_odds}%</td>
-                            <td>{row.limepic_odds}%</td>
+                            <td>{parseFloat((row.new_card_odds*100).toFixed(1))}%</td>
+                            <td>{parseFloat((row.limleg_odds*100).toFixed(1))}%</td>
+                            <td>{parseFloat((row.limepic_odds*100).toFixed(1))}%</td>
+                            <td>{row.limleg_per_1k ? row.limleg_per_1k.toFixed(1) : 'N/A'}</td>
                         </tr>
                     ))}
                 </tbody>
