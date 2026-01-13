@@ -43,6 +43,7 @@ const Home = () => {
 
   const deckCardRef = useRef(null);
   const artCardRef = useRef(null);
+  const oddsCardRef = useRef(null);
   const wikiCardRef = useRef(null);
 
   const shuffledDeckList = useMemo(() => {
@@ -140,9 +141,9 @@ const Home = () => {
       >
         <div
           className="card"
-          ref={wikiCardRef}
-          onMouseMove={(e) => handleMouseMove(e, wikiCardRef)}
-          onMouseLeave={() => handleMouseLeave(wikiCardRef)}
+          ref={oddsCardRef}
+          onMouseMove={(e) => handleMouseMove(e, oddsCardRef)}
+          onMouseLeave={() => handleMouseLeave(oddsCardRef)}
         >
           {/* Explicitly setting width and height to reserve space */}
           <img
