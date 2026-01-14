@@ -187,7 +187,7 @@ const initialData = [
     {
         id: 13,
         name: 'Downgraded Album Finder',
-        image: packNames[7],
+        image: packNames[12],
         cost: 150,
         new_card_odds: 0.25,
         limleg_odds: 0.39,

@@ -189,4 +189,6 @@ export const packIconNames = () => { return [
   'https://res.cloudinary.com/defal1ruq/image/upload/v1768325180/IMG_1529_l0voei.png',
   // 20 Gem collection
   'https://res.cloudinary.com/defal1ruq/image/upload/v1768325592/IMG_1530_gkuy9k.png',
+  // Downgraded Album Finder
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768404191/IMG_1541_nb2qjw.png',
 ]}
