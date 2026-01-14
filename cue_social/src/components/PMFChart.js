@@ -67,7 +67,7 @@ export default function PMFChart({ label, probability, spend, cost, color, type,
   const limlegFinder = name === 'Album Finder' && /Legendary/i.test(label);
   const limlegFinderValue = limlegFinder
     ? /Legendary/i.test(label)
-      ? (1.25 * (spend / cost)).toFixed(1): null
+      ? (1.25 * (spend / cost)).toFixed(1) : null
     : null;
 
   const grabBag = /Grab Bag/i.test(name);
@@ -147,10 +147,14 @@ export default function PMFChart({ label, probability, spend, cost, color, type,
 
   const tooLarge = isNaN(maxY) || isNaN(mean);
 
+  const showMeanLabel = !(isCoinLegendary || tooLarge || stratospheric || limlegFinder || grabBag || albumLegendary);
+
   /* -------- render -------- */
   return (
     <div className="chart-block" ref={containerRef}>
-      <div className="chart-label">{label2}</div>
+      <div className="chart-label">
+        {label2}{showMeanLabel ? `: ${mean.toFixed(1)}` : ''}
+      </div>
 
       {isCoinLegendary ? (
         <div className="chart-empty" style={{ fontSize: '2rem', textAlign: 'center', padding: '3rem 0' }}>

@@ -204,7 +204,7 @@ export default function PackOdds() {
     const [sortKey, setSortKey] = useState(null);
     const [direction, setDirection] = useState('desc');
     const [openDeck, setOpenDeck] = useState(null);
-    const [viewMode, setViewMode] = useState('table');
+    const [viewMode, setViewMode] = useState('grid');
 
     const handleSort = (key) => {
         const nextDirection =
@@ -225,16 +225,16 @@ export default function PackOdds() {
         <div className="table-wrapper">
             <div className="view-toggle">
                 <button
-                    className={viewMode === 'table' ? 'active' : ''}
-                    onClick={() => setViewMode('table')}
-                >
-                    Table
-                </button>
-                <button
                     className={viewMode === 'grid' ? 'active' : ''}
                     onClick={() => setViewMode('grid')}
                 >
                     Grid
+                </button>
+                <button
+                    className={viewMode === 'table' ? 'active' : ''}
+                    onClick={() => setViewMode('table')}
+                >
+                    Table
                 </button>
             </div>
 
