@@ -151,7 +151,7 @@ export default function OddsModal({ open, onClose, title, deck }) {
                         </h3>
 
                         {charts
-                            .filter(c => !c.label.includes("All"))
+                            .filter(c => !c.label.includes("All") && (deck.type === 'coin' || c.probability > 0))
                             .map(c => (
                                 <PMFChart
                                     key={c.key}
@@ -172,18 +172,20 @@ export default function OddsModal({ open, onClose, title, deck }) {
                         className="charts-wrapper"
                         onMouseLeave={() => setHoverSpend(null)}
                     >
-                        {data.map(chart => (
-                            <OddsChart
-                                key={chart.key}
-                                label={chart.label}
-                                color={chart.color}
-                                values={chart.values}
-                                hoverSpend={hoverSpend}
-                                setHoverSpend={setHoverSpend}
-                                maxSpend={maxSpend}
-                                type={deck?.type}
-                            />
-                        ))}
+                        {data
+                            .filter(c => deck?.type === 'coin' || c.probability > 0)
+                            .map(chart => (
+                                <OddsChart
+                                    key={chart.key}
+                                    label={chart.label}
+                                    color={chart.color}
+                                    values={chart.values}
+                                    hoverSpend={hoverSpend}
+                                    setHoverSpend={setHoverSpend}
+                                    maxSpend={maxSpend}
+                                    type={deck?.type}
+                                />
+                            ))}
                     </div>
                 </div>
             </div>
