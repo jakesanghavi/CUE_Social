@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import '../component_styles/odds-modal.css';
+import PMFChart from './PMFChart';
 import OddsChart from './OddsChart';
 
 export default function OddsModal({ open, onClose, title, deck }) {
     const [hoverSpend, setHoverSpend] = useState(null);
+    const defaultSpend = deck?.type === 'coin' ? 250000 : 1000;
+    const [assumedSpend, setAssumedSpend] = useState(defaultSpend);
 
     if (!open || !deck) return null;
 
@@ -111,23 +114,77 @@ export default function OddsModal({ open, onClose, title, deck }) {
                     </div>
                     <button className="modal-close" onClick={onClose}>×</button>
                 </header>
+                <div className="spend-control">
+                    <label htmlFor="spend-input">
+                        Assumed spend ({deck.type === 'coin' ? 'Coins' : 'Gems'})
+                    </label>
 
-                <div
-                    className="charts-wrapper"
-                    onMouseLeave={() => setHoverSpend(null)}
-                >
-                    {data.map(chart => (
-                        <OddsChart
-                            key={chart.key}
-                            label={chart.label}
-                            color={chart.color}
-                            values={chart.values}
-                            hoverSpend={hoverSpend}
-                            setHoverSpend={setHoverSpend}
-                            maxSpend={maxSpend}
-                            type={deck?.type}
-                        />
-                    ))}
+                    <input
+                        id="spend-input"
+                        type="number"
+                        min={deck.cost}
+                        step={deck.cost}
+                        value={assumedSpend}
+                        onChange={(e) => {
+                            const val = e.target.value;
+
+                            // Allow empty string while typing
+                            if (val === "") {
+                                setAssumedSpend("");
+                                return;
+                            }
+
+                            const v = Number(val);
+
+                            if (Number.isFinite(v) && v >= 0) {
+                                setAssumedSpend(v);
+                            }
+                        }}
+                    />
+                </div>
+
+                <div className="charts-split">
+                    {/* LEFT: outcome distributions */}
+                    <div className="expected-wrapper">
+                        <h3 className="expected-title">
+                            Outcome distributions
+                        </h3>
+
+                        {charts
+                            .filter(c => !c.label.includes("All"))
+                            .map(c => (
+                                <PMFChart
+                                    key={c.key}
+                                    label={c.label}
+                                    probability={c.probability}
+                                    spend={assumedSpend}
+                                    cost={deck.cost}
+                                    color={c.color}
+                                    type={deck?.type}
+                                    name={deck?.name}
+                                />
+                            ))
+                        }
+                    </div>
+
+                    {/* RIGHT: existing odds charts */}
+                    <div
+                        className="charts-wrapper"
+                        onMouseLeave={() => setHoverSpend(null)}
+                    >
+                        {data.map(chart => (
+                            <OddsChart
+                                key={chart.key}
+                                label={chart.label}
+                                color={chart.color}
+                                values={chart.values}
+                                hoverSpend={hoverSpend}
+                                setHoverSpend={setHoverSpend}
+                                maxSpend={maxSpend}
+                                type={deck?.type}
+                            />
+                        ))}
+                    </div>
                 </div>
             </div>
         </div>

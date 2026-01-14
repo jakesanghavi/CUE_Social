@@ -16,7 +16,7 @@ const initialData = [
         limleg_odds: 1,
         limepic_odds: 0.27,
         type: 'gem',
-        limleg_per_1k: 1000 / 140 + 0.25 * 1,
+        limleg_per_1k: 1000 / 140 + 0.25 * 1000 / 140,
         limepic_per_1k: 1000 / 140 * 0.27,
         num_new: 1
     },
@@ -182,6 +182,19 @@ const initialData = [
         type: 'gem',
         limleg_per_1k: 1000 / 50 * 0.015,
         limepic_per_1k: 1000 / 50 * 0.52,
+        num_new: 1
+    },
+    {
+        id: 13,
+        name: 'Downgraded Album Finder',
+        image: packNames[7],
+        cost: 150,
+        new_card_odds: 0.25,
+        limleg_odds: 0.39,
+        limepic_odds: 0.965,
+        type: 'gem',
+        limleg_per_1k: 1000 / 150 * 0.39 + 1000 / 150 * (0.14 * 0.25),
+        limepic_per_1k: 1000 / 150 * 0.965,
         num_new: 1
     },
 ];
