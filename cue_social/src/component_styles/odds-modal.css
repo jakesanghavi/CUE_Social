@@ -225,3 +225,26 @@
     width: 1000px; /* wider for large screens */
   }
 }
+
+.modal-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px; /* space between image and text */
+}
+
+.deck-image {
+  width: 10%;       /* default width for desktop */
+  max-height: 100%; /* maintain aspect ratio to match header height */
+  object-fit: contain;
+}
+
+.modal-header-text {
+  flex: 1; /* allow text to fill remaining space */
+}
+
+/* Increase image width on smaller screens */
+@media (max-width: 800px) {
+  .deck-image {
+    width: 40%; /* larger relative size on mobile */
+  }
+}

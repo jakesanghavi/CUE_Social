@@ -93,26 +93,20 @@ export default function OddsModal({ open, onClose, title, deck }) {
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content modal-odds" onClick={(e) => e.stopPropagation()}>
                 <header className="modal-header">
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                    <div className="modal-header-left">
                         {deck.image && (
                             <img
                                 src={deck.image}
-                                alt={deck.name || "Deck image"}
-                                style={{
-                                    width: '10%',      // 10% of modal width
-                                    height: 'auto',    // keep aspect ratio
-                                    objectFit: 'contain',
-                                    borderRadius: '6px',
-                                }}
+                                alt={deck.name || "Deck"}
+                                className="deck-image"
                             />
                         )}
-                        <div style={{ flex: 1 }}>
+                        <div className="modal-header-text">
                             <h2>{title}</h2>
                             <p className="modal-subtitle">
                                 {!deck.message || deck.message === null
                                     ? "Hover or tap the charts to see odds change as you spend more gems."
-                                    : deck.message
-                                }
+                                    : deck.message}
                                 {deck.limleg_per_1k != null && (
                                     <>
                                         <br />
@@ -128,8 +122,10 @@ export default function OddsModal({ open, onClose, title, deck }) {
                             </p>
                         </div>
                     </div>
+
                     <button className="modal-close" onClick={onClose}>×</button>
                 </header>
+
                 <div className="spend-control">
                     <label htmlFor="spend-input">
                         Assumed spend ({deck.type === 'coin' ? 'Coins' : 'Gems'})
