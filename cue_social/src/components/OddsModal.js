@@ -93,24 +93,40 @@ export default function OddsModal({ open, onClose, title, deck }) {
         <div className="modal-overlay" onClick={onClose}>
             <div className="modal-content modal-odds" onClick={(e) => e.stopPropagation()}>
                 <header className="modal-header">
-                    <div>
-                        <h2>{title}</h2>
-                        <p className="modal-subtitle">
-                            {!deck.message || deck.message === null ? "Hover or tap the charts to see odds change as you spend more gems." : deck.message}
-                            {deck.limleg_per_1k != null && (
-                                <>
-                                    <br />
-                                    {"Limlegs per 1k: " + deck.limleg_per_1k.toFixed(1)}
-
-                                    {deck.limepic_per_1k != null && (
-                                        <>
-                                            <br />
-                                            {"Limepics per 1k: " + deck.limepic_per_1k.toFixed(1)}
-                                        </>
-                                    )}
-                                </>
-                            )}
-                        </p>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                        {deck.image && (
+                            <img
+                                src={deck.image}
+                                alt={deck.name || "Deck image"}
+                                style={{
+                                    width: '10%',      // 10% of modal width
+                                    height: 'auto',    // keep aspect ratio
+                                    objectFit: 'contain',
+                                    borderRadius: '6px',
+                                }}
+                            />
+                        )}
+                        <div style={{ flex: 1 }}>
+                            <h2>{title}</h2>
+                            <p className="modal-subtitle">
+                                {!deck.message || deck.message === null
+                                    ? "Hover or tap the charts to see odds change as you spend more gems."
+                                    : deck.message
+                                }
+                                {deck.limleg_per_1k != null && (
+                                    <>
+                                        <br />
+                                        {"Limlegs per 1k: " + deck.limleg_per_1k.toFixed(1)}
+                                        {deck.limepic_per_1k != null && (
+                                            <>
+                                                <br />
+                                                {"Limepics per 1k: " + deck.limepic_per_1k.toFixed(1)}
+                                            </>
+                                        )}
+                                    </>
+                                )}
+                            </p>
+                        </div>
                     </div>
                     <button className="modal-close" onClick={onClose}>×</button>
                 </header>
