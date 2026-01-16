@@ -191,4 +191,8 @@ export const packIconNames = () => { return [
   'https://res.cloudinary.com/defal1ruq/image/upload/v1768325592/IMG_1530_gkuy9k.png',
   // Downgraded Album Finder
   'https://res.cloudinary.com/defal1ruq/image/upload/v1768404191/IMG_1541_nb2qjw.png',
+  // Downgraded 3 Card Pack
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768574022/IMG_1551_mmbid4.png',
+  // 20% New Limleg
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768574022/IMG_1554_j13buw.png',
 ]}

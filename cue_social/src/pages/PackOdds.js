@@ -16,7 +16,8 @@ const initialData = [
         limleg_odds: 1,
         limepic_odds: 0.27,
         type: 'gem',
-        limleg_per_1k: 1000 / 140 + 0.25 * 1000 / 140,
+        // Accounting for getting the finder card + natural limleg
+        limleg_per_1k: 1000 / 140 + 1000 / 140 * 0.25,
         limepic_per_1k: 1000 / 140 * 0.27,
         num_new: 1
     },
@@ -68,8 +69,10 @@ const initialData = [
         limleg_odds: 0.055,
         limepic_odds: 0.135,
         type: 'gem',
-        limleg_per_1k: 1000 / 20 * 0.055,
-        limepic_per_1k: 1000 / 20 * 0.135,
+        // Accounting for getting the finder card + natural limleg
+        limleg_per_1k: 1000 / 20 * 0.055 + 1000 / 20 * (0.1/3 * (0.055 - (0.1/3))),
+        // Accounting for getting the finder card + natural limepic
+        limepic_per_1k: 1000 / 20 * 0.135 + 1000 / 20 * (0.1/3 * (0.135 - (0.1/3))),
         num_new: 3,
         message: (
             <>
@@ -181,7 +184,8 @@ const initialData = [
         limepic_odds: 0.52,
         type: 'gem',
         limleg_per_1k: 1000 / 50 * 0.015,
-        limepic_per_1k: 1000 / 50 * 0.52,
+        // Accounting for getting the finder card + natural limepic
+        limepic_per_1k: 1000 / 50 * 0.52 + 1000 / 50 * (0.22 * 0.3),
         num_new: 1
     },
     {
@@ -193,10 +197,39 @@ const initialData = [
         limleg_odds: 0.39,
         limepic_odds: 0.965,
         type: 'gem',
+        // Accounting for getting the finder card + natural limleg
         limleg_per_1k: 1000 / 150 * 0.39 + 1000 / 150 * (0.14 * 0.25),
         limepic_per_1k: 1000 / 150 * 0.965,
         num_new: 1
     },
+    {
+        id: 14,
+        name: 'Downgraded 3 New Cards',
+        image: packNames[13],
+        cost: 15,
+        new_card_odds: 0.2,
+        limleg_odds: 0.015,
+        limepic_odds: 0.15,
+        type: 'gem',
+        limleg_per_1k: 1000 / 15 * 0.015,
+        // Accounting for getting the finder card + natural limepic
+        limepic_per_1k: 1000 / 15 * 0.15 + 1000 / 15 * (0.2/3 * (0.15 - 0.2/3)),
+        num_new: 1
+    },
+    {
+        id: 15,
+        name: '20% New Limleg Pack',
+        image: packNames[14],
+        cost: 110,
+        new_card_odds: 0.2,
+        limleg_odds: 0.1,
+        limepic_odds: 0.98,
+        type: 'gem',
+        // Accounting for getting the finder card + natural limleg
+        limleg_per_1k: 1000 / 110 * 0.3 + 1000 / 110 * (0.1 * 0.2),
+        limepic_per_1k: 1000 / 150 * 0.98,
+        num_new: 1
+    }
 ];
 
 export default function PackOdds() {
