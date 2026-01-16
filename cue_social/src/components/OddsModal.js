@@ -61,7 +61,9 @@ export default function OddsModal({ open, onClose, title, deck }) {
                 color: '#6FFFFF',
                 probability: deck.new_card_odds,
                 num_new: deck.num_new,
-                cost: deck.cost
+                cost: deck.cost,
+                odds: deck,
+                odds_list: deck.new_card_odds_list
             }]
             : []),
         ...(deck.num_new >= 1
@@ -69,11 +71,12 @@ export default function OddsModal({ open, onClose, title, deck }) {
                 key: 'new',
                 label: '1+ New Card',
                 color: '#6C8CFF',
-                probability: deck.new_card_odds
+                probability: deck.new_card_odds,
+                odds_list: deck.new_card_odds_list
             }]
             : []),
-        { key: 'limleg', label: '1+ Limited Legendary', color: '#c9a728', probability: deck.limleg_odds },
-        { key: 'limepic', label: '1+ Limited Epic', color: '#aaaaaa', probability: deck.limepic_odds }
+        { key: 'limleg', label: '1+ Limited Legendary', color: '#c9a728', probability: deck.limleg_odds, odds_list: deck.legendary_odds_list },
+        { key: 'limepic', label: '1+ Limited Epic', color: '#aaaaaa', probability: deck.limepic_odds, odds_list: deck.epic_odds_list }
     ];
 
 
@@ -159,7 +162,7 @@ export default function OddsModal({ open, onClose, title, deck }) {
                     {/* LEFT: outcome distributions */}
                     <div className="expected-wrapper">
                         <h3 className="expected-title">
-                            Outcome distributions
+                            Outcome Distributions (Whole Number Packs Only!)
                         </h3>
 
                         {charts
@@ -169,6 +172,7 @@ export default function OddsModal({ open, onClose, title, deck }) {
                                     key={c.key}
                                     label={c.label}
                                     probability={c.probability}
+                                    odds_list={c.odds_list}
                                     spend={assumedSpend}
                                     cost={deck.cost}
                                     color={c.color}

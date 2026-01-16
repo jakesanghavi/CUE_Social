@@ -1,19 +1,19 @@
 import { useMemo, useRef, useState, useEffect } from 'react';
 
 /* ------------------ math helpers ------------------ */
-function binomial(n, k) {
-  if (k < 0 || k > n) return 0;
-  let res = 1;
-  for (let i = 1; i <= k; i++) {
-    res *= (n - (k - i));
-    res /= i;
-  }
-  return res;
-}
+// function binomial(n, k) {
+//   if (k < 0 || k > n) return 0;
+//   let res = 1;
+//   for (let i = 1; i <= k; i++) {
+//     res *= (n - (k - i));
+//     res /= i;
+//   }
+//   return res;
+// }
 
-function binomialPMF(n, p, k) {
-  return binomial(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
-}
+// function binomialPMF(n, p, k) {
+//   return binomial(n, k) * Math.pow(p, k) * Math.pow(1 - p, n - k);
+// }
 
 function gaussianKernel(x, h) {
   return Math.exp(-0.5 * (x / h) ** 2);
@@ -34,8 +34,64 @@ function smoothPMF(pmf, bandwidth = 0.6) {
   });
 }
 
+function perPackPMFFromOddsList(oddsList) {
+  // Start with P(0) = 1
+  let pmf = [{ k: 0, prob: 1 }];
+
+  for (const p of oddsList) {
+    const next = new Map();
+
+    for (const { k, prob } of pmf) {
+      // no hit from this source
+      next.set(
+        k,
+        (next.get(k) || 0) + prob * (1 - p)
+      );
+
+      // hit from this source
+      next.set(
+        k + 1,
+        (next.get(k + 1) || 0) + prob * p
+      );
+    }
+
+    pmf = [...next.entries()].map(([k, prob]) => ({ k, prob }));
+  }
+
+  return pmf;
+}
+
+/**
+ * Convolve two discrete PMFs
+ */
+function convolvePMFs(a, b) {
+  const out = new Map();
+
+  for (const x of a) {
+    for (const y of b) {
+      const k = x.k + y.k;
+      out.set(k, (out.get(k) || 0) + x.prob * y.prob);
+    }
+  }
+
+  return [...out.entries()].map(([k, prob]) => ({ k, prob }));
+}
+
+/**
+ * Build PMF for total epics after opening N packs
+ */
+function pmfForNPacks(n, perPackPMF) {
+  let pmf = [{ k: 0, prob: 1 }];
+
+  for (let i = 0; i < n; i++) {
+    pmf = convolvePMFs(pmf, perPackPMF);
+  }
+
+  return pmf;
+}
+
 /* ------------------ component ------------------ */
-export default function PMFChart({ label, probability, spend, cost, color, type, name }) {
+export default function PMFChart({ label, probability, spend, cost, color, type, name, odds_list }) {
   const svgRef = useRef(null);
   const containerRef = useRef(null);
   const [containerWidth, setContainerWidth] = useState(320); // default
@@ -62,12 +118,6 @@ export default function PMFChart({ label, probability, spend, cost, color, type,
       : /Epic/i.test(label)
         ? (12 * (spend / cost)).toFixed(1)
         : null
-    : null;
-
-  const limlegFinder = name === 'Album Finder' && /Legendary/i.test(label);
-  const limlegFinderValue = limlegFinder
-    ? /Legendary/i.test(label)
-      ? (1.25 * (spend / cost)).toFixed(1) : null
     : null;
 
   const grabBag = /Grab Bag/i.test(name);
@@ -97,23 +147,57 @@ export default function PMFChart({ label, probability, spend, cost, color, type,
   }, []);
 
   /* -------- PMF + KDE (hooks called unconditionally) -------- */
-  const mean = valid ? draws * probability : 0;
-  const std = valid ? Math.sqrt(draws * probability * (1 - probability)) : 0;
+  const perPackPMF = useMemo(() => {
+    if (!odds_list || odds_list.length === 0) return null;
+    return perPackPMFFromOddsList(odds_list);
+  }, [odds_list]);
+
+  const totalPMF = useMemo(() => {
+    if (!valid || !perPackPMF || isCoinLegendary) return [];
+    return pmfForNPacks(draws, perPackPMF);
+  }, [valid, draws, perPackPMF, isCoinLegendary]);
+
+  const mean = useMemo(() => {
+    if (!totalPMF.length || !valid) return 0;
+    return totalPMF.reduce((s, d) => s + d.k * d.prob, 0);
+  }, [totalPMF, valid]);
+
+  console.log(label)
+  console.log(mean)
+
+  const std = useMemo(() => {
+    if (!totalPMF.length || !valid) return 0;
+    const mu = mean;
+    return Math.sqrt(
+      totalPMF.reduce((s, d) => s + (d.k - mu) ** 2 * d.prob, 0)
+    );
+  }, [totalPMF, mean, valid]);
+
+  // const mean = valid ? draws * probability : 0;
+  // const std = valid ? Math.sqrt(draws * probability * (1 - probability)) : 0;
   const kSigma = 3;
-  let xMin = valid ? Math.max(0, Math.floor(mean - kSigma * std)) : 0;
-  let xMax = valid ? Math.min(draws, Math.ceil(mean + kSigma * std)) : 1;
+  // let xMin = valid ? Math.max(0, Math.floor(mean - kSigma * std)) : 0;
+  // let xMax = valid ? Math.min(draws, Math.ceil(mean + kSigma * std)) : 1;
+  const halfWidth = Math.ceil(kSigma * std);
+  let xMin = Math.max(0, Math.floor(mean - halfWidth));
+  let xMax = Math.ceil(mean + halfWidth);
   if (valid && xMax <= xMin) {
     xMin = Math.max(0, Math.floor(mean) - 2);
     xMax = Math.min(draws, Math.ceil(mean) + 2);
   }
 
   const pmf = useMemo(() => {
-    if (!valid || isCoinLegendary) return [];
-    return Array.from({ length: xMax - xMin + 1 }, (_, i) => {
-      const k = xMin + i;
-      return { k, prob: binomialPMF(draws, probability, k) };
-    });
-  }, [valid, draws, probability, xMin, xMax, isCoinLegendary]);
+    if (!totalPMF.length || !valid || isCoinLegendary) return [];
+    return totalPMF.filter(d => d.k >= xMin && d.k <= xMax);
+  }, [totalPMF, xMin, xMax, valid, isCoinLegendary]);
+
+  // const pmf = useMemo(() => {
+  //   if (!valid || isCoinLegendary) return [];
+  //   return Array.from({ length: xMax - xMin + 1 }, (_, i) => {
+  //     const k = xMin + i;
+  //     return { k, prob: binomialPMF(draws, probability, k) };
+  //   });
+  // }, [valid, draws, probability, xMin, xMax, isCoinLegendary]);
 
   const kde = useMemo(() => {
     if (!valid || pmf.length === 0 || isCoinLegendary) return [];
@@ -147,7 +231,7 @@ export default function PMFChart({ label, probability, spend, cost, color, type,
 
   const tooLarge = isNaN(maxY) || isNaN(mean);
 
-  const showMeanLabel = !(isCoinLegendary || tooLarge || stratospheric || limlegFinder || grabBag || albumLegendary);
+  const showMeanLabel = !(isCoinLegendary || tooLarge || stratospheric || grabBag || albumLegendary);
 
   /* -------- render -------- */
   return (
@@ -169,10 +253,6 @@ export default function PMFChart({ label, probability, spend, cost, color, type,
       ) : stratospheric ? (
         <div className="chart-empty" style={{ fontSize: '2rem', textAlign: 'center', padding: '3rem 0' }}>
           {stratosphericValue}
-        </div>
-      ) : limlegFinder ? (
-        <div className="chart-empty" style={{ fontSize: '2rem', textAlign: 'center', padding: '3rem 0' }}>
-          {limlegFinderValue}
         </div>
       ) : grabBag ? (
         <div className="chart-empty" style={{ fontSize: '2rem', textAlign: 'center', padding: '3rem 0' }}>

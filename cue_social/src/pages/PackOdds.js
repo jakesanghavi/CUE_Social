@@ -9,16 +9,19 @@ const packNames = packIconNames();
 const initialData = [
     {
         id: 1,
-        name: 'Album Finder',
+        name: 'Limleg Finder',
         image: packNames[0],
         cost: 140,
         new_card_odds: 0.25,
+        new_card_odds_list: [0.25],
         limleg_odds: 1,
         limepic_odds: 0.27,
         type: 'gem',
         // Accounting for getting the finder card + natural limleg
-        limleg_per_1k: 1000 / 140 + 1000 / 140 * 0.25,
+        limleg_per_1k: 1000 / 140 * (1 + 0.25),
+        legendary_odds_list: [1, 0.25],
         limepic_per_1k: 1000 / 140 * 0.27,
+        epic_odds_list: [0.27],
         num_new: 1
     },
     {
@@ -27,12 +30,15 @@ const initialData = [
         image: packNames[3],
         cost: 40,
         new_card_odds: 0.2,
+        new_card_odds_list: [0.2],
         limleg_odds: 0.015,
         limepic_odds: 0.325,
         type: 'gem',
         limleg_per_1k: 1000 / 40 * 0.015,
+        legendary_odds_list: [0.015],
         // Accounting for getting the finder card + natural limepic
-        limepic_per_1k: 1000 / 40 * 0.325 + 1000 / 40 * (0.125 * 0.2),
+        limepic_per_1k: 1000 / 40 * (0.125 + 0.2),
+        epic_odds_list: [0.125, 0.2],
         num_new: 1
     },
     {
@@ -41,11 +47,14 @@ const initialData = [
         image: packNames[1],
         cost: 25,
         new_card_odds: 0,
+        new_card_odds_list: [0],
         limleg_odds: 0.13,
         limepic_odds: 0.095,
         type: 'gem',
         limleg_per_1k: 1000 / 25 * 0.13,
+        legendary_odds_list: [0.13],
         limepic_per_1k: 1000 / 25 * 0.095,
+        epic_odds_list: [0.095],
         num_new: 0
     },
     {
@@ -54,11 +63,14 @@ const initialData = [
         image: packNames[5],
         cost: 50,
         new_card_odds: 0,
+        new_card_odds_list: [0],
         limleg_odds: 1 - (1 - 0.13) ** 3,
         limepic_odds: 1 - (1 - 0.095) ** 3,
         type: 'gem',
         limleg_per_1k: 1000 / 50 * 3 * 0.13,
+        legendary_odds_list: [0.13, 0.13, 0.13],
         limepic_per_1k: 1000 / 50 * 3 * 0.095,
+        epic_odds_list: [0.095, 0.095, 0.095],
         num_new: 0
     },
     {
@@ -67,13 +79,16 @@ const initialData = [
         image: packNames[6],
         cost: 20,
         new_card_odds: 0.1,
+        new_card_odds_list: [0.1],
         limleg_odds: 0.055,
         limepic_odds: 0.135,
         type: 'gem',
         // Accounting for getting the finder card + natural limleg
-        limleg_per_1k: 1000 / 20 * 0.055 + 1000 / 20 * (0.1/3 * (0.055 - (0.1/3))),
+        limleg_per_1k: 1000 / 20 * (0.055),
+        legendary_odds_list: [0.055 - (0.1/3), 0.1/3],
         // Accounting for getting the finder card + natural limepic
-        limepic_per_1k: 1000 / 20 * 0.135 + 1000 / 20 * (0.1/3 * (0.135 - (0.1/3))),
+        limepic_per_1k: 1000 / 20 * (0.135),
+        epic_odds_list: [0.135 - (0.1/3), 0.1/3],
         num_new: 3,
         message: (
             <>
@@ -89,11 +104,14 @@ const initialData = [
         image: packNames[8],
         cost: 150,
         new_card_odds: 0,
+        new_card_odds_list: [0],
         limleg_odds: 1,
         limepic_odds: 0,
         type: 'gem',
         limleg_per_1k: 1000 / 150 * 1,
+        legendary_odds_list: [1],
         limepic_per_1k: 0,
+        epic_odds_list: [0],
         num_new: 0
     },
     {
@@ -102,11 +120,14 @@ const initialData = [
         image: packNames[11],
         cost: 20,
         new_card_odds: 0,
+        new_card_odds_list: [0],
         limleg_odds: 0.025,
         limepic_odds: 0.17,
         type: 'gem',
         limleg_per_1k: 1000 / 20 * 0.025,
+        legendary_odds_list: [0.025],
         limepic_per_1k: 1000 / 20 * 0.17,
+        epic_odds_list: [0.17],
         num_new: 0
     },
     // Coin packs will require larger X-axis range and sharp
@@ -117,8 +138,11 @@ const initialData = [
         image: packNames[9],
         cost: 4000,
         new_card_odds: 0,
+        new_card_odds_list: [0],
         limleg_odds: 0,
+        legendary_odds_list: [0],
         limepic_odds: 0.015,
+        epic_odds_list: [0.015],
         type: 'coin',
         num_new: 0,
         message: (
@@ -135,8 +159,11 @@ const initialData = [
         image: packNames[10],
         cost: 3500,
         new_card_odds: 0,
+        new_card_odds_list: [0],
         limleg_odds: 0,
+        legendary_odds_list: [0],
         limepic_odds: 0.045,
+        epic_odds_list: [0.045],
         type: 'coin',
         num_new: 0,
         message: (
@@ -154,11 +181,14 @@ const initialData = [
         image: packNames[4],
         cost: 1000,
         new_card_odds: 0,
+        new_card_odds_list: [0],
         limleg_odds: 1,
+        legendary_odds_list: [1,1,1,1,1,1],
         limepic_odds: 1,
         type: 'fixed',
         limleg_per_1k: 6,
         limepic_per_1k: 12,
+        epic_odds_list: [1,1,1,1,1,1,1,1,1,1,1,1],
         num_new: 0
     },
     // Need to indicate that this has 1 limleg + 2 limepics
@@ -168,11 +198,14 @@ const initialData = [
         image: packNames[2],
         cost: 230,
         new_card_odds: 0,
+        new_card_odds_list: [0],
         limleg_odds: 1,
         limepic_odds: 1,
         type: 'fixed',
         limleg_per_1k: 1 * (1000 / 230),
+        legendary_odds_list: [1],
         limepic_per_1k: 2 * (1000 / 230),
+        epic_odds_list: [1,1],
         num_new: 0
     },
     {
@@ -181,26 +214,32 @@ const initialData = [
         image: packNames[7],
         cost: 50,
         new_card_odds: 0.3,
+        new_card_odds_list: [0.3],
         limleg_odds: 0.015,
         limepic_odds: 0.52,
         type: 'gem',
         limleg_per_1k: 1000 / 50 * 0.015,
+        legendary_odds_list: [0.015],
         // Accounting for getting the finder card + natural limepic
-        limepic_per_1k: 1000 / 50 * 0.52 + 1000 / 50 * (0.22 * 0.3),
+        limepic_per_1k: 1000 / 50 * (0.3 + 0.22),
+        epic_odds_list: [0.22, 0.3],
         num_new: 1
     },
     {
         id: 13,
-        name: 'Downgraded Album Finder',
+        name: 'Downgraded Limleg Finder',
         image: packNames[12],
         cost: 150,
         new_card_odds: 0.25,
+        new_card_odds_list: [0.25],
         limleg_odds: 0.39,
         limepic_odds: 0.965,
         type: 'gem',
         // Accounting for getting the finder card + natural limleg
-        limleg_per_1k: 1000 / 150 * 0.39 + 1000 / 150 * (0.14 * 0.25),
+        limleg_per_1k: 1000 / 150 * (0.14 + 0.25),
+        legendary_odds_list: [0.14, 0.25],
         limepic_per_1k: 1000 / 150 * 0.965,
+        epic_odds_list: [0.965],
         num_new: 1
     },
     {
@@ -209,12 +248,15 @@ const initialData = [
         image: packNames[13],
         cost: 15,
         new_card_odds: 0.2,
+        new_card_odds_list: [0.2],
         limleg_odds: 0.015,
         limepic_odds: 0.15,
         type: 'gem',
         limleg_per_1k: 1000 / 15 * 0.015,
+        legendary_odds_list: [0.015],
         // Accounting for getting the finder card + natural limepic
-        limepic_per_1k: 1000 / 15 * 0.15 + 1000 / 15 * (0.2/3 * (0.15 - 0.2/3)),
+        limepic_per_1k: 1000 / 15 * (0.15),
+        epic_odds_list: [0.15 - (0.2/3), 0.2/3],
         num_new: 1
     },
     {
@@ -223,12 +265,15 @@ const initialData = [
         image: packNames[14],
         cost: 110,
         new_card_odds: 0.2,
+        new_card_odds_list: [0.2],
         limleg_odds: 0.1,
         limepic_odds: 0.98,
         type: 'gem',
         // Accounting for getting the finder card + natural limleg
-        limleg_per_1k: 1000 / 110 * 0.3 + 1000 / 110 * (0.1 * 0.2),
-        limepic_per_1k: 1000 / 150 * 0.98,
+        limleg_per_1k: 1000 / 110 * (0.1 + 0.2),
+        legendary_odds_list: [0.1, 0.2],
+        limepic_per_1k: 1000 / 110 * 0.98,
+        epic_odds_list: [0.98],
         num_new: 1
     }
 ];
