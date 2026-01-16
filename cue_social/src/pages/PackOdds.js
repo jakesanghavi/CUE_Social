@@ -23,7 +23,7 @@ const initialData = [
     },
     {
         id: 2,
-        name: '20% Epic Pack',
+        name: '20% Limepic Pack',
         image: packNames[3],
         cost: 40,
         new_card_odds: 0.2,
@@ -31,7 +31,8 @@ const initialData = [
         limepic_odds: 0.325,
         type: 'gem',
         limleg_per_1k: 1000 / 40 * 0.015,
-        limepic_per_1k: 1000 / 40 * 0.325,
+        // Accounting for getting the finder card + natural limepic
+        limepic_per_1k: 1000 / 40 * 0.325 + 1000 / 40 * (0.125 * 0.2),
         num_new: 1
     },
     {
@@ -218,7 +219,7 @@ const initialData = [
     },
     {
         id: 15,
-        name: '20% New Limleg Pack',
+        name: '20% Limleg Pack',
         image: packNames[14],
         cost: 110,
         new_card_odds: 0.2,
