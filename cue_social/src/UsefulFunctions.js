@@ -150,21 +150,8 @@ export const cardIconNames = () => {
 // return ["https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/5c/49/6b53cd76a8af3ba5134777f40798d864cdae", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/43/02/1adf299c56306ba07ef7d93af5fdab99ecfb", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/30/f4/3b800566cc811e75492ca8a1672bcb9882c7", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/65/2f/63afb0406b8b46228354e56d6e345beff78d", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/5e/9a/e82ee4a0fbc4a291a36edb2dc9e64e54f79a", "https://cdn-virttrade-assets-eucalyptus.cloud.virttrade.com/filekey/da/10/ec97c375abe77c4e200069ab9b556f26049f"]
 // }
 
-export const deckBuilderNames = () => {
-  return ['/images/grail.webp', '/images/shini.webp', '/images/simulation.webp', '/images/smbh.webp', '/images/tamarin.webp']
-}
 
-export const cardArtNames = () => {
-  return ['/images/doge.webp', '/images/leo.webp', '/images/miche.webp', '/images/mona.webp', '/images/ptol.webp', '/images/vitr.webp']
-}
-
-export const einsteinName = () => { return '/images/einstein.webp' }
-
-export const godParticleName = () => { return '/images/godparticle.webp' }
-
-export const calculusName = () => { return '/images/calculus.webp' }
-
-export const packIconNames = () => { return [
+const packIconNames = () => { return [
   // Finder
   'https://res.cloudinary.com/defal1ruq/image/upload/v1768325182/IMG_1501_s38fyo.png',
   // Spotlight
@@ -195,4 +182,380 @@ export const packIconNames = () => { return [
   'https://res.cloudinary.com/defal1ruq/image/upload/v1768574022/IMG_1551_mmbid4.png',
   // 20% New Limleg
   'https://res.cloudinary.com/defal1ruq/image/upload/v1768574022/IMG_1554_j13buw.png',
+  // Path of Legend
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768682595/IMG_1564_mrdosl.png',
+  // Choose Your Destiny
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768682595/IMG_1563_bbk5yq.png',
+  // Bounty Hunter
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768682595/IMG_1561_szzigp.png',
+  // Album DX
+  'https://res.cloudinary.com/defal1ruq/image/upload/v1768682595/IMG_1559_i6t49a.png',
 ]}
+
+export const packOdds = () => {
+  const packNames = packIconNames();
+  return [
+    {
+        id: 1,
+        name: 'Limleg Finder',
+        image: packNames[0],
+        cost: 140,
+        new_card_odds: 0.25,
+        new_card_odds_list: [0.25],
+        limleg_odds: 1,
+        limepic_odds: 0.27,
+        type: 'gem',
+        // Accounting for getting the finder card + natural limleg
+        limleg_per_1k: 1000 / 140 * (1 + 0.25),
+        legendary_odds_list: [1, 0.25],
+        limepic_per_1k: 1000 / 140 * 0.27,
+        epic_odds_list: [0.27],
+        num_new: 1
+    },
+    {
+        id: 2,
+        name: '20% Limepic Pack',
+        image: packNames[3],
+        cost: 40,
+        new_card_odds: 0.2,
+        new_card_odds_list: [0.2],
+        limleg_odds: 0.015,
+        limepic_odds: 0.325,
+        type: 'gem',
+        limleg_per_1k: 1000 / 40 * 0.015,
+        legendary_odds_list: [0.015],
+        // Accounting for getting the finder card + natural limepic
+        limepic_per_1k: 1000 / 40 * (0.125 + 0.2),
+        epic_odds_list: [0.125, 0.2],
+        num_new: 1
+    },
+    {
+        id: 3,
+        name: 'League Spotlight',
+        image: packNames[1],
+        cost: 25,
+        new_card_odds: 0,
+        new_card_odds_list: [0],
+        limleg_odds: 0.13,
+        limepic_odds: 0.095,
+        type: 'gem',
+        limleg_per_1k: 1000 / 25 * 0.13,
+        legendary_odds_list: [0.13],
+        limepic_per_1k: 1000 / 25 * 0.095,
+        epic_odds_list: [0.095],
+        num_new: 0
+    },
+    {
+        id: 4,
+        name: 'Triple League Spotlight',
+        image: packNames[5],
+        cost: 50,
+        new_card_odds: 0,
+        new_card_odds_list: [0],
+        limleg_odds: 1 - (1 - 0.13) ** 3,
+        limepic_odds: 1 - (1 - 0.095) ** 3,
+        type: 'gem',
+        limleg_per_1k: 1000 / 50 * 3 * 0.13,
+        legendary_odds_list: [0.13, 0.13, 0.13],
+        limepic_per_1k: 1000 / 50 * 3 * 0.095,
+        epic_odds_list: [0.095, 0.095, 0.095],
+        num_new: 0
+    },
+    {
+        id: 5,
+        name: '3 New Cards',
+        image: packNames[6],
+        cost: 20,
+        new_card_odds: 0.1,
+        new_card_odds_list: [0.1],
+        limleg_odds: 0.055,
+        limepic_odds: 0.135,
+        type: 'gem',
+        // Accounting for getting the finder card + natural limleg
+        limleg_per_1k: 1000 / 20 * (0.055),
+        legendary_odds_list: [0.055 - (0.1/3), 0.1/3],
+        // Accounting for getting the finder card + natural limepic
+        limepic_per_1k: 1000 / 20 * (0.135),
+        epic_odds_list: [0.135 - (0.1/3), 0.1/3],
+        num_new: 3,
+        message: (
+            <>
+                Hover or tap the charts to see odds change as you spend more gems.
+                <br />
+                Assumes equal rate of all 3 new cards.
+            </>
+        )
+    },
+    {
+        id: 6,
+        name: 'Album Legendary',
+        image: packNames[8],
+        cost: 150,
+        new_card_odds: 0,
+        new_card_odds_list: [0],
+        limleg_odds: 1,
+        limepic_odds: 0,
+        type: 'gem',
+        limleg_per_1k: 1000 / 150 * 1,
+        legendary_odds_list: [1],
+        limepic_per_1k: 0,
+        epic_odds_list: [0],
+        num_new: 0
+    },
+    {
+        id: 7,
+        name: 'Collection Pack (20 Gems)',
+        image: packNames[11],
+        cost: 20,
+        new_card_odds: 0,
+        new_card_odds_list: [0],
+        limleg_odds: 0.025,
+        limepic_odds: 0.17,
+        type: 'gem',
+        limleg_per_1k: 1000 / 20 * 0.025,
+        legendary_odds_list: [0.025],
+        limepic_per_1k: 1000 / 20 * 0.17,
+        epic_odds_list: [0.17],
+        num_new: 0
+    },
+    // Coin packs will require larger X-axis range and sharp
+    // limleg increase to 100% after 250k coins
+    {
+        id: 8,
+        name: 'Collection Pack (4K Coins)',
+        image: packNames[9],
+        cost: 4000,
+        new_card_odds: 0,
+        new_card_odds_list: [0],
+        limleg_odds: 0,
+        legendary_odds_list: [0],
+        limepic_odds: 0.015,
+        epic_odds_list: [0.015],
+        type: 'coin',
+        num_new: 0,
+        message: (
+            <>
+                Hover or tap the charts to see odds change as you spend more gems.
+                <br />
+                Assumes 250k pity timer as the only method of acquisition.
+            </>
+        )
+    },
+    {
+        id: 9,
+        name: 'Collection Pack (3.5K Coins)',
+        image: packNames[10],
+        cost: 3500,
+        new_card_odds: 0,
+        new_card_odds_list: [0],
+        limleg_odds: 0,
+        legendary_odds_list: [0],
+        limepic_odds: 0.045,
+        epic_odds_list: [0.045],
+        type: 'coin',
+        num_new: 0,
+        message: (
+            <>
+                Hover or tap the charts to see odds change as you spend more gems.
+                <br />
+                Assumes 250k pity timer as the only method of acquisition.
+            </>
+        )
+    },
+    // Need to indicate that this has 6 limlegs + 12 limepics
+    {
+        id: 10,
+        name: 'Stratospheric',
+        image: packNames[4],
+        cost: 1000,
+        new_card_odds: 0,
+        new_card_odds_list: [0],
+        limleg_odds: 1,
+        legendary_odds_list: [1,1,1,1,1,1],
+        limepic_odds: 1,
+        type: 'fixed',
+        limleg_per_1k: 6,
+        limepic_per_1k: 12,
+        epic_odds_list: [1,1,1,1,1,1,1,1,1,1,1,1],
+        num_new: 0
+    },
+    // Need to indicate that this has 1 limleg + 2 limepics
+    {
+        id: 11,
+        name: 'Grab Bag',
+        image: packNames[2],
+        cost: 230,
+        new_card_odds: 0,
+        new_card_odds_list: [0],
+        limleg_odds: 1,
+        limepic_odds: 1,
+        type: 'fixed',
+        limleg_per_1k: 1 * (1000 / 230),
+        legendary_odds_list: [1],
+        limepic_per_1k: 2 * (1000 / 230),
+        epic_odds_list: [1,1],
+        num_new: 0
+    },
+    {
+        id: 12,
+        name: '30% Epic Pack',
+        image: packNames[7],
+        cost: 50,
+        new_card_odds: 0.3,
+        new_card_odds_list: [0.3],
+        limleg_odds: 0.015,
+        limepic_odds: 0.52,
+        type: 'gem',
+        limleg_per_1k: 1000 / 50 * 0.015,
+        legendary_odds_list: [0.015],
+        // Accounting for getting the finder card + natural limepic
+        limepic_per_1k: 1000 / 50 * (0.3 + 0.22),
+        epic_odds_list: [0.22, 0.3],
+        num_new: 1
+    },
+    {
+        id: 13,
+        name: 'Downgraded Limleg Finder',
+        image: packNames[12],
+        cost: 150,
+        new_card_odds: 0.25,
+        new_card_odds_list: [0.25],
+        limleg_odds: 0.39,
+        limepic_odds: 0.965,
+        type: 'gem',
+        // Accounting for getting the finder card + natural limleg
+        limleg_per_1k: 1000 / 150 * (0.14 + 0.25),
+        legendary_odds_list: [0.14, 0.25],
+        limepic_per_1k: 1000 / 150 * 0.965,
+        epic_odds_list: [0.965],
+        num_new: 1
+    },
+    {
+        id: 14,
+        name: 'Downgraded 3 New Cards',
+        image: packNames[13],
+        cost: 15,
+        new_card_odds: 0.2,
+        new_card_odds_list: [0.2],
+        limleg_odds: 0.015,
+        limepic_odds: 0.15,
+        type: 'gem',
+        limleg_per_1k: 1000 / 15 * 0.015,
+        legendary_odds_list: [0.015],
+        // Accounting for getting the finder card + natural limepic
+        limepic_per_1k: 1000 / 15 * (0.15),
+        epic_odds_list: [0.15 - (0.2/3), 0.2/3],
+        num_new: 3
+    },
+    {
+        id: 15,
+        name: '20% Limleg Pack',
+        image: packNames[14],
+        cost: 110,
+        new_card_odds: 0.2,
+        new_card_odds_list: [0.2],
+        limleg_odds: 0.1,
+        limepic_odds: 0.98,
+        type: 'gem',
+        // Accounting for getting the finder card + natural limleg
+        limleg_per_1k: 1000 / 110 * (0.1 + 0.2),
+        legendary_odds_list: [0.1, 0.2],
+        limepic_per_1k: 1000 / 110 * 0.98,
+        epic_odds_list: [0.98],
+        num_new: 1
+    },
+    {
+        id: 16,
+        name: 'Path of Legend',
+        image: packNames[15],
+        cost: 1500,
+        new_card_odds: 0,
+        new_card_odds_list: [0],
+        limleg_odds: 1,
+        limepic_odds: 1,
+        type: 'fixed',
+        limleg_per_1k: 1000 / 1500 * (10),
+        legendary_odds_list: [1,1,1,1,1,1,1,1,1,1],
+        limepic_per_1k: 1000 / 1500 * (10),
+        epic_odds_list: [1,1,1,1,1,1,1,1,1,1],
+        num_new: 0,
+        message: (
+            <>
+                Hover or tap the charts to see odds change as you spend more gems.
+                <br />
+                Assumes no card rarity upgrades.
+            </>
+        )
+    },
+    {
+        id: 17,
+        name: 'Choose Your Destiny',
+        image: packNames[16],
+        cost: 330,
+        new_card_odds: 0,
+        new_card_odds_list: [0],
+        limleg_odds: 1,
+        limepic_odds: 0,
+        type: 'fixed',
+        limleg_per_1k: 1000 / 330 * (3),
+        legendary_odds_list: [1,1,1],
+        limepic_per_1k: 0,
+        epic_odds_list: [0],
+        num_new: 0
+    },
+    {
+        id: 18,
+        name: 'Bounty Hunter',
+        image: packNames[17],
+        cost: 500,
+        new_card_odds: 0,
+        new_card_odds_list: [0],
+        limleg_odds: 1,
+        limepic_odds: 1,
+        type: 'fixed',
+        limleg_per_1k: 1000 / 500 * (3),
+        legendary_odds_list: [1,1,1],
+        limepic_per_1k: 1000 / 500 * (3 + 0.005),
+        // Accounting for rare upgrade to epic
+        epic_odds_list: [1,1,1,0.005/3,0.005/3,0.005/3],
+        num_new: 0,
+        message: (
+            <>
+                Hover or tap the charts to see odds change as you spend more gems.
+                <br />
+                Assumes cards stay at same rarity other than 0.5% chance for rare to epic.
+            </>
+        )
+    },
+    {
+        id: 19,
+        name: 'Album Finder DX',
+        image: packNames[18],
+        cost: 150,
+        new_card_odds: 0,
+        new_card_odds_list: [0],
+        limleg_odds: 1,
+        limepic_odds: 1,
+        type: 'fixed',
+        limleg_per_1k: 1000 / 150,
+        legendary_odds_list: [1],
+        limepic_per_1k: 1000 / 150,
+        epic_odds_list: [1],
+        num_new: 0
+    },
+]
+}
+
+export const deckBuilderNames = () => {
+  return ['/images/grail.webp', '/images/shini.webp', '/images/simulation.webp', '/images/smbh.webp', '/images/tamarin.webp']
+}
+
+export const cardArtNames = () => {
+  return ['/images/doge.webp', '/images/leo.webp', '/images/miche.webp', '/images/mona.webp', '/images/ptol.webp', '/images/vitr.webp']
+}
+
+export const einsteinName = () => { return '/images/einstein.webp' }
+
+export const godParticleName = () => { return '/images/godparticle.webp' }
+
+export const calculusName = () => { return '/images/calculus.webp' }
